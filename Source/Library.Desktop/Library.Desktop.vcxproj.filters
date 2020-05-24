@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Program.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shader.frag">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="Content\Shader.vert">
+      <Filter>Content</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{4022fd64-0416-47d3-bf10-631fa869a0fc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
