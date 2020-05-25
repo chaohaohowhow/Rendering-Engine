@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shader.h"
+#include "Utility.h"
 
 namespace Library
 {
@@ -40,13 +41,16 @@ namespace Library
 		}
 
 		GLCall(glValidateProgram(mShaderId));
-		GLCall(glGetShaderiv(mShaderId, GL_VALIDATE_STATUS, &result));
+		GLCall(glGetProgramiv(mShaderId, GL_VALIDATE_STATUS, &result));
 		if (!result)
 		{
 			GLCall(glGetProgramInfoLog(mShaderId, sizeof(eLog), NULL, eLog));
 			std::cout << "Error validating program: " << eLog << std::endl;
 			throw std::exception("Program validation failed!");
 		}
+
+		GLCall(mUniformView = glGetUniformLocation(mShaderId, "view"));
+		GLCall(mUniformProjection = glGetUniformLocation(mShaderId, "projection"));
 	}
 
 	void Shader::AddShader(GLuint program, const std::string& shaderCode, GLenum shaderType)
@@ -76,5 +80,21 @@ namespace Library
 	{
 		std::ifstream fileStream(fileLocation);
 		return std::string((std::istreambuf_iterator<char>(fileStream)), std::istreambuf_iterator<char>());
+	}
+	void Shader::CreateFromFiles(const std::string& vertexPath, const std::string& fragmentPath)
+	{
+		CompileShader(ReadFile(vertexPath), ReadFile(fragmentPath));
+	}
+	GLuint Shader::GetUniformView()
+	{
+		return mUniformView;
+	}
+	GLuint Shader::GetUniformProjection()
+	{
+		return mUniformProjection;
+	}
+	void Shader::UseShader() const
+	{
+		GLCall(glUseProgram(mShaderId));
 	}
 }

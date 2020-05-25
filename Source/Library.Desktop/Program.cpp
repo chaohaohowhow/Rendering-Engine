@@ -1,6 +1,9 @@
 #include "pch.h"
 
+#include "Camera.h"
 #include "GLWindow.h"
+#include "Shader.h"
+#include "Triangle.h"
 
 using namespace Library;
 
@@ -17,10 +20,23 @@ int main()
 	GLWindow mainWindow(800, 600);
 	mainWindow.Initialize();
 
+	Triangle triangle;
+	triangle.Initialize();
+
+	Shader shader;
+	shader.CreateFromFiles("Content\\Shader.vert", "Content\\Shader.frag");
+
+	Camera camera;
+
+	glm::mat4 projection = glm::perspective(90.0f, static_cast<GLfloat>(mainWindow.GetBufferWidth()) / static_cast<GLfloat>(mainWindow.GetBufferHeight()), 0.0f, 100.0f);
 	while (!mainWindow.GetShouldClose())
 	{
-		glfwPollEvents();
-
 		mainWindow.SwapBuffers();
+		shader.UseShader();
+		triangle.Render(shader.GetUniformProjection(), projection, shader.GetUniformView(), camera.CalculateViewMatrix());
+
+		camera.KeyControl(mainWindow.GetKeys());
+		camera.MouseControl(mainWindow.GetXChange(), mainWindow.GetYChange());
+		glfwPollEvents();
 	}
 }

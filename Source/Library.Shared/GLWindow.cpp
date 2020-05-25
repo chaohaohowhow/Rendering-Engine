@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GLWindow.h"
+#include "Utility.h"
 
 namespace Library
 {
@@ -25,8 +26,8 @@ namespace Library
 
 		// Setup GLFW window properties
 		// OpenGL version
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 4);
 
 		// Core profile = No backwards compatibility
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -50,11 +51,12 @@ namespace Library
 		// Handle Key + mouse input
 		glfwSetKeyCallback(mMainWindow, HandleKeys);
 		glfwSetCursorPosCallback(mMainWindow, HandleMouse);
+
 		// Uncomment the following line to disable cursor
 		glfwSetInputMode(mMainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-
-		if (glewInit() != 0)
+		glewExperimental = GL_TRUE;
+		if (glewInit() != GLEW_OK)
 		{
 			std::cout << "GLEW initialization failed" << std::endl;
 			glfwDestroyWindow(mMainWindow);
@@ -62,7 +64,7 @@ namespace Library
 			return 1;
 		}
 
-		glEnable(GL_DEPTH_TEST);
+		//glEnable(GL_DEPTH_TEST);
 
 		// Setup viewport size
 		glViewport(0, 0, mBufferWidth, mBufferHeight);
@@ -122,5 +124,26 @@ namespace Library
 
 		glWindow->mLastX = static_cast<GLfloat>(xPos);
 		glWindow->mLastY = static_cast<GLfloat>(yPos);
+	}
+	GLint GLWindow::GetBufferWidth()
+	{
+		return mBufferWidth;
+	}
+	GLint Library::GLWindow::GetBufferHeight()
+	{
+		return mBufferHeight;
+	}
+	bool* GLWindow::GetKeys()
+	{
+		return mKeys;
+	}
+	bool Library::GLWindow::GetShouldClose()
+	{
+		return glfwWindowShouldClose(mMainWindow);
+	}
+	void Library::GLWindow::SwapBuffers()
+	{
+		glfwSwapBuffers(mMainWindow);
+		GLCall(glClearBufferfv(GL_COLOR, 0, &sCornflowerBlue[0]));
 	}
 }

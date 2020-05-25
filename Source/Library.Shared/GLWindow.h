@@ -44,5 +44,3 @@ namespace Library
 		inline static const glm::vec4 sCornflowerBlue = glm::vec4(0.392f, 0.584f, 0.929f, 1.0f);
 	};
 }
-
-#include "GLWindow.inl"

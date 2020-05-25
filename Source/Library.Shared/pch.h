@@ -9,6 +9,7 @@
 #endif
 
 // Standard 
+#include <algorithm>
 #include <cstdlib>
 #include <cstdint>
 #include <iostream>
@@ -27,4 +28,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-
+#pragma warning(push)
+#pragma warning(disable: 4201)
+#include <glm/gtc/type_ptr.hpp>
+#pragma warning(pop)
