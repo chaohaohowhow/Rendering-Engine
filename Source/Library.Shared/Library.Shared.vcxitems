@@ -18,11 +18,15 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ColoredTriangle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)DrawableGameComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Enum.inl" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FirstPersonCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Game.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClock.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameTime.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Model.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ModelMaterial.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -41,12 +45,16 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ColoredTriangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DrawableGameComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Enum.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FirstPersonCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Game.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameClock.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameTime.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Model.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ModelMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />

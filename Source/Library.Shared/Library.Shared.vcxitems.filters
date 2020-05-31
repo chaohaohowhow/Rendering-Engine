@@ -47,6 +47,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Model.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ModelMaterial.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Enum.inl">
+      <Filter>Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -101,6 +113,18 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Model.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ModelMaterial.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Enum.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Misc">
@@ -117,6 +141,9 @@
     </Filter>
     <Filter Include="Demos">
       <UniqueIdentifier>{e146c052-39f9-4b98-8ce3-915d43a24f85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{b2bc7d4e-ce22-47f1-85c4-cff0aacb0eec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -42,3 +42,15 @@
 
 // Microsoft guild line
 #include <gsl/gsl>
+
+// Assimp
+#if defined(_LINUX)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+#if defined(_LINUX)
+#pragma GCC diagnostic pop
+#endif
