@@ -10,11 +10,18 @@
 
 // Standard 
 #include <algorithm>
+#include <chrono>
 #include <cstdlib>
 #include <cstdint>
-#include <iostream>
-#include <string>
+#include <functional>
 #include <fstream>
+#include <iostream>
+#include <map>
+#include <random>
+#include <set>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 
 #if defined(DEBUG) || defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
@@ -32,3 +39,6 @@
 #pragma warning(disable: 4201)
 #include <glm/gtc/type_ptr.hpp>
 #pragma warning(pop)
+
+// Microsoft guild line
+#include <gsl/gsl>

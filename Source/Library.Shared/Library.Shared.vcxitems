@@ -15,22 +15,45 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GLWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ColoredTriangle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)DrawableGameComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FirstPersonCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Game.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameClock.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameTime.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Shader.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Triangle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PerspectiveCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ShaderProgram.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Variable.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)VertexDeclarations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GLWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColoredTriangle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DrawableGameComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FirstPersonCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Game.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameClock.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Shader.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Triangle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ShaderProgram.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Variable.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VertexDeclarations.h" />
   </ItemGroup>
 </Project>

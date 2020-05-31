@@ -3,8 +3,8 @@
 layout (location = 0) in vec4 Position;
 layout (location = 1) in vec4 Color;
 
-uniform mat4 projection;
-uniform mat4 view;
+uniform mat4 Projection;
+uniform mat4 View;
 
 out VS_OUTPUT
 {
@@ -13,6 +13,6 @@ out VS_OUTPUT
 
 void main()
 {
-	gl_Position = projection * view * Position;
+	gl_Position = Projection * View * Position;
 	OUT.Color = Color;
 }

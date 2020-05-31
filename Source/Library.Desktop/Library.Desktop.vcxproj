@@ -166,10 +166,14 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Shader.frag" />
     <None Include="Content\Shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RenderingGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

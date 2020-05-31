@@ -1,71 +1,78 @@
 #include "pch.h"
 #include "Camera.h"
 
-namespace Library {
-	Library::Camera::Camera(GLfloat moveSpeed, GLfloat turnSpeed) :
-		mMovementSpeed(moveSpeed), mTurnSpeed(turnSpeed)
+using namespace glm;
+namespace Library 
+{
+	RTTI_DEFINITIONS(Camera);
+
+	Camera::Camera(Game& game) :
+		GameComponent(game),
+		mNearPlaneDistance(sDefaultFarPlaneDistance), mFarPlaneDistance(sDefaultFarPlaneDistance)
 	{
 	}
 
-	glm::vec3& Library::Camera::GetRight()
+	Camera::Camera(Game& game, float nearPlaneDistance, float farPlaneDistance):
+		GameComponent(game),
+		mNearPlaneDistance(nearPlaneDistance), mFarPlaneDistance(farPlaneDistance)
 	{
-		return mRight;
 	}
 
-	glm::vec3& Library::Camera::GetFront()
+	void Camera::SetPosition(float x, float y, float z)
 	{
-		return mFront;
+		mPosition = vec3(x, y, z);
+		mViewMatrixDataDirty = true;
 	}
 
-	glm::vec3& Library::Camera::GetPosition()
+	void Camera::SetPosition(const vec3 position)
 	{
-		return mPosition;
+		mPosition = position;
+		mViewMatrixDataDirty = true;
 	}
 
-	void Library::Camera::KeyControl(bool* keys)
+	void Camera::Reset()
 	{
-		if (keys[GLFW_KEY_W])
+		mPosition = Vector3Helper::Zero;
+		mDirection = Vector3Helper::Forward;
+		mUp = Vector3Helper::Up;
+		mRight = Vector3Helper::Right;
+		mViewMatrixDataDirty = true;
+
+		UpdateViewMatrix();
+	}
+
+	void Camera::Initialize()
+	{
+		UpdateProjectionMatrix();
+		Reset();
+	}
+
+	void Camera::Update(const GameTime& /*gameTime*/)
+	{
+		if (mViewMatrixDataDirty)
 		{
-			mPosition += mFront * mMovementSpeed;
-		}
-		if (keys[GLFW_KEY_S])
-		{
-			mPosition -= mFront * mMovementSpeed;
-		}
-		if (keys[GLFW_KEY_A])
-		{
-			mPosition -= mRight * mMovementSpeed;
-		}
-		if (keys[GLFW_KEY_D])
-		{
-			mPosition += mRight * mMovementSpeed;
+			UpdateViewMatrix();
 		}
 	}
-	void Camera::MouseControl(GLfloat xChange, GLfloat yChange)
-	{
-		xChange *= mTurnSpeed;
-		yChange *= mTurnSpeed;
 
-		mYaw += xChange;
-		mPitch += yChange;
-
-		mPitch = std::clamp(mPitch, -89.0f, 89.0f);
-
-		Update();
-	}
-	glm::mat4 Camera::CalculateViewMatrix()
+	void Camera::UpdateViewMatrix()
 	{
-		return glm::lookAt(mPosition, mPosition + mFront, mUp);
+		vec3 target = mPosition + mDirection;
+		mViewMatrix = lookAt(mPosition, target, mUp);
+		mViewMatrixDataDirty = false;
 	}
-	void Camera::Update()
+
+	void Camera::ApplyRotation(const mat4& transform)
 	{
-		mFront = glm::normalize(
-			glm::vec3(
-				cos(glm::radians(mYaw)) * cos(glm::radians(mPitch)),
-				sin(glm::radians(mPitch)),
-				sin(glm::radians(mYaw)) * cos(glm::radians(mPitch))
-			));
-		mRight = glm::normalize(glm::cross(mFront, mWorldUp));
-		mUp = glm::normalize(glm::cross(mRight, mFront));
+		vec4 direction = transform * vec4(mDirection, 0.0f);
+		mDirection = (vec3)normalize(direction);
+
+		vec4 up = transform * vec4(mUp, 0.0f);
+		mUp = (vec3)normalize(up);
+
+		mRight = cross(mDirection, mUp);
+		mUp = cross(mRight, mDirection);
+		mViewMatrixDataDirty = true;
 	}
+
 }

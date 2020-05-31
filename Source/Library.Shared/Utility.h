@@ -1,30 +1,18 @@
 #pragma once
+using namespace std;
 
-#include <GL/glew.h>
-#include <iostream>
-
-#define ASSERT(x) if(!(x)) __debugbreak();
-
-#if defined(DEBUG) || defined(_DEBUG)
-#define GLCall(x) GLClearError();\
-	x;\
-	ASSERT(GLLogCall(#x, __FILE__, __LINE__));
-#else
-#define GLCall(x) x;
-#endif
-
-static void GLClearError()
+namespace Library
 {
-	while (glGetError() != GL_NO_ERROR);
-}
-
-static bool GLLogCall(const char* function, const char* file, int line)
-{
-	while (GLenum error = glGetError())
+	class Utility final
 	{
-		std::cout << "[OpenGL Error] (0x" << std::hex << error << std::dec << "):" << function << " " << file << ": " << line << std::endl;
-		return false;
-	}
+	public:
+		Utility() = delete;
+		Utility(const Utility&) = delete;
+		Utility& operator=(const Utility&) = delete;
+		Utility(Utility&&) = delete;
+		Utility& operator=(Utility&&) = delete;
+		~Utility() = default;
 
-	return true;
+		static void LoadBinaryFile(const std::string& filename, std::vector<char>& data);
+	};
 }
