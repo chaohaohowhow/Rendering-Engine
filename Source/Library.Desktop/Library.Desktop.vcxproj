@@ -169,6 +169,7 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     <ClCompile Include="RenderingGame.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Models\T-Rex.3mf" />
     <None Include="Content\Shader.frag" />
     <None Include="Content\Shader.vert" />
   </ItemGroup>

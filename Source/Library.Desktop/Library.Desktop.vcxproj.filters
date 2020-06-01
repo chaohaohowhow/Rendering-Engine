@@ -11,10 +11,16 @@
     <None Include="Content\Shader.vert">
       <Filter>Content</Filter>
     </None>
+    <None Include="Content\Models\T-Rex.3mf">
+      <Filter>Content\Models</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
       <UniqueIdentifier>{4022fd64-0416-47d3-bf10-631fa869a0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Models">
+      <UniqueIdentifier>{d83eb5bb-47e3-4589-a0d5-4c10f397b056}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

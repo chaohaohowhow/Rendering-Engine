@@ -33,7 +33,7 @@ namespace Rendering
 				}
 			});
 
-		// Adding the ColoredTriangle
+		// Adding a ColoredTriangle
 		shared_ptr<GameComponent> triangle = make_shared<ColoredTriangle>(*this, camera);
 		mComponents.push_back(triangle);
 
