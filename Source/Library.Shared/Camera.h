@@ -51,7 +51,7 @@ namespace Library
 
 		// Member variables
 		glm::vec3 mPosition = Vector3Helper::Zero;
-		glm::vec3 mDirection = Vector3Helper::Forward;
+		glm::vec3 mDirection = Vector3Helper::In;
 		glm::vec3 mUp = Vector3Helper::Up;
 		glm::vec3 mRight = Vector3Helper::Right;
 		glm::mat4 mViewMatrix{ 1 };

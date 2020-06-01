@@ -34,8 +34,8 @@ namespace Library
 
 		inline static const glm::vec3 Zero = glm::vec3(0.0f, 0.0f, 0.0f);
 		inline static const glm::vec3 One = glm::vec3(1.0f, 1.0f, 1.0f);
-		inline static const glm::vec3 Forward = glm::vec3(0.0f, 0.0f, -1.0f);
-		inline static const glm::vec3 Backward = glm::vec3(0.0f, 0.0f, 1.0f);
+		inline static const glm::vec3 In = glm::vec3(0.0f, 0.0f, -1.0f);
+		inline static const glm::vec3 Out = glm::vec3(0.0f, 0.0f, 1.0f);
 		inline static const glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 		inline static const glm::vec3 Down = glm::vec3(0.0f, -1.0f, 0.0f);
 		inline static const glm::vec3 Right = glm::vec3(1.0f, 0.0f, 0.0f);

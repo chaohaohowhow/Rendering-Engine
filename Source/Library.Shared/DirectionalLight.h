@@ -21,7 +21,7 @@ namespace Library
 
 		void ApplyRotation(const glm::mat4 transform);
 	private:
-		glm::vec3 mDirection = Vector3Helper::Forward;
+		glm::vec3 mDirection = Vector3Helper::In;
 		glm::vec3 mUp = Vector3Helper::Up;
 		glm::vec3 mRight = Vector3Helper::Right;
 	};

@@ -61,6 +61,24 @@ namespace Library
 		{
 			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
 		}
+	};	
+	
+	struct VertexPositionTextureNormal final : public VertexDeclaration<VertexPositionTextureNormal>
+	{
+		glm::vec4 Position{ 0 };
+		glm::vec2 TextureCoordinates{ 0 };
+		glm::vec3 Normal{ 0 };
+
+		VertexPositionTextureNormal() = default;
+
+		VertexPositionTextureNormal(const glm::vec4& position, const glm::vec2& textureCoordinates, const glm::vec3& normal) :
+			Position(position), TextureCoordinates(textureCoordinates), Normal(normal) { }
+
+		//static void CreateVertexBuffer(const Library::Mesh& mesh, GLuint& vertexBuffer);
+		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionTextureNormal>& vertices, GLuint& vertexBuffer)
+		{
+			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
+		}
 	};
 }
 

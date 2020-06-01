@@ -29,7 +29,7 @@ namespace Library
 		inline static const float DefaultInnerAngle = 0.75f;
 		inline static const float DefaultOuterAngle = 0.25f;
 	protected:
-		glm::vec3 mDirection = Vector3Helper::Forward;
+		glm::vec3 mDirection = Vector3Helper::In;
 		glm::vec3 mUp = Vector3Helper::Up;
 		glm::vec3 mRight = Vector3Helper::Right;
 		float mInnerAngle = DefaultInnerAngle;

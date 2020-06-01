@@ -33,7 +33,7 @@ namespace Library
 	void Camera::Reset()
 	{
 		mPosition = Vector3Helper::Zero;
-		mDirection = Vector3Helper::Forward;
+		mDirection = Vector3Helper::In;
 		mUp = Vector3Helper::Up;
 		mRight = Vector3Helper::Right;
 		mViewMatrixDataDirty = true;

@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "HelperMacros.h"
 #include "Light.h"
+#include "DirectionalLight.h"
 #include "VectorHelper.h"
 #include "VertexDeclarations.h"
 
@@ -32,43 +33,43 @@ namespace Library
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shader.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
-		const VertexPositionTexture vertices[] =
+		const VertexPositionTextureNormal vertices[] =
 		{
 			// Top
-			VertexPositionTexture(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 4.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 4.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 3.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 3.0f / 4.0f)),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 4.0f / 4.0f), Vector3Helper::Up),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 4.0f / 4.0f), Vector3Helper::Up),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 3.0f / 4.0f), Vector3Helper::Up),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 3.0f / 4.0f), Vector3Helper::Up),
 
 			// Front
-			VertexPositionTexture(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 3.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 3.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f)),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 3.0f / 4.0f), Vector3Helper::Out),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 3.0f / 4.0f), Vector3Helper::Out),
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Out),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Out),
 
 			// Bottom
-			VertexPositionTexture(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f)),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Down),
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Down),
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Down),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Down),
 
 			// Back
-			VertexPositionTexture(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 0.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 0.0f / 4.0f)),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::In),
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::In),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 0.0f / 4.0f), Vector3Helper::In),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 0.0f / 4.0f), Vector3Helper::In),
 
 			// Left
-			VertexPositionTexture(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(0.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(0.0f / 3.0f, 2.0f / 4.0f)),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, -0.5f, 1.0f), vec2(0.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Left),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, -0.5f, 1.0f), vec2(1.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Left),
+			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Left),
+			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(0.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Left),
 
 			//Right
-			VertexPositionTexture(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(3.0f / 3.0f, 2.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(3.0f / 3.0f, 1.0f / 4.0f)),
-			VertexPositionTexture(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f))
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Right),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(3.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Right),
+			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(3.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Right),
+			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, +0.5f, 1.0f), vec2(2.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Right)
 		};
 
 		// Vertex buffer
@@ -116,10 +117,12 @@ namespace Library
 		}
 		
 		// Attribute Pointers
-		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, Position)));
+		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position)));
 		GLCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position)));
-		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, TextureCoordinates)));
+		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, TextureCoordinates)));
 		GLCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate)));
+		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Normal)));
+		GLCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Normal)));
 
 		GLCall(glBindVertexArray(0));
 
@@ -128,13 +131,31 @@ namespace Library
 		GLCall(mViewLocation = glGetUniformLocation(mShaderProgram.Program(), "View"));
 		GLCall(mWorldLocation = glGetUniformLocation(mShaderProgram.Program(), "World"));
 		GLCall(mAmbientColorLoation = glGetUniformLocation(mShaderProgram.Program(), "AmbientColor"));
-		if (mProjectionLocation == -1 || mViewLocation == -1 || mWorldLocation == -1 || mAmbientColorLoation == -1)
-		{
-			throw runtime_error("glGetUniformLocation() did not find uniform location!");
-		}
+		GLCall(mLightDirectionLocation = glGetUniformLocation(mShaderProgram.Program(), "LightDirection"));
+		GLCall(mLightColorLocation = glGetUniformLocation(mShaderProgram.Program(), "LightColor"));
+		GLCall(mCameraPositionLocation = glGetUniformLocation(mShaderProgram.Program(), "CameraPosition"));
+		GLCall(mSpecularColorLocation = glGetUniformLocation(mShaderProgram.Program(), "SpecularColor"));
+		GLCall(mSpecularPowerLocation = glGetUniformLocation(mShaderProgram.Program(), "SpecularPower"));
+			if (mProjectionLocation == -1 ||
+				mViewLocation == -1 ||
+				mWorldLocation == -1 ||
+				mAmbientColorLoation == -1 ||
+				mLightDirectionLocation == -1 ||
+				mLightColorLocation == -1 ||
+				mCameraPositionLocation == -1 ||
+				mSpecularColorLocation == -1 ||
+				mSpecularPowerLocation == -1)
+			{
+				throw runtime_error("glGetUniformLocation() did not find uniform location!");
+			}
 
-		// Initialize Ambient Light
+		// Initialize lights
 		mAmbientLight = make_unique<Light>(*mGame);
+		mAmbientLight->SetColor(vec4(static_cast<vec3>(0.2f), 1.0f));
+		mDirectionalLight = make_unique<DirectionalLight>(*mGame);
+		//mDirectionalLight->SetColor(ColorHelper::Red);
+		mDirectionalLight->ApplyRotation(rotate(mat4(1), radians(-30.0f), mDirectionalLight->Right()));
+		mDirectionalLight->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Up));
 	}
 	void TexturedCube::Update(const GameTime& gameTime)
 	{
@@ -177,6 +198,11 @@ namespace Library
 		GLCall(glUniformMatrix4fv(mViewLocation, 1, GL_FALSE, value_ptr(mCamera->ViewMatrix())));
 		GLCall(glUniformMatrix4fv(mWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix)));
 		GLCall(glUniform4fv(mAmbientColorLoation, 1, value_ptr(mAmbientLight->Color())));
+		GLCall(glUniform3fv(mLightDirectionLocation, 1, value_ptr(mDirectionalLight->Direction())));
+		GLCall(glUniform4fv(mLightColorLocation, 1, value_ptr(mDirectionalLight->Color())));
+		GLCall(glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position())));
+		GLCall(glUniform4fv(mSpecularColorLocation, 1, value_ptr(mSpecularColor)));
+		GLCall(glUniform1fv(mSpecularPowerLocation, 1, &mSpecularPower));
 
 		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
 		GLCall(glBindVertexArray(0));
