@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "ColoredTriangle.h"
 
-#include "ColorHelper.h"
-#include "VertexDeclarations.h"
 #include "Camera.h"
+#include "ColorHelper.h"
+#include "HelperMacros.h"
+#include "VertexDeclarations.h"
 
 using namespace std;
 using namespace glm;

@@ -1,13 +1,19 @@
 #version 440 core
 
+layout (binding = 0) uniform sampler2D ColorTextureSampler;
+
+uniform vec4 AmbientColor;
+
 in VS_OUTPUT
 {
-	vec4 Color;
+	vec2 TextureCoordinate;
 } IN;
 
 out vec4 Color;
 
 void main()
 {
-	Color = IN.Color;
+	vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
+	Color.rgb = sampledColor.rgb * AmbientColor.rgb;
+	Color.a = sampledColor.a;
 }

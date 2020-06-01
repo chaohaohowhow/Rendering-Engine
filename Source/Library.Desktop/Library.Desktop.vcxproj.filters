@@ -22,8 +22,16 @@
     <Filter Include="Content\Models">
       <UniqueIdentifier>{d83eb5bb-47e3-4589-a0d5-4c10f397b056}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content\Textures">
+      <UniqueIdentifier>{60e588de-43e1-4bc9-aad8-c6c40376586a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\Cube.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "RenderingGame.h"
 
-#include "ColoredTriangle.h"
+#include "TexturedCube.h"
 #include "ColorHelper.h"
 #include "FirstPersonCamera.h"
 #include "HelperMacros.h"
@@ -17,6 +17,7 @@ namespace Rendering
 	RenderingGame::RenderingGame(const std::string& windowTitle) :
 		Game(windowTitle)
 	{
+		mDepthStencilBufferEnabled = true;
 	}
 	void RenderingGame::Initialize()
 	{
@@ -34,16 +35,18 @@ namespace Rendering
 			});
 
 		// Adding a ColoredTriangle
-		shared_ptr<GameComponent> triangle = make_shared<ColoredTriangle>(*this, camera);
-		mComponents.push_back(triangle);
+		shared_ptr<GameComponent> texturedCube = make_shared<TexturedCube>(*this, camera);
+		mComponents.push_back(texturedCube);
 
 		Game::Initialize();
-		camera->SetPosition(0, 5, 10);
+		camera->SetPosition(0, 2, 4);
 		camera->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Left));
 	}
 	void RenderingGame::Draw(const GameTime& gameTime)
 	{
+		static const GLfloat one = 1.0f;
 		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
+		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));
 		Game::Draw(gameTime);
 		glfwSwapBuffers(mWindow);
 	}

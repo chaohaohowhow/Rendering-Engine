@@ -1,19 +1,15 @@
 #pragma once
-#include "HelperMacros.h"
 
 namespace Library
 {
+	class Mesh;
+
 	template <typename T>
 	struct VertexDeclaration
 	{
 		static constexpr uint32_t VertexSize() { return gsl::narrow_cast<uint32_t>(sizeof(T)); }
 		static constexpr uint32_t VertexBufferByteWidth(size_t vertexCount) { return gsl::narrow_cast<uint32_t>(sizeof(T) * vertexCount); }
-		inline static void CreateVertexBuffer(const gsl::span<const T>& vertices, GLuint& vertexBuffer)
-		{
-			GLCall(glGenBuffers(1, &vertexBuffer));
-			GLCall(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
-			GLCall(glBufferData(GL_ARRAY_BUFFER, VertexSize() * vertices.size(), vertices.data(), GL_STATIC_DRAW));
-		}
+		static void CreateVertexBuffer(const gsl::span<const T>& vertices, GLuint& vertexBuffer);
 	};
 
 	struct VertexPosition final : public VertexDeclaration<VertexPosition>
@@ -45,6 +41,23 @@ namespace Library
 		}
 
 		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionColor>& vertices, GLuint& vertexBuffer)
+		{
+			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
+		}
+	};
+
+	struct VertexPositionTexture final : public VertexDeclaration<VertexPositionTexture>
+	{
+		glm::vec4 Position{ 0 };
+		glm::vec2 TextureCoordinates{ 0 };
+
+		VertexPositionTexture() = default;
+
+		VertexPositionTexture(const glm::vec4& position, const glm::vec2& textureCoordinates) :
+			Position(position), TextureCoordinates(textureCoordinates) { }
+
+		static void CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer);
+		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionTexture>& vertices, GLuint& vertexBuffer)
 		{
 			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
 		}

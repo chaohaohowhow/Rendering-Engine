@@ -176,6 +176,9 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\Cube.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

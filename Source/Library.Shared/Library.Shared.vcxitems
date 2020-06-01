@@ -39,6 +39,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PointLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ShaderProgram.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TRex.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Variable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
@@ -67,6 +69,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ShaderProgram.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TRex.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Variable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />
