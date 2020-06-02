@@ -29,7 +29,7 @@ namespace Library
 		inline int ScreenHeight() const { return mScreenHeight; }
 		inline float AspectRatio() const { return static_cast<float>(mScreenWidth) / mScreenHeight; }
 		inline bool IsFullScreen() const { return mIsFullScreen; }
-		//const std::vector<std::shared_ptr<GameComponent>>& Components() const;
+		inline const std::vector<std::shared_ptr<GameComponent>>& Components() const { return mComponents; }
 		//const ServiceContainer& Services() const;
 
 		// Game Essentials

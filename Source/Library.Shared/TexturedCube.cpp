@@ -66,7 +66,7 @@ namespace Library
 			VertexPositionTextureNormal(vec4(-0.5f, -0.5f, +0.5f, 1.0f), vec2(1.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Left),
 			VertexPositionTextureNormal(vec4(-0.5f, +0.5f, +0.5f, 1.0f), vec2(0.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Left),
 
-			//Right
+			// Right
 			VertexPositionTextureNormal(vec4(+0.5f, -0.5f, -0.5f, 1.0f), vec2(2.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Right),
 			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, -0.5f, 1.0f), vec2(3.0f / 3.0f, 2.0f / 4.0f), Vector3Helper::Right),
 			VertexPositionTextureNormal(vec4(+0.5f, +0.5f, +0.5f, 1.0f), vec2(3.0f / 3.0f, 1.0f / 4.0f), Vector3Helper::Right),
