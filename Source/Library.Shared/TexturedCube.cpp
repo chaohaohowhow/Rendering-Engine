@@ -2,10 +2,11 @@
 #include "TexturedCube.h"
 
 #include "Camera.h"
+#include "DirectionalLight.h"
 #include "Game.h"
 #include "HelperMacros.h"
 #include "Light.h"
-#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "VectorHelper.h"
 #include "VertexDeclarations.h"
 
@@ -131,20 +132,26 @@ namespace Library
 		GLCall(mViewLocation = glGetUniformLocation(mShaderProgram.Program(), "View"));
 		GLCall(mWorldLocation = glGetUniformLocation(mShaderProgram.Program(), "World"));
 		GLCall(mAmbientColorLoation = glGetUniformLocation(mShaderProgram.Program(), "AmbientColor"));
-		GLCall(mLightDirectionLocation = glGetUniformLocation(mShaderProgram.Program(), "LightDirection"));
-		GLCall(mLightColorLocation = glGetUniformLocation(mShaderProgram.Program(), "LightColor"));
+		GLCall(mDirectionalLightDirectionLocation = glGetUniformLocation(mShaderProgram.Program(), "DirectionalLight.Direction"));
+		GLCall(mDirectionalLightColorLocation = glGetUniformLocation(mShaderProgram.Program(), "DirectionalLight.Color"));
 		GLCall(mCameraPositionLocation = glGetUniformLocation(mShaderProgram.Program(), "CameraPosition"));
 		GLCall(mSpecularColorLocation = glGetUniformLocation(mShaderProgram.Program(), "SpecularColor"));
 		GLCall(mSpecularPowerLocation = glGetUniformLocation(mShaderProgram.Program(), "SpecularPower"));
+		GLCall(mPointLightColorLocation = glGetUniformLocation(mShaderProgram.Program(), "PointLight.Color"));
+		GLCall(mPointLightPositionLocation = glGetUniformLocation(mShaderProgram.Program(), "PointLight.Position"));
+		GLCall(mPointLightRadiusLocation = glGetUniformLocation(mShaderProgram.Program(), "PointLight.Radius"));
 			if (mProjectionLocation == -1 ||
 				mViewLocation == -1 ||
 				mWorldLocation == -1 ||
 				mAmbientColorLoation == -1 ||
-				mLightDirectionLocation == -1 ||
-				mLightColorLocation == -1 ||
+				mDirectionalLightDirectionLocation == -1 ||
+				mDirectionalLightColorLocation == -1 ||
 				mCameraPositionLocation == -1 ||
 				mSpecularColorLocation == -1 ||
-				mSpecularPowerLocation == -1)
+				mSpecularPowerLocation == -1 ||
+				mPointLightColorLocation == -1 ||
+				mPointLightPositionLocation == -1 ||
+				mPointLightRadiusLocation == -1)
 			{
 				throw runtime_error("glGetUniformLocation() did not find uniform location!");
 			}
@@ -152,10 +159,13 @@ namespace Library
 		// Initialize lights
 		mAmbientLight = make_unique<Light>(*mGame);
 		mAmbientLight->SetColor(vec4(static_cast<vec3>(0.2f), 1.0f));
+		// Directional light
 		mDirectionalLight = make_unique<DirectionalLight>(*mGame);
-		//mDirectionalLight->SetColor(ColorHelper::Red);
 		mDirectionalLight->ApplyRotation(rotate(mat4(1), radians(-30.0f), mDirectionalLight->Right()));
 		mDirectionalLight->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Up));
+		// Point Light
+		mPointLight = make_unique<PointLight>(*mGame);
+		mPointLight->SetPosition(-0.5f, 1.5f, -1.0f);
 	}
 	void TexturedCube::Update(const GameTime& gameTime)
 	{
@@ -180,6 +190,16 @@ namespace Library
 
 			mAmbientLight->SetColor(vec4(static_cast<vec3>(ambientIntensity), 1.0f));
 		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_HOME) && mSpecularPower < 256.0f)
+		{
+			mSpecularPower += gameTime.ElapsedGameTime().count() * 0.1f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_END) && mSpecularPower > 4.0f)
+		{
+			mSpecularPower -= gameTime.ElapsedGameTime().count() * 0.1f;
+		}
 	}
 	void TexturedCube::Draw(const GameTime& /*gameTime*/)
 	{
@@ -198,11 +218,15 @@ namespace Library
 		GLCall(glUniformMatrix4fv(mViewLocation, 1, GL_FALSE, value_ptr(mCamera->ViewMatrix())));
 		GLCall(glUniformMatrix4fv(mWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix)));
 		GLCall(glUniform4fv(mAmbientColorLoation, 1, value_ptr(mAmbientLight->Color())));
-		GLCall(glUniform3fv(mLightDirectionLocation, 1, value_ptr(mDirectionalLight->Direction())));
-		GLCall(glUniform4fv(mLightColorLocation, 1, value_ptr(mDirectionalLight->Color())));
+		GLCall(glUniform3fv(mDirectionalLightDirectionLocation, 1, value_ptr(mDirectionalLight->Direction())));
+		GLCall(glUniform4fv(mDirectionalLightColorLocation, 1, value_ptr(mDirectionalLight->Color())));
 		GLCall(glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position())));
 		GLCall(glUniform4fv(mSpecularColorLocation, 1, value_ptr(mSpecularColor)));
 		GLCall(glUniform1fv(mSpecularPowerLocation, 1, &mSpecularPower));
+		GLCall(glUniform4fv(mPointLightColorLocation, 1, value_ptr(mPointLight->Color())));
+		GLCall(glUniform3fv(mPointLightPositionLocation, 1, value_ptr(mPointLight->Position())));
+		static float radius = mPointLight->Radius();
+		GLCall(glUniform1fv(mPointLightRadiusLocation, 1, &radius));
 
 		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
 		GLCall(glBindVertexArray(0));

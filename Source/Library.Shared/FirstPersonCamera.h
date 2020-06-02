@@ -30,7 +30,7 @@ namespace Library
 		
 		inline static const float sDefaultMouseSensitivity = 10.0f;
 		inline static const float sDefaultRotationRate = glm::radians(1.0f);
-		inline static const float sDefaultMovementRate = 50.f;
+		inline static const float sDefaultMovementRate = 10.f;
 	protected:
 		float mMouseSensitivity = sDefaultMouseSensitivity;
 		float mRotationRate = sDefaultRotationRate;

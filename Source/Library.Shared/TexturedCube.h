@@ -7,6 +7,7 @@ namespace Library
 {
 	class Light;
 	class DirectionalLight;
+	class PointLight;
 
 	class TexturedCube : public DrawableGameComponent
 	{
@@ -34,6 +35,7 @@ namespace Library
 		glm::mat4 mWorldMatrix{ 1 };
 		std::unique_ptr<Light> mAmbientLight;
 		std::unique_ptr<DirectionalLight> mDirectionalLight;
+		std::unique_ptr<PointLight> mPointLight;
 		glm::vec4 mSpecularColor = ColorHelper::White;
 
 		ShaderProgram mShaderProgram;
@@ -50,11 +52,14 @@ namespace Library
 		GLint mViewLocation = -1;
 		GLint mWorldLocation = -1;
 		GLint mAmbientColorLoation = -1;
-		GLint mLightDirectionLocation = -1;
-		GLint mLightColorLocation = -1;
+		GLint mDirectionalLightDirectionLocation = -1;
+		GLint mDirectionalLightColorLocation = -1;
 		GLint mSpecularColorLocation = -1;
 		GLint mSpecularPowerLocation = -1;
 		GLint mCameraPositionLocation = -1;
+		GLint mPointLightColorLocation = -1;
+		GLint mPointLightPositionLocation = -1;
+		GLint mPointLightRadiusLocation = -1;
 	};
 }
 
