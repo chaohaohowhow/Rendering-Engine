@@ -14,6 +14,8 @@ namespace Library
 		{TextureType::Emissive, aiTextureType_EMISSIVE},
 		{TextureType::HeightMap, aiTextureType_HEIGHT},
 		{TextureType::NormalMap, aiTextureType_NORMALS},
+		{TextureType::SpecularPowerMap, aiTextureType_SHININESS},
+		{TextureType::DisplacementMap, aiTextureType_DISPLACEMENT},
 		{TextureType::LightMap, aiTextureType_LIGHTMAP}
 	};
 

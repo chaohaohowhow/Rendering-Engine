@@ -74,7 +74,7 @@ namespace Library
 		VertexPositionTextureNormal(const glm::vec4& position, const glm::vec2& textureCoordinates, const glm::vec3& normal) :
 			Position(position), TextureCoordinates(textureCoordinates), Normal(normal) { }
 
-		//static void CreateVertexBuffer(const Library::Mesh& mesh, GLuint& vertexBuffer);
+		static void CreateVertexBuffer(const Library::Mesh& mesh, GLuint& vertexBuffer);
 		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionTextureNormal>& vertices, GLuint& vertexBuffer)
 		{
 			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);

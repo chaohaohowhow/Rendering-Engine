@@ -44,10 +44,12 @@ private:												\
 	Library::Variable* m ## VariableName = nullptr
 
 #define SHADER_VARIABLE_DEFINITION(ShaderProgram, VariableName)		\
-	Library::Variable& ShaderProgram::VariablesByName() const		\
+	Library::Variable& ShaderProgram::VariableName() const		\
 	{																\
 		return *m ## VariableName;									\
 	}
+
+#define SHADER_VARIABLE_INITIALIZATION(VariableName) m ## VariableName(nullptr)
 
 #define SHADER_VARIABLE_INSTANTIATE(VariableName)									\
 	m ## VariableName = new Variable(*this, #VariableName);							\

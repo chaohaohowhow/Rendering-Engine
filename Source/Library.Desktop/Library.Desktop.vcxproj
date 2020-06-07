@@ -170,6 +170,8 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Models\T-Rex.3mf" />
+    <None Include="Content\ScreenShader.frag" />
+    <None Include="Content\ScreenShader.vert" />
     <None Include="Content\Shader.frag" />
     <None Include="Content\Shader.vert" />
   </ItemGroup>

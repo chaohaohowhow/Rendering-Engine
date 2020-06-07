@@ -13,6 +13,8 @@ namespace Library
 		Emissive,
 		HeightMap,
 		NormalMap,
+		SpecularPowerMap,
+		DisplacementMap,
 		LightMap,
 
 		Begin = Diffuse,

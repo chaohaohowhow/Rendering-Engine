@@ -1,10 +1,13 @@
 #pragma once
 #include "Game.h"
 
+#include "ScreenQuad.h"
+
 using namespace Library;
 
 namespace Rendering
 {
+
 	class RenderingGame final : public Game
 	{
 		RTTI_DECLARATIONS(RenderingGame, Game);

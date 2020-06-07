@@ -1,6 +1,7 @@
 #version 440 core
 
 layout (binding = 0) uniform sampler2D ColorTextureSampler;
+layout (binding = 1) uniform sampler2D NormalMapSampler;
 
 struct DLight
 {
@@ -20,19 +21,19 @@ uniform vec3 CameraPosition;
 uniform vec4 SpecularColor;
 uniform float SpecularPower;
 uniform PLight PointLight;
+uniform DLight DirectionalLight; // Direction is flipped on CPU
 
 in VS_OUTPUT
 {
 	vec2 TextureCoordinate;
-	vec3 Normal;
 	vec3 WorldPosition;
-	DLight DirectionalLight;
+	float Attenuation;
 } IN;
 
 out vec4 Color;
 
 vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
-vec3 normal = normalize(IN.Normal);
+vec3 normal = normalize(texture(NormalMapSampler, IN.TextureCoordinate).rgb * 2.0f - 1.0f);
 
 vec3 CalculateByDirection(vec4 color, vec3 direction)
 {
@@ -44,16 +45,15 @@ vec3 CalculateByDirection(vec4 color, vec3 direction)
 	float n_dot_h = dot(normal, halfVector);
 
 	vec3 diffuse = clamp(color.rgb * n_dot_l * sampledColor.rgb, 0.0f, 1.0f);
-	vec3 specular = SpecularColor.rgb * min(pow(clamp(n_dot_h, 0.0f, 1.0f), SpecularPower), sampledColor.w);
+	vec3 specular = SpecularColor.rgb * pow(clamp(n_dot_h, 0.0f, 1.0f), SpecularPower); 
 	return diffuse + specular;
 }
 
 vec3 CalculatePointLight(PLight light)
 {
 	vec3 direction = light.Position - IN.WorldPosition;
-	float attenuation = clamp(1.0f - length(direction) / light.Radius, 0.0f, 1.0f);
 	
-	return CalculateByDirection(light.Color, direction) * attenuation;
+	return CalculateByDirection(light.Color, direction) * IN.Attenuation;
 }
 
 void main()
@@ -61,7 +61,7 @@ void main()
 	vec3 ambient = sampledColor.rgb * AmbientColor.rgb;	
 
 	Color.rgb = ambient;
-	Color.rgb += CalculateByDirection(IN.DirectionalLight.Color, IN.DirectionalLight.Direction);
+	Color.rgb += CalculateByDirection(DirectionalLight.Color, DirectionalLight.Direction);
 	Color.rgb += CalculatePointLight(PointLight);
 	Color.a = sampledColor.a;
 }

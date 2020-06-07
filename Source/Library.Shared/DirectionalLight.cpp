@@ -21,4 +21,10 @@ namespace Library
 		mRight = cross(mDirection, mUp);
 		mUp = cross(mRight, mDirection);
 	}
+	void DirectionalLight::FlipDirection()
+	{
+		mDirection = -mDirection;
+		mRight = -mRight;
+		mUp = -mUp;
+	}
 }

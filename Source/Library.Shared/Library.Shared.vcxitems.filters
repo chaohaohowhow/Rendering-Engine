@@ -74,8 +74,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)TRex.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)BloomEffect.cpp">
+      <Filter>Demos\ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Dev\OpenGLRenderingEngine\Rendering-Engine\Source\Library.Shared\Fountain.cpp">
       <Filter>Demos</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScreenQuad.cpp">
+      <Filter>Misc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,8 +164,14 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h">
       <Filter>Demos</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TRex.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)BloomEffect.h">
+      <Filter>Demos\ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Dev\OpenGLRenderingEngine\Rendering-Engine\Source\Library.Shared\Fountain.h">
       <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScreenQuad.h">
+      <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +195,9 @@
     </Filter>
     <Filter Include="Lights">
       <UniqueIdentifier>{53ccbae3-9169-4a9d-84df-0f146500c8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demos\ShaderPrograms">
+      <UniqueIdentifier>{aa5e0de2-ff08-405a-ad34-4d87f8e55673}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

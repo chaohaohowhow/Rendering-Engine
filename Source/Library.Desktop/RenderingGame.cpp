@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "RenderingGame.h"
 
-#include "TexturedCube.h"
+#include "Fountain.h"
 #include "ColorHelper.h"
 #include "FirstPersonCamera.h"
 #include "HelperMacros.h"
 #include "VectorHelper.h"
+#include "ScreenQuad.h"
 
 using namespace std;
 using namespace glm;
@@ -34,12 +35,19 @@ namespace Rendering
 				}
 			});
 
-		// Adding a ColoredTriangle
-		shared_ptr<GameComponent> texturedCube = make_shared<TexturedCube>(*this, camera);
-		mComponents.push_back(texturedCube);
+		// Adding an object
+		shared_ptr<GameComponent> fountain = make_shared<Fountain>(*this, camera);
+		mComponents.push_back(fountain);
+		
+		// Adding the post-processing screen quad
+		shared_ptr<GameComponent> screenQuad = make_shared<ScreenQuad>(*this, camera);
+		mComponents.push_back(screenQuad);
 
+		// TODO: Find a better way to do post-processing draw calls
 		Game::Initialize();
-		camera->SetPosition(0, 2, 4);
+		GLuint textureBuffer = fountain->As<Fountain>()->TextureBuffer();
+		screenQuad->As<ScreenQuad>()->SetTextureBuffer(textureBuffer);
+		camera->SetPosition(0, 6, 10);
 		camera->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Left));
 	}
 	void RenderingGame::Draw(const GameTime& gameTime)

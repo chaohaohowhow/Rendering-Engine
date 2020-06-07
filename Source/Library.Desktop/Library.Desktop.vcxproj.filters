@@ -14,6 +14,8 @@
     <None Include="Content\Models\T-Rex.3mf">
       <Filter>Content\Models</Filter>
     </None>
+    <None Include="Content\ScreenShader.vert" />
+    <None Include="Content\ScreenShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">

@@ -18,7 +18,7 @@ namespace Library
 		}
 
 		const aiScene* scene = importer.ReadFile(fileName, flags);
-		if (scene == nullptr || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		if (!scene)
 		{
 			throw runtime_error(importer.GetErrorString());
 		}

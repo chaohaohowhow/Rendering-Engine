@@ -20,6 +20,7 @@ namespace Library
 		inline const glm::vec3& Right() const { return mRight; }
 
 		void ApplyRotation(const glm::mat4 transform);
+		void FlipDirection();
 	private:
 		glm::vec3 mDirection = Vector3Helper::In;
 		glm::vec3 mUp = Vector3Helper::Up;

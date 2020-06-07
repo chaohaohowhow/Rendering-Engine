@@ -11,6 +11,7 @@
 #define GLCall(x) x;
 #endif
 
+#if defined(DEBUG) || defined(_DEBUG)
 static void GLClearError()
 {
 	while (glGetError() != GL_NO_ERROR);
@@ -26,3 +27,4 @@ static bool GLLogCall(const char* function, const char* file, int line)
 
 	return true;
 }
+#endif
