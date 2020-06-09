@@ -30,7 +30,8 @@ in VS_OUTPUT
 	float Attenuation;
 } IN;
 
-out vec4 Color;
+layout (location = 0) out vec4 Color;
+layout (location = 1) out vec4 BrightColor;
 
 vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
 vec3 normal = normalize(texture(NormalMapSampler, IN.TextureCoordinate).rgb * 2.0f - 1.0f);
@@ -64,4 +65,13 @@ void main()
 	Color.rgb += CalculateByDirection(DirectionalLight.Color, DirectionalLight.Direction);
 	Color.rgb += CalculatePointLight(PointLight);
 	Color.a = sampledColor.a;
+	float brightness = dot(Color.rgb, vec3(0.2126, 0.7152, 0.0722));
+	if(brightness > 1.0)
+	{
+		BrightColor = Color;
+	}
+	else
+	{
+		BrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	}
 }

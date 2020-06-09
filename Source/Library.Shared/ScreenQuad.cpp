@@ -3,6 +3,7 @@
 
 #include "VertexDeclarations.h"
 #include "HelperMacros.h"
+#include "Game.h"
 
 using namespace std;
 using namespace glm;
@@ -66,10 +67,13 @@ namespace Library
 		GLCall(glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate)));
 	}
 
+	void ScreenQuad::Update(const GameTime& /*gameTime*/)
+	{
+	}
+
 	void ScreenQuad::Draw(const GameTime& /*gameTime*/)
 	{
 		GLCall(glDisable(GL_DEPTH_TEST));
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 		mShaderProgram.Use();
 
 		GLCall(glBindVertexArray(mVAO));

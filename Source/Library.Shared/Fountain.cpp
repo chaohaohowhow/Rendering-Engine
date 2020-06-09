@@ -27,7 +27,6 @@ namespace Library
 		GLCall(glDeleteBuffers(1, &mVBO));
 		GLCall(glDeleteBuffers(1, &mIBO));
 		GLCall(glDeleteVertexArrays(1, &mVAO));
-		GLCall(glDeleteFramebuffers(1, &mFBO));
 	}
 
 	void Fountain::Initialize()
@@ -47,28 +46,6 @@ namespace Library
 		mesh->CreateIndexBuffer(mIBO);
 		mIndexCount = mesh->Indices().size();
 
-		// Create frame buffer
-		GLCall(glGenFramebuffers(1, &mFBO));
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
-		// Color attachment texture
-		GLCall(glGenTextures(1, &mTextureBuffer));
-		GLCall(glBindTexture(GL_TEXTURE_2D, mTextureBuffer));
-		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mGame->ScreenWidth(), mGame->ScreenHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr));
-		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mTextureBuffer, 0));
-		// render buffer object for depth and stencil
-		GLuint RBO;
-		GLCall(glGenRenderbuffers(1, &RBO));
-		GLCall(glBindRenderbuffer(GL_RENDERBUFFER, RBO));
-		GLCall(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, mGame->ScreenWidth(), mGame->ScreenHeight()));
-		GLCall(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO));
-		// Check if complete
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			throw runtime_error("Frame buffer is not complete!");
-		}
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 		// Loading fountain textures
 		mColorTexture = SOIL_load_OGL_texture("Content\\Textures\\fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
@@ -110,7 +87,7 @@ namespace Library
 		// Point Light
 		mPointLight = make_unique<PointLight>(*mGame);
 		mPointLight->SetPosition(-0.5f, 1.5f, -1.0f);
-
+		mPointLight->SetColor(15.0f, 15.0f, 15.0f, 1.0f);
 		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));		
 	}
 
@@ -147,6 +124,17 @@ namespace Library
 		{
 			mSpecularPower -= gameTime.ElapsedGameTime().count() * 0.1f;
 		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_DELETE) && mPointLight->Color().r > 0.0f)
+		{
+			auto& lightColor = mPointLight->Color();
+			mPointLight->SetColor(lightColor.r - 1.0f, lightColor.g - 1.0f, lightColor.b - 1.0f, 1.0f);
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_INSERT) && mPointLight->Color().r < 100.f)
+		{
+			auto& lightColor = mPointLight->Color();
+			mPointLight->SetColor(lightColor.r + 1.0f, lightColor.g + 1.0f, lightColor.b + 1.0f, 1.0f);
+		}
 	}
 
 	void Fountain::Draw(const GameTime& /*gameTime*/)
@@ -168,7 +156,6 @@ namespace Library
 		static float radius = mPointLight->Radius();
 		GLCall(glUniform1fv(mPointLightRadiusLocation, 1, &radius));
 
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
 		GLCall(glEnable(GL_DEPTH_TEST));
 		GLCall(glDepthFunc(GL_LEQUAL));
 
@@ -189,7 +176,6 @@ namespace Library
 		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
 
 		GLCall(glBindVertexArray(0));
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
 	

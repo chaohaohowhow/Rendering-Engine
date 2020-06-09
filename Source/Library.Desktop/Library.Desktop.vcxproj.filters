@@ -11,11 +11,18 @@
     <None Include="Content\Shader.vert">
       <Filter>Content</Filter>
     </None>
-    <None Include="Content\Models\T-Rex.3mf">
-      <Filter>Content\Models</Filter>
+    <None Include="Content\GaussianBlur.frag">
+      <Filter>Content</Filter>
     </None>
-    <None Include="Content\ScreenShader.vert" />
-    <None Include="Content\ScreenShader.frag" />
+    <None Include="Content\GaussianBlur.vert">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="Content\ScreenShader.frag">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="Content\ScreenShader.vert">
+      <Filter>Content</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -35,5 +42,7 @@
     <Image Include="Content\Textures\Cube.png">
       <Filter>Content\Textures</Filter>
     </Image>
+    <Image Include="Content\Textures\fountainBaseColor.png" />
+    <Image Include="Content\Textures\fountainNormal.png" />
   </ItemGroup>
 </Project>

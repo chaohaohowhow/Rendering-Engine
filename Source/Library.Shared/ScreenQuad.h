@@ -19,6 +19,7 @@ namespace Library
 		~ScreenQuad();
 
 		virtual void Initialize() override;
+		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
 		inline void SetTextureBuffer(GLuint textureColorBuffer) { mTextureBuffer = textureColorBuffer; }

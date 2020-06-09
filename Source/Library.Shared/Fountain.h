@@ -29,8 +29,6 @@ namespace Library
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
-
-		inline GLuint TextureBuffer() const { return mTextureBuffer; }
 	private:
 		glm::mat4 mWorldMatrix{ 1 };
 		std::unique_ptr<Light> mAmbientLight;
@@ -45,12 +43,10 @@ namespace Library
 		GLuint mVAO = 0;
 		GLuint mVBO = 0;
 		GLuint mIBO = 0;
-		GLuint mFBO = 0;
 		size_t mIndexCount = 0;
 		GLuint mColorTexture = 0;
 		GLuint mNormalMap = 0;
 		float mSpecularPower = 16.0f;
-		GLuint mTextureBuffer = 0;
 
 		// Uniforms
 		GLint mDirectionalLightDirectionLocation = -1;
