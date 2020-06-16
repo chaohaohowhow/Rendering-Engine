@@ -14,6 +14,7 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BasicEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BloomEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ColoredTriangle.cpp" />
@@ -26,6 +27,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameClock.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameComponent.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameTime.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlur.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Model.cpp" />
@@ -40,6 +43,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PointLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScreenQuad.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ShaderProgram.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Fountain.cpp" />
@@ -49,6 +54,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)VertexDeclarations.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BasicEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BloomEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColoredTriangle.h" />
@@ -61,6 +67,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameClock.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameComponent.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameTime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlur.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
@@ -72,6 +80,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScreenQuad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ShaderProgram.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skybox.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Fountain.h" />

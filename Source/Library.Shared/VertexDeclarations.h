@@ -39,7 +39,7 @@ namespace Library
 			Position(position), Color(color)
 		{
 		}
-
+		static void CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer);
 		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionColor>& vertices, GLuint& vertexBuffer)
 		{
 			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);

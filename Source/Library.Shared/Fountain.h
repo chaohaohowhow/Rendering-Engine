@@ -14,10 +14,6 @@ namespace Library
 	class Fountain : public DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(Fountain, DrawableGameComponent);
-
-		struct BufferInfo
-		{
-		};
 	public:
 		Fountain(Game& game, std::shared_ptr<Camera> camera);
 		Fountain(const Fountain&) = delete;

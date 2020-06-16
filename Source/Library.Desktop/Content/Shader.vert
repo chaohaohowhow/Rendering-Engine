@@ -2,7 +2,6 @@
 
 layout (location = 0) in vec4 Position;
 layout (location = 1) in vec2 TextureCoordinate;
-layout (location = 2) in vec3 Normal;
 
 struct PLight
 {

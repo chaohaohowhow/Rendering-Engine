@@ -162,10 +162,6 @@ namespace Library
 		GLCall(glEnable(GL_CULL_FACE));
 		GLCall(glFrontFace(GL_CCW));
 
-		static const GLfloat one = 1.0f;
-		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
-		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));
-
 		GLCall(glActiveTexture(GL_TEXTURE0));
 		GLCall(glBindTexture(GL_TEXTURE_2D, mColorTexture));
 		GLCall(glActiveTexture(GL_TEXTURE1));

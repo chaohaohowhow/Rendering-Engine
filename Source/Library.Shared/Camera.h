@@ -28,8 +28,9 @@ namespace Library
 		inline const glm::vec3& Right() const { return mRight; }
 		inline float NearPlaneDistance() const { return mNearPlaneDistance; }
 		inline float FarPlaneDistance() const { return mFarPlaneDistance; }
-		inline const glm::mat4 ViewMatrix() const { return mViewMatrix; }
-		inline const glm::mat4 ProjectionMatrix() const { return mProjectionMatrix; }
+		inline const glm::mat4& ViewMatrix() const { return mViewMatrix; }
+		inline const glm::mat4& ProjectionMatrix() const { return mProjectionMatrix; }
+		inline glm::mat4 ViewProjectionMatrix() const { return mProjectionMatrix * mViewMatrix; }
 
 		// Setters
 		virtual void SetPosition(float x, float y, float z);

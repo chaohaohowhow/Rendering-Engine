@@ -23,6 +23,12 @@
     <None Include="Content\ScreenShader.vert">
       <Filter>Content</Filter>
     </None>
+    <None Include="Content\Skybox.vert">
+      <Filter>Content</Filter>
+    </None>
+    <None Include="Content\Skybox.frag">
+      <Filter>Content</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -42,7 +48,11 @@
     <Image Include="Content\Textures\Cube.png">
       <Filter>Content\Textures</Filter>
     </Image>
-    <Image Include="Content\Textures\fountainBaseColor.png" />
-    <Image Include="Content\Textures\fountainNormal.png" />
+    <Image Include="Content\Textures\fountainBaseColor.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\fountainNormal.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

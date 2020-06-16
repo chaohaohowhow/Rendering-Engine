@@ -7,6 +7,7 @@
 #include "HelperMacros.h"
 #include "VectorHelper.h"
 #include "ScreenQuad.h"
+#include "Skybox.h"
 
 using namespace std;
 using namespace glm;
@@ -48,15 +49,25 @@ namespace Rendering
 		// Adding an object
 		shared_ptr<Fountain> fountain = make_shared<Fountain>(*this, camera);
 		mComponents.push_back(fountain);
-		
+
+		auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
+		mComponents.push_back(skybox);
+
 		// Post-processing screen quad
 		mScreenQuad = make_shared<ScreenQuad>(*this, camera);
 
+		// Gaussian Blur effect
+		mGaussianBlur = make_shared<GaussianBlur>(*this, camera);
+
 		Game::Initialize();
 		mScreenQuad->Initialize();
+		mScreenQuad->SetTextureBuffer(mColorBuffers[0]);
+		mScreenQuad->SetBloomBlur(mIntermediateColorBuffers[1]);
 
-		GLuint textureBuffer = mColorBuffers[0];
-		mScreenQuad->SetTextureBuffer(textureBuffer);
+		mGaussianBlur->Initialize();
+		mGaussianBlur->SetTextureBuffer(mColorBuffers[1]);
+		mGaussianBlur->SetFrameBuffers(&mIntermediateFBOs);
+		mGaussianBlur->SetIntermediateColorBuffers(&mIntermediateColorBuffers);
 		camera->SetPosition(0, 6, 10);
 		camera->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Left));
 	}
@@ -67,20 +78,26 @@ namespace Rendering
 	}
 	void RenderingGame::Draw(const GameTime& gameTime)
 	{
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
+		// Rendering the scene onto a render target
 		static const GLfloat one = 1.0f;
 		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
 		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));
+		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
+		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));
+
 		Game::Draw(gameTime);
 
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
-		mScreenQuad->Draw(gameTime);
+		// Do a 2-pass Gaussian Blur
+		//mGaussianBlur->Draw(gameTime);
+
+		// Draw the render target
+		//mScreenQuad->Draw(gameTime);
 		glfwSwapBuffers(mWindow);
 	}
 	void RenderingGame::CreateFrameBuffers()
 	{
 		// Create frame buffer
-
 		GLCall(glGenFramebuffers(1, &mFBO));
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
 		// Color attachment textures

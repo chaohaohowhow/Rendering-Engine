@@ -12,7 +12,7 @@ namespace Library
 {
 	RTTI_DEFINITIONS(ScreenQuad);
 
-	const VertexPositionTexture ScreenQuad::screenVertices[] =
+	const VertexPositionTexture ScreenQuad::sScreenVertices[] =
 	{
 		VertexPositionTexture(vec4(-1.0f, -1.0f, 0.0f, 1.0f), vec2(0.0f, 0.0f)),
 		VertexPositionTexture(vec4(-1.0f, +1.0f, 0.0f, 1.0f), vec2(0.0f, 1.0f)),
@@ -20,7 +20,7 @@ namespace Library
 		VertexPositionTexture(vec4(+1.0f, +1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f))
 	};;
 
-	const uint32_t ScreenQuad::screenIndicies[] =
+	const uint32_t ScreenQuad::sScreenIndicies[] =
 	{
 		0, 2, 1,
 		3, 1, 2
@@ -49,12 +49,12 @@ namespace Library
 		// Vertex Buffer
 		GLCall(glGenBuffers(1, &mVBO));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mVBO));
-		GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(screenVertices), screenVertices, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(sScreenVertices), sScreenVertices, GL_STATIC_DRAW));
 
 		// Index buffer
 		GLCall(glGenBuffers(1, &mIBO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * mIndexCount, screenIndicies, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * mIndexCount, sScreenIndicies, GL_STATIC_DRAW));
 
 		// Vertex array
 		GLCall(glGenVertexArrays(1, &mVAO));
@@ -76,11 +76,15 @@ namespace Library
 		GLCall(glDisable(GL_DEPTH_TEST));
 		mShaderProgram.Use();
 
+		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GLCall(glBindVertexArray(mVAO));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mVBO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
 		GLCall(glActiveTexture(GL_TEXTURE0));
 		GLCall(glBindTexture(GL_TEXTURE_2D, mTextureBuffer));
+		GLCall(glActiveTexture(GL_TEXTURE1));
+		GLCall(glBindTexture(GL_TEXTURE_2D, mBloomBlurTexture));
 		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
 		GLCall(glBindVertexArray(0));
 	}

@@ -23,16 +23,20 @@ namespace Library
 		virtual void Draw(const GameTime& gameTime) override;
 
 		inline void SetTextureBuffer(GLuint textureColorBuffer) { mTextureBuffer = textureColorBuffer; }
-	private:
-		static const VertexPositionTexture screenVertices[];
-		static const uint32_t screenIndicies[];
-
-		ShaderProgram mShaderProgram;
+		inline void SetBloomBlur(GLuint bloomBlur) { mBloomBlurTexture = bloomBlur; }
+	protected:
 		GLuint mVAO = 0;
 		GLuint mVBO = 0;
 		GLuint mIBO = 0;
 		static const size_t mIndexCount = 6;
 		GLuint mTextureBuffer = 0;
+		GLuint mBloomBlurTexture = 0;
+
+
+	private:
+		ShaderProgram mShaderProgram;
+		static const VertexPositionTexture sScreenVertices[];
+		static const uint32_t sScreenIndicies[];
 
 		enum class VertexAttribute
 		{

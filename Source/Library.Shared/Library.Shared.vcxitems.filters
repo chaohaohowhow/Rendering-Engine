@@ -83,6 +83,21 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Fountain.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BasicEffect.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlur.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.cpp">
+      <Filter>Demos\ShaderPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -172,6 +187,21 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Fountain.h">
       <Filter>Demos</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Skybox.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BasicEffect.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlur.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.h">
+      <Filter>Demos\ShaderPrograms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

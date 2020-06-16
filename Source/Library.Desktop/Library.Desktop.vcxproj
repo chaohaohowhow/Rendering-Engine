@@ -104,6 +104,10 @@
       <Command>mkdir "$(OutDir)Content"
 xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -123,6 +127,10 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
       <Command>mkdir "$(OutDir)Content"
 xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -143,6 +151,10 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
       <Command>mkdir "$(OutDir)Content"
 xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -163,6 +175,10 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
       <Command>mkdir "$(OutDir)Content"
 xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
@@ -175,6 +191,8 @@ xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content"</Command>
     <None Include="Content\Shader.frag" />
     <None Include="Content\Shader.vert" />
     <None Include="Content\GaussianBlur.frag" />
+    <None Include="Content\Skybox.frag" />
+    <None Include="Content\Skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />

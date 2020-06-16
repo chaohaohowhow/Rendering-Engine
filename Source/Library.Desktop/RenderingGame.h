@@ -2,6 +2,7 @@
 #include "Game.h"
 
 #include "ScreenQuad.h"
+#include "GaussianBlur.h"
 
 using namespace Library;
 
@@ -23,6 +24,7 @@ namespace Rendering
 
 	private:
 		std::shared_ptr<ScreenQuad> mScreenQuad = nullptr;
+		std::shared_ptr<GaussianBlur> mGaussianBlur = nullptr;
 
 		GLuint mFBO;
 		std::vector<GLuint> mColorBuffers{ 2 };
