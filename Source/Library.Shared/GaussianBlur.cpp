@@ -34,8 +34,8 @@ namespace Library
 	{
 		// Build shader programs
 		vector<ShaderDefinition> shaders;
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/GaussianBlur.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/GaussianBlur.frag"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Shaders/GaussianBlur.vert"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shaders/GaussianBlur.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
 		// Vertex Buffer

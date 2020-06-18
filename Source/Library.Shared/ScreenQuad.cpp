@@ -42,8 +42,8 @@ namespace Library
 	{
 		// Build shader programs
 		vector<ShaderDefinition> screenShaders;
-		screenShaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/ScreenShader.vert"));
-		screenShaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/ScreenShader.frag"));
+		screenShaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Shaders/ScreenShader.vert"));
+		screenShaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shaders/ScreenShader.frag"));
 		mShaderProgram.BuildProgram(screenShaders);
 
 		// Vertex Buffer

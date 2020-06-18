@@ -1,33 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Program.cpp" />
-    <ClCompile Include="RenderingGame.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\Shader.frag">
-      <Filter>Content</Filter>
+    <None Include="Content\Shaders\BasicEffect.frag">
+      <Filter>Content\Shaders</Filter>
     </None>
-    <None Include="Content\Shader.vert">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\GaussianBlur.frag">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\GaussianBlur.vert">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\ScreenShader.frag">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\ScreenShader.vert">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\Skybox.vert">
-      <Filter>Content</Filter>
-    </None>
-    <None Include="Content\Skybox.frag">
-      <Filter>Content</Filter>
+    <None Include="Content\Shaders\BasicEffect.vert">
+      <Filter>Content\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -40,18 +18,12 @@
     <Filter Include="Content\Textures">
       <UniqueIdentifier>{60e588de-43e1-4bc9-aad8-c6c40376586a}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="RenderingGame.h" />
+    <Filter Include="Content\Shaders">
+      <UniqueIdentifier>{d410e0c6-7bcb-4263-bac3-9083873dd2bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Textures\Cube.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\fountainBaseColor.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\fountainNormal.png">
       <Filter>Content\Textures</Filter>
     </Image>
   </ItemGroup>

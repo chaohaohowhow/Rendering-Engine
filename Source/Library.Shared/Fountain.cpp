@@ -33,8 +33,8 @@ namespace Library
 	{
 		// Build Shader programs
 		vector<ShaderDefinition> shaders;
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Shader.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shader.frag"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Shaders/ShadowMapping.vert"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shaders/ShadowMapping.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
 		// Load the model
@@ -48,8 +48,8 @@ namespace Library
 
 
 		// Loading fountain textures
-		mColorTexture = SOIL_load_OGL_texture("Content\\Textures\\fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		mNormalMap = SOIL_load_OGL_texture("Content\\Textures\\fountainNormal.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		mColorTexture = SOIL_load_OGL_texture("Content/Textures/fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+		mNormalMap = SOIL_load_OGL_texture("Content/Textures/fountainNormal.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 		if (mColorTexture == 0 || mNormalMap == 0)
 		{
 			throw runtime_error("SOIL_load_OGL_texture() failed!");
