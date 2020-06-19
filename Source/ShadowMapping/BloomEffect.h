@@ -25,6 +25,7 @@ namespace Library
 		{
 			Position = 0,
 			TextureCoordinate = 1,
+			Normal = 2
 		};
 	};
 }

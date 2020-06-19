@@ -7,6 +7,24 @@
     <None Include="Content\Shaders\BasicEffect.vert">
       <Filter>Content\Shaders</Filter>
     </None>
+    <None Include="Content\Models\Sphere.obj">
+      <Filter>Content\Models</Filter>
+    </None>
+    <None Include="Content\Shaders\Skybox.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\Skybox.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Models\fountain2.obj">
+      <Filter>Content\Models</Filter>
+    </None>
+    <None Include="Content\Models\PointLightProxy.mtl">
+      <Filter>Content\Models</Filter>
+    </None>
+    <None Include="Content\Models\PointLightProxy.obj">
+      <Filter>Content\Models</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -21,9 +39,42 @@
     <Filter Include="Content\Shaders">
       <UniqueIdentifier>{d410e0c6-7bcb-4263-bac3-9083873dd2bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Content\Textures\Skybox">
+      <UniqueIdentifier>{43e035c1-1211-422a-868b-07e7a3680be1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Textures\Cube.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\negx.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\negy.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\negz.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\posx.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\posy.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\Skybox\posz.jpg">
+      <Filter>Content\Textures\Skybox</Filter>
+    </Image>
+    <Image Include="Content\Textures\fountainBaseColor.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\fountainEmissive.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\fountainNormal.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\fountainOcclusionRoughnessMetallic.png">
       <Filter>Content\Textures</Filter>
     </Image>
   </ItemGroup>

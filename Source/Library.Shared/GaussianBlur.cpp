@@ -46,7 +46,7 @@ namespace Library
 		// Index buffer
 		GLCall(glGenBuffers(1, &mIBO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * mIndexCount, sScreenIndicies, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * sIndexCount, sScreenIndicies, GL_STATIC_DRAW));
 
 		// Vertex array
 		GLCall(glGenVertexArrays(1, &mVAO));
@@ -75,7 +75,7 @@ namespace Library
 			GLCall(glBindBuffer(GL_ARRAY_BUFFER, mVBO));
 			GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
 			assert(mIntermediateColorBuffers != nullptr);
-			GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
+			GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(sIndexCount), GL_UNSIGNED_INT, 0));
 			GLCall(glBindVertexArray(0));
 			mHorizontal = !mHorizontal;
 			if (mFirstIteration)

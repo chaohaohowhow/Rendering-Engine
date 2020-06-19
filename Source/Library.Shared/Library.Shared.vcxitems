@@ -15,7 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BasicEffect.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)BloomEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ColoredTriangle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp" />
@@ -30,6 +29,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlur.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MatrixHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Model.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ModelMaterial.cpp" />
@@ -40,14 +40,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PerspectiveCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PointLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProxyModel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScreenQuad.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ShaderProgram.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Fountain.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Variable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
@@ -55,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BasicEffect.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)BloomEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColoredTriangle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h" />
@@ -71,12 +71,15 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MatrixHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Model.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ModelMaterial.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PointLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProxyModel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScreenQuad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ShaderProgram.h" />
@@ -84,7 +87,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Fountain.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Variable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />

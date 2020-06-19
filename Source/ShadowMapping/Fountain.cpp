@@ -9,6 +9,8 @@
 #include "PointLight.h"
 #include "VertexDeclarations.h"
 #include "ModelMaterial.h"
+#include "Plane.h"
+#include "ProxyModel.h"
 
 using namespace std;
 using namespace glm;
@@ -42,15 +44,13 @@ namespace Library
 
 		// Create vertex and index buffer
 		auto mesh = model.Meshes().at(0);
-		VertexPositionTexture::CreateVertexBuffer(*mesh, mVBO);
+		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVBO);
 		mesh->CreateIndexBuffer(mIBO);
 		mIndexCount = mesh->Indices().size();
 
-
-		// Loading fountain textures
+		// Loading fountain texture
 		mColorTexture = SOIL_load_OGL_texture("Content/Textures/fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		mNormalMap = SOIL_load_OGL_texture("Content/Textures/fountainNormal.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		if (mColorTexture == 0 || mNormalMap == 0)
+		if (mColorTexture == 0)
 		{
 			throw runtime_error("SOIL_load_OGL_texture() failed!");
 		}
@@ -87,8 +87,18 @@ namespace Library
 		// Point Light
 		mPointLight = make_unique<PointLight>(*mGame);
 		mPointLight->SetPosition(-0.5f, 1.5f, -1.0f);
-		mPointLight->SetColor(15.0f, 15.0f, 15.0f, 1.0f);
-		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));		
+		mPointLight->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));	
+		
+		// Initialize plane
+		mPlane = make_unique<Plane>(*mGame, mCamera);
+		mPlane->Initialize();
+		mPlane->SetWorldMatrix(scale(mPlane->WorldMatrix(), vec3(10.0f, 0.0f, 10.0f)));
+
+		mProxyModel = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj", 0.5f);
+		mProxyModel->Initialize();
+		mProxyModel->SetPosition(mPointLight->Position());
 	}
 
 	void Fountain::Update(const GameTime& gameTime)
@@ -125,19 +135,12 @@ namespace Library
 			mSpecularPower -= gameTime.ElapsedGameTime().count() * 0.1f;
 		}
 
-		if (glfwGetKey(mGame->Window(), GLFW_KEY_DELETE) && mPointLight->Color().r > 0.0f)
-		{
-			auto& lightColor = mPointLight->Color();
-			mPointLight->SetColor(lightColor.r - 1.0f, lightColor.g - 1.0f, lightColor.b - 1.0f, 1.0f);
-		}
-		if (glfwGetKey(mGame->Window(), GLFW_KEY_INSERT) && mPointLight->Color().r < 100.f)
-		{
-			auto& lightColor = mPointLight->Color();
-			mPointLight->SetColor(lightColor.r + 1.0f, lightColor.g + 1.0f, lightColor.b + 1.0f, 1.0f);
-		}
+		UpdatePointlight(gameTime);
+
+		mProxyModel->Update(gameTime);
 	}
 
-	void Fountain::Draw(const GameTime& /*gameTime*/)
+	void Fountain::Draw(const GameTime& gameTime)
 	{
 		mShaderProgram.Use();
 
@@ -164,14 +167,67 @@ namespace Library
 
 		GLCall(glActiveTexture(GL_TEXTURE0));
 		GLCall(glBindTexture(GL_TEXTURE_2D, mColorTexture));
-		GLCall(glActiveTexture(GL_TEXTURE1));
-		GLCall(glBindTexture(GL_TEXTURE_2D, mNormalMap));
 		GLCall(glBindVertexArray(mVAO));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, mVBO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
 		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
 
 		GLCall(glBindVertexArray(0));
+
+		mShaderProgram.World() << mPlane->WorldMatrix();
+		mPlane->Draw(gameTime);
+
+		mProxyModel->Draw(gameTime);
+	}
+
+	void Fountain::UpdatePointlight(const GameTime& gameTime)
+	{
+		float elapsedTime = gameTime.ElapsedGameTimeSeconds().count();
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_DELETE) && mPointLight->Color().r > 0.0f)
+		{
+			auto& lightColor = mPointLight->Color();
+			mPointLight->SetColor(lightColor.r - elapsedTime, lightColor.g - elapsedTime, lightColor.b - elapsedTime, 1.0f);
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_INSERT) && mPointLight->Color().r < 1.f)
+		{
+			auto& lightColor = mPointLight->Color();
+			mPointLight->SetColor(lightColor.r + elapsedTime, lightColor.g + elapsedTime, lightColor.b + elapsedTime, 1.0f);
+		}
+
+		vec3 movementAmount = Vector3Helper::Zero;
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_4))
+		{
+			movementAmount.x = -1.0f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_6))
+		{
+			movementAmount.x = 1.0f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_9))
+		{
+			movementAmount.y = 1.0f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_3))
+		{
+			movementAmount.y = -1.0f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_8))
+		{
+			movementAmount.z = -1.0f;
+		}
+
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_KP_2))
+		{
+			movementAmount.z = 1.0f;
+		}
+
+		vec3 movement = movementAmount * sLightMovementRate * elapsedTime;
+		mPointLight->SetPosition(mPointLight->Position() + movement);
+		mProxyModel->SetPosition(mPointLight->Position());
 	}
 
 	

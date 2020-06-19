@@ -7,7 +7,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <CustomBuildStep>
-      <Command>mkdir "$(OutDir)Content"
+      <Command>IF EXIST "$(SharedPdb)" xcopy /Y /F "$(SharedPdb)" "$(IntDir)"
+IF EXIST "$(SharedIdb)" xcopy /Y /F "$(SharedIdb)" "$(IntDir)"
+
+mkdir "$(OutDir)Content"
 IF EXIST "$(ProjectDir)..\Library.Desktop\Content" xcopy /E /Y "$(ProjectDir)..\Library.Desktop\Content" "$(OutDir)Content"
 IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Content\"</Command>
     </CustomBuildStep>
@@ -19,7 +22,8 @@ IF EXIST "$(ProjectDir)Content" xcopy /E /Y "$(ProjectDir)Content" "$(OutDir)Con
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <CustomBuildStep>
-      <Outputs>$(OutDir)Content</Outputs>
+      <Outputs>$(IntDir)vc$(PlatformToolsetVersion).pdb</Outputs>
+      <Inputs>$(SharedPdb)</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup />

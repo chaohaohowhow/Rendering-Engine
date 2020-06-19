@@ -62,7 +62,6 @@ namespace Rendering
 		Game::Initialize();
 		mScreenQuad->Initialize();
 		mScreenQuad->SetTextureBuffer(mColorBuffers[0]);
-		mScreenQuad->SetBloomBlur(mIntermediateColorBuffers[1]);
 
 		mGaussianBlur->Initialize();
 		mGaussianBlur->SetTextureBuffer(mColorBuffers[1]);

@@ -20,9 +20,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Camera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PerspectiveCamera.cpp">
       <Filter>Cameras</Filter>
     </ClCompile>
@@ -43,9 +40,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ColoredTriangle.cpp">
       <Filter>Demos</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp">
-      <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp">
       <Filter>Models</Filter>
@@ -74,14 +68,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp">
       <Filter>Demos</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)BloomEffect.cpp">
-      <Filter>Demos\ShaderPrograms</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ScreenQuad.cpp">
       <Filter>Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Fountain.cpp">
-      <Filter>Demos</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp">
       <Filter>ShaderPrograms</Filter>
@@ -97,6 +85,21 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.cpp">
       <Filter>Demos\ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProxyModel.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ColorHelper.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MatrixHelper.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +128,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Camera.h">
       <Filter>Cameras</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)PerspectiveCamera.h">
       <Filter>Cameras</Filter>
     </ClInclude>
@@ -145,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ColoredTriangle.h">
       <Filter>Demos</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h">
-      <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h">
       <Filter>Misc</Filter>
@@ -179,14 +176,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h">
       <Filter>Demos</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BloomEffect.h">
-      <Filter>Demos\ShaderPrograms</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ScreenQuad.h">
       <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Fountain.h">
-      <Filter>Demos</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h">
       <Filter>ShaderPrograms</Filter>
@@ -202,6 +193,21 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.h">
       <Filter>Demos\ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProxyModel.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ColorHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MatrixHelper.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,6 +234,9 @@
     </Filter>
     <Filter Include="Demos\ShaderPrograms">
       <UniqueIdentifier>{aa5e0de2-ff08-405a-ad34-4d87f8e55673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{b367e8fa-d759-4cc7-9684-e9c815bed020}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

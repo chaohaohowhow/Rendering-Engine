@@ -20,7 +20,7 @@ namespace Library
 		VertexPositionTexture(vec4(+1.0f, +1.0f, 0.0f, 1.0f), vec2(1.0f, 1.0f))
 	};;
 
-	const uint32_t ScreenQuad::sScreenIndicies[] =
+	const GLuint ScreenQuad::sScreenIndicies[] =
 	{
 		0, 2, 1,
 		3, 1, 2
@@ -54,7 +54,7 @@ namespace Library
 		// Index buffer
 		GLCall(glGenBuffers(1, &mIBO));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * mIndexCount, sScreenIndicies, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * sIndexCount, sScreenIndicies, GL_STATIC_DRAW));
 
 		// Vertex array
 		GLCall(glGenVertexArrays(1, &mVAO));
@@ -83,9 +83,7 @@ namespace Library
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO));
 		GLCall(glActiveTexture(GL_TEXTURE0));
 		GLCall(glBindTexture(GL_TEXTURE_2D, mTextureBuffer));
-		GLCall(glActiveTexture(GL_TEXTURE1));
-		GLCall(glBindTexture(GL_TEXTURE_2D, mBloomBlurTexture));
-		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
+		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(sIndexCount), GL_UNSIGNED_INT, 0));
 		GLCall(glBindVertexArray(0));
 	}
 

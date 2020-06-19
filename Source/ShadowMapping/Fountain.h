@@ -10,6 +10,8 @@ namespace Library
 	class DirectionalLight;
 	class PointLight;
 	class ModelMaterial;
+	class Plane;
+	class ProxyModel;
 
 	class Fountain : public DrawableGameComponent
 	{
@@ -30,10 +32,11 @@ namespace Library
 		std::unique_ptr<Light> mAmbientLight;
 		std::unique_ptr<DirectionalLight> mDirectionalLight;
 		std::unique_ptr<PointLight> mPointLight;
+		std::unique_ptr<ProxyModel> mProxyModel;
+		std::unique_ptr<Plane> mPlane;
 		glm::vec4 mSpecularColor = ColorHelper::White;
 
 		BloomEffect mShaderProgram;
-		ShaderProgram mScreenShaderProgram;
 
 		// For shader program
 		GLuint mVAO = 0;
@@ -41,7 +44,6 @@ namespace Library
 		GLuint mIBO = 0;
 		size_t mIndexCount = 0;
 		GLuint mColorTexture = 0;
-		GLuint mNormalMap = 0;
 		float mSpecularPower = 16.0f;
 
 		// Uniforms
@@ -50,6 +52,10 @@ namespace Library
 		GLint mPointLightColorLocation = -1;
 		GLint mPointLightPositionLocation = -1;
 		GLint mPointLightRadiusLocation = -1;
+
+		inline const static float sLightMovementRate = 10.0f;
+
+		void UpdatePointlight(const GameTime& gameTime);
 	};
 }
 

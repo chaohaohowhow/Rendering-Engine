@@ -31,8 +31,8 @@ namespace Library
 	{
 		// Build the shader program
 		vector<ShaderDefinition> shaders;
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content/Shaders/Skybox.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content/Shaders/Skybox.frag"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\Skybox.vert"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\Skybox.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
 		Model model("Content/Models/Sphere.obj");

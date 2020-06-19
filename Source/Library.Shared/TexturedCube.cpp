@@ -99,12 +99,12 @@ namespace Library
 			20, 23, 22
 		};
 
-		mIndexCount = size(indicies);
+		sIndexCount = size(indicies);
 
 		// Index buffer
 		GLCall(glGenBuffers(1, &mIndexBuffer));
 		GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer));
-		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * mIndexCount, indicies, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * sIndexCount, indicies, GL_STATIC_DRAW));
 
 		// Vertex array
 		GLCall(glGenVertexArrays(1, &mVertexArrayObject));
@@ -228,7 +228,7 @@ namespace Library
 		static float radius = mPointLight->Radius();
 		GLCall(glUniform1fv(mPointLightRadiusLocation, 1, &radius));
 
-		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0));
+		GLCall(glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(sIndexCount), GL_UNSIGNED_INT, 0));
 		GLCall(glBindVertexArray(0));
 	}
 }

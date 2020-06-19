@@ -1,7 +1,6 @@
 #version 440 core
 
 layout (binding = 0) uniform sampler2D ColorTextureSampler;
-layout (binding = 1) uniform sampler2D NormalMapSampler;
 
 struct DLight
 {
@@ -27,6 +26,7 @@ in VS_OUTPUT
 {
 	vec2 TextureCoordinate;
 	vec3 WorldPosition;
+	vec3 Normal;
 	float Attenuation;
 } IN;
 
@@ -34,7 +34,7 @@ layout (location = 0) out vec4 Color;
 layout (location = 1) out vec4 BrightColor;
 
 vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
-vec3 normal = normalize(texture(NormalMapSampler, IN.TextureCoordinate).rgb * 2.0f - 1.0f);
+vec3 normal = normalize(IN.Normal);
 
 vec3 CalculateByDirection(vec4 color, vec3 direction)
 {

@@ -43,7 +43,7 @@ namespace Library
 		GLuint mVertexArrayObject = 0;
 		GLuint mVertexBuffer = 0;
 		GLuint mIndexBuffer = 0;
-		size_t mIndexCount = 0;
+		size_t sIndexCount = 0;
 		GLuint mTexture = 0;
 		float mSpecularPower = 32.0f;
 

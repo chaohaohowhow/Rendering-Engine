@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="UserMacros">
+    <SharedPchDir>$(SolutionDir)obj\Shared\$(Platform)\$(Configuration)\</SharedPchDir>
+    <SharedPch>$(SharedPchDir)Shared.pch</SharedPch>
+    <SharedPdb>$(SharedPchDir)vc$(PlatformToolsetVersion).pdb</SharedPdb>
+    <SharedIdb>$(SharedPchDir)vc$(PlatformToolsetVersion).idb</SharedIdb>
+  </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>Shared</_PropertySheetDisplayName>
     <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
@@ -18,10 +23,24 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(SolutionDir)..\Source\Library.Shared\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderOutputFile>$(SharedPch)</PrecompiledHeaderOutputFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BuildMacro Include="SharedPchDir">
+      <Value>$(SharedPchDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SharedPch">
+      <Value>$(SharedPch)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SharedPdb">
+      <Value>$(SharedPdb)</Value>
+    </BuildMacro>
+    <BuildMacro Include="SharedIdb">
+      <Value>$(SharedIdb)</Value>
+    </BuildMacro>
+  </ItemGroup>
 </Project>

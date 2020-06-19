@@ -1,18 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Image Include="Content\Textures\fountainBaseColor.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\fountainEmissive.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\fountainNormal.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\fountainOcclusionRoughnessMetallic.png">
-      <Filter>Content\Textures</Filter>
-    </Image>
+    <Image Include="Content\Textures\Floor.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -29,28 +18,34 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Models\fountain2.obj">
-      <Filter>Content\Models</Filter>
-    </None>
     <None Include="Content\Shaders\ShadowMapping.frag">
       <Filter>Content\Shaders</Filter>
     </None>
     <None Include="Content\Shaders\ShadowMapping.vert">
       <Filter>Content\Shaders</Filter>
     </None>
-    <None Include="Content\Shaders\Skybox.frag" />
-    <None Include="Content\Shaders\Skybox.vert" />
-    <None Include="Content\Models\Sphere.obj" />
-    <None Include="Content\Shaders\ScreenShader.vert" />
-    <None Include="Content\Shaders\ScreenShader.frag" />
+    <None Include="Content\Shaders\GaussianBlur.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\GaussianBlur.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\ScreenShader.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\ScreenShader.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
-    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Fountain.cpp" />
+    <ClCompile Include="BloomEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="Fountain.h" />
+    <ClInclude Include="BloomEffect.h" />
   </ItemGroup>
 </Project>
