@@ -3,9 +3,9 @@
 
 namespace Library
 {
-	class BloomEffect : public ShaderProgram
+	class ShadowMappingEffect : public ShaderProgram
 	{
-		RTTI_DECLARATIONS(BloomEffect, ShaderProgram);
+		RTTI_DECLARATIONS(ShadowMappingEffect, ShaderProgram);
 
 		SHADER_VARIABLE_DECLARATION(Projection);
 		SHADER_VARIABLE_DECLARATION(View);
@@ -14,9 +14,10 @@ namespace Library
 		SHADER_VARIABLE_DECLARATION(CameraPosition);
 		SHADER_VARIABLE_DECLARATION(SpecularColor);
 		SHADER_VARIABLE_DECLARATION(SpecularPower);
+		SHADER_VARIABLE_DECLARATION(LightSpaceMatrix);
 
 	public:
-		BloomEffect();
+		ShadowMappingEffect();
 
 		virtual void Initialize(GLuint vertexArrayObject) override;
 

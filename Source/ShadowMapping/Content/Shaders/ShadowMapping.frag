@@ -1,6 +1,7 @@
 #version 440 core
 
 layout (binding = 0) uniform sampler2D ColorTextureSampler;
+layout (binding = 1) uniform sampler2D ShadowMapSampler;
 
 struct DLight
 {
@@ -24,14 +25,14 @@ uniform DLight DirectionalLight; // Direction is flipped on CPU
 
 in VS_OUTPUT
 {
-	vec2 TextureCoordinate;
+	vec4 LightSpacePosition;
 	vec3 WorldPosition;
-	vec3 Normal;
 	float Attenuation;
+	vec3 Normal;
+	vec2 TextureCoordinate;
 } IN;
 
 layout (location = 0) out vec4 Color;
-layout (location = 1) out vec4 BrightColor;
 
 vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
 vec3 normal = normalize(IN.Normal);
@@ -57,21 +58,29 @@ vec3 CalculatePointLight(PLight light)
 	return CalculateByDirection(light.Color, direction) * IN.Attenuation;
 }
 
+float CalculateShadow(vec4 lightSpacePosition)
+{
+	// Persepective divide
+	vec3 projectionCoords = lightSpacePosition.xyz / lightSpacePosition.w;
+	// Transform to [0, 1]
+	projectionCoords = projectionCoords * 0.5 + 0.5;
+
+	float closestDepth = texture(ShadowMapSampler, projectionCoords.xy).x;
+	float currentDepth = projectionCoords.z;
+	float bias = max(0.05 * (1.0 - dot(normal, DirectionalLight.Direction)), 0.005);
+	float shadow = currentDepth - 0.005 > closestDepth ? 1.0 : 0.0;
+
+	return shadow;
+}
+
 void main()
 {
 	vec3 ambient = sampledColor.rgb * AmbientColor.rgb;	
+	vec3 diffuseSpecular = CalculateByDirection(DirectionalLight.Color, DirectionalLight.Direction);
+	diffuseSpecular += CalculatePointLight(PointLight);
+	float shadow = CalculateShadow(IN.LightSpacePosition);
 
 	Color.rgb = ambient;
-	Color.rgb += CalculateByDirection(DirectionalLight.Color, DirectionalLight.Direction);
-	Color.rgb += CalculatePointLight(PointLight);
+	Color.rgb += (1.0 - shadow) * (diffuseSpecular) * sampledColor.rgb;
 	Color.a = sampledColor.a;
-	float brightness = dot(Color.rgb, vec3(0.2126, 0.7152, 0.0722));
-	if(brightness > 1.0)
-	{
-		BrightColor = Color;
-	}
-	else
-	{
-		BrightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	}
 }

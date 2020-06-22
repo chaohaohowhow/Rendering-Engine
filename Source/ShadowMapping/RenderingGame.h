@@ -3,6 +3,7 @@
 
 #include "ScreenQuad.h"
 #include "GaussianBlur.h"
+#include "ShadowMappingDemo.h"
 
 using namespace Library;
 
@@ -23,15 +24,9 @@ namespace Rendering
 		virtual void Draw(const GameTime& gameTime) override;
 
 	private:
+		std::shared_ptr<ShadowMappingDemo> mDemo = nullptr;
 		std::shared_ptr<ScreenQuad> mScreenQuad = nullptr;
 		std::shared_ptr<GaussianBlur> mGaussianBlur = nullptr;
-
-		GLuint mFBO;
-		std::vector<GLuint> mColorBuffers{ 2 };
-		std::vector<GLuint> mIntermediateFBOs{ 2 };
-		std::vector<GLuint> mIntermediateColorBuffers{ 2 };
-
-		void CreateFrameBuffers();
 	};
 }
 

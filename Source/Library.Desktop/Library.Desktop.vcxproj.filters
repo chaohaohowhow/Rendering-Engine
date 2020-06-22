@@ -25,6 +25,12 @@
     <None Include="Content\Models\PointLightProxy.obj">
       <Filter>Content\Models</Filter>
     </None>
+    <None Include="Content\Models\DirectionalLightProxy.obj">
+      <Filter>Content\Models</Filter>
+    </None>
+    <None Include="Content\Models\DirectionalLightProxy.mtl">
+      <Filter>Content\Models</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">

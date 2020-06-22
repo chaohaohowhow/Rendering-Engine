@@ -21,7 +21,9 @@ static bool GLLogCall(const char* function, const char* file, int line)
 {
 	while (GLenum error = glGetError())
 	{
-		std::cout << "[OpenGL Error] (0x" << std::hex << error << std::dec << "):" << function << " " << file << ": " << line << std::endl;
+		std::wstringstream errorMessage;
+		errorMessage << "[OpenGL Error] (0x" << std::hex << error << std::dec << "):" << function << " " << file << ": " << line << std::endl;
+		OutputDebugStringW(errorMessage.str().c_str());
 		return false;
 	}
 

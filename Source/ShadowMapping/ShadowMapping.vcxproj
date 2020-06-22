@@ -164,22 +164,26 @@
     <Image Include="Content\Textures\Floor.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Shaders\DepthShader.frag" />
+    <None Include="Content\Shaders\DepthShader.vert" />
     <None Include="Content\Shaders\GaussianBlur.frag" />
     <None Include="Content\Shaders\GaussianBlur.vert" />
     <None Include="Content\Shaders\ScreenShader.frag" />
     <None Include="Content\Shaders\ScreenShader.vert" />
     <None Include="Content\Shaders\ShadowMapping.frag" />
     <None Include="Content\Shaders\ShadowMapping.vert" />
+    <None Include="Content\Shaders\DebugDepthShader.frag" />
+    <None Include="Content\Shaders\DebugDepthShader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BloomEffect.cpp" />
-    <ClCompile Include="Fountain.cpp" />
+    <ClCompile Include="ShadowMappingDemo.cpp" />
+    <ClCompile Include="ShadowMappingEffect.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BloomEffect.h" />
-    <ClInclude Include="Fountain.h" />
+    <ClInclude Include="ShadowMappingDemo.h" />
+    <ClInclude Include="ShadowMappingEffect.h" />
     <ClInclude Include="RenderingGame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

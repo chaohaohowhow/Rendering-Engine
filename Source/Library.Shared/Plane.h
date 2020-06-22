@@ -29,7 +29,7 @@ namespace Library
 		GLuint mVAO = 0;
 		GLuint mVBO = 0;
 		GLuint mIBO = 0;
-		glm::mat4 mWorldMatrix{ 1 };
+		glm::mat4 mWorldMatrix{ 1.0f };
 		bool mHasNormal;
 		GLuint mTexture = 0;
 
