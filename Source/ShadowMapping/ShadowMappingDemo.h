@@ -44,8 +44,8 @@ namespace Library
 		ShaderProgram mDepthShaderProgram;
 		ShaderProgram mDebugShaderProgram;
 		// Shadow mapping related variables
-		const float mNearPlane = 1.0f;
-		const float mFarPlane = 10.0f;
+		const float mNearPlane = 0.1f;
+		const float mFarPlane = 20.0f;
 		glm::vec3 mDirectionalLightPosition;
 		glm::mat4 mDirectionalLightProjection;
 		glm::mat4 mDirectionalLightView;

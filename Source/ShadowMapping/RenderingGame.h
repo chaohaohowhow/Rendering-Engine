@@ -25,8 +25,6 @@ namespace Rendering
 
 	private:
 		std::shared_ptr<ShadowMappingDemo> mDemo = nullptr;
-		std::shared_ptr<ScreenQuad> mScreenQuad = nullptr;
-		std::shared_ptr<GaussianBlur> mGaussianBlur = nullptr;
 	};
 }
 

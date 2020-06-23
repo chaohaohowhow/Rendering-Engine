@@ -97,6 +97,7 @@ namespace Library
 		mPointLight = make_unique<PointLight>(*mGame);
 		mPointLight->SetPosition(-2.0f, 3.0f, -1.0f);
 		mPointLight->SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+		mPointLight->SetRadius(20.0f);
 
 		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));	
 		
@@ -139,6 +140,7 @@ namespace Library
 	{
 		// Render scene from light's perspective
 		// -----------------------------------------
+		GLCall(glCullFace(GL_FRONT));
 		mDepthShaderProgram.Use();
 		GLCall(glUniformMatrix4fv(glGetUniformLocation(mDepthShaderProgram.Program(), "LightSpaceMatrix"), 1, GL_FALSE, value_ptr(mDirectionalLightSpaceMatrix)));
 
@@ -158,6 +160,7 @@ namespace Library
 
 		GLCall(glUniformMatrix4fv(glGetUniformLocation(mDepthShaderProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix())));
 		mPlane->Draw(gameTime);
+		GLCall(glCullFace(GL_BACK));	
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
 		// Rendering scene as normal
@@ -221,8 +224,10 @@ namespace Library
 		GLCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, mShadowWidth, mShadowHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
-		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER));
+		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER));
+		GLfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
 
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
 		GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthMap, 0));
@@ -237,10 +242,10 @@ namespace Library
 			{
 				float quadVertices[] = {
 					// positions        // texture Coords
-					-1.0f, -0.3f, 0.0f, 0.0f, 1.0f,
+					-1.0f, -0.4f, 0.0f, 0.0f, 1.0f,
 					-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-					-0.3f, -0.3f, 0.0f, 1.0f, 1.0f,
-					-0.3f, -1.0f, 0.0f, 1.0f, 0.0f,
+					-0.4f, -0.4f, 0.0f, 1.0f, 1.0f,
+					-0.4f, -1.0f, 0.0f, 1.0f, 0.0f,
 				};
 				// setup plane VAO
 				glGenVertexArrays(1, &mDebugVAO);

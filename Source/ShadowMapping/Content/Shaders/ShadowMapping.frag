@@ -58,17 +58,32 @@ vec3 CalculatePointLight(PLight light)
 	return CalculateByDirection(light.Color, direction) * IN.Attenuation;
 }
 
-float CalculateShadow(vec4 lightSpacePosition)
+float CalculateShadow(vec4 lightSpacePosition, vec3 lightDir)
 {
 	// Persepective divide
 	vec3 projectionCoords = lightSpacePosition.xyz / lightSpacePosition.w;
 	// Transform to [0, 1]
 	projectionCoords = projectionCoords * 0.5 + 0.5;
 
-	float closestDepth = texture(ShadowMapSampler, projectionCoords.xy).x;
+	// Don't need closest depth with PCF
+	//float closestDepth = texture(ShadowMapSampler, projectionCoords.xy).x;
 	float currentDepth = projectionCoords.z;
-	float bias = max(0.05 * (1.0 - dot(normal, DirectionalLight.Direction)), 0.005);
-	float shadow = currentDepth - 0.005 > closestDepth ? 1.0 : 0.0;
+	float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+	float shadow = 0;
+	vec2 texelSize = 1.0 / textureSize(ShadowMapSampler, 0);
+	#pragma optionNV (unroll all)
+	for(int x = -1; x <= 1; ++x)
+	{
+		#pragma optionNV (unroll all)
+		for(int y = -1; y <= 1; ++y)
+		{
+			float pcfDepth = texture(ShadowMapSampler, projectionCoords.xy + vec2(x, y) * texelSize).x;
+			shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;
+		}
+	}
+	shadow /= 9.0f;
+	if(projectionCoords.z > 1.0f)
+		shadow = 0.0;
 
 	return shadow;
 }
@@ -78,7 +93,7 @@ void main()
 	vec3 ambient = sampledColor.rgb * AmbientColor.rgb;	
 	vec3 diffuseSpecular = CalculateByDirection(DirectionalLight.Color, DirectionalLight.Direction);
 	diffuseSpecular += CalculatePointLight(PointLight);
-	float shadow = CalculateShadow(IN.LightSpacePosition);
+	float shadow = CalculateShadow(IN.LightSpacePosition, DirectionalLight.Direction);
 
 	Color.rgb = ambient;
 	Color.rgb += (1.0 - shadow) * (diffuseSpecular) * sampledColor.rgb;

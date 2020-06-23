@@ -48,12 +48,6 @@ namespace Rendering
 		auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
 		mComponents.push_back(skybox);
 
-		// Post-processing screen quad
-		mScreenQuad = make_shared<ScreenQuad>(*this, camera);
-
-		// Gaussian Blur effect
-		mGaussianBlur = make_shared<GaussianBlur>(*this, camera);
-
 		Game::Initialize();
 
 		camera->SetPosition(0, 6, 10);
@@ -62,7 +56,6 @@ namespace Rendering
 	void RenderingGame::Update(const GameTime& gameTime)
 	{
 		Game::Update(gameTime);
-		mScreenQuad->Update(gameTime);
 	}
 	void RenderingGame::Draw(const GameTime& gameTime)
 	{
