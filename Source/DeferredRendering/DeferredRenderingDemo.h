@@ -35,7 +35,7 @@ namespace Rendering
 		GLuint mVAO = 0;
 		GLuint mVBO = 0;
 		GLuint mIBO = 0;
-		GLuint mFBO = 0;
+		GLuint mGBuffer = 0;
 		GLuint mColorTexture = 0;
 		size_t mIndexCount = 0;
 		GLuint mPositionTexture = 0;

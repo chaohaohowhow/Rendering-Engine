@@ -32,7 +32,7 @@ namespace Rendering
 		GLCall(glDeleteBuffers(1, &mVBO));
 		GLCall(glDeleteBuffers(1, &mIBO));
 		GLCall(glDeleteVertexArrays(1, &mVAO));
-		GLCall(glDeleteFramebuffers(1, &mFBO));
+		GLCall(glDeleteFramebuffers(1, &mGBuffer));
 		GLCall(glDeleteTextures(1, &mColorTexture));
 		GLCall(glDeleteTextures(1, &mPositionTexture));
 		GLCall(glDeleteTextures(1, &mNormalTexture));
@@ -89,9 +89,19 @@ namespace Rendering
 		{
 			GLCall(mPointLightPositionLocations[i] = glGetUniformLocation(mShaderProgram.Program(), ("PointLights[" + to_string(i) + "].Position").c_str()));
 			GLCall(mPointLightColorLocations[i] = glGetUniformLocation(mShaderProgram.Program(), ("PointLights[" + to_string(i) + "].Color").c_str()));
+			if (mPointLightPositionLocations[i] == -1 || mPointLightColorLocations[i] == -1)
+			{
+				throw runtime_error("glGetUniformLocation() failed!");
+			}
 		}
 		GLCall(mCameraPositionLocation = glGetUniformLocation(mShaderProgram.Program(), "CameraPosition"));
 		GLCall(mShaderWorldLocation = glGetUniformLocation(mShaderProgram.Program(), "World"));
+		if (mGBufferWorldLocation == -1 || mViewLocation == -1 ||
+			mProjectionLocation == -1|| mCameraPositionLocation == -1 ||
+			mShaderWorldLocation == -1)
+		{
+			throw runtime_error("glGetUniformLocation() failed!");
+		}
 		GLCall(glBindVertexArray(0));
 
 		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.0f));
@@ -117,17 +127,16 @@ namespace Rendering
 	void DeferredRenderingDemo::Update(const Library::GameTime& gameTime)
 	{
 		mWorldMatrix = rotate(mWorldMatrix, gameTime.ElapsedGameTimeSeconds().count() / 2.0f, Vector3Helper::Up);
-		mPointLightProxy->Update(gameTime);
 	}
 
 	void DeferredRenderingDemo::Draw(const Library::GameTime& gameTime)
 	{
 		// Draw to the gBuffer first
 		// --------------------------------------------------------------------
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
+		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer));
 		GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-		// Send Uniforms
 		mGBufferProgram.Use();
+		// Send Uniforms
 		GLCall(glUniformMatrix4fv(mGBufferWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix)));
 		GLCall(glUniformMatrix4fv(mViewLocation, 1, GL_FALSE, value_ptr(mCamera->ViewMatrix())));
 		GLCall(glUniformMatrix4fv(mProjectionLocation, 1, GL_FALSE, value_ptr(mCamera->ProjectionMatrix())));
@@ -168,7 +177,7 @@ namespace Rendering
 
 		// Render Proxy models
 		// --------------------------------------------------------------------
-		GLCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, mFBO));
+		GLCall(glBindFramebuffer(GL_READ_FRAMEBUFFER, mGBuffer));
 		GLCall(glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0)); // Read from FBO and draw to default buffer
 		GLCall(glBlitFramebuffer(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), 0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST));
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
@@ -185,8 +194,8 @@ namespace Rendering
 	void DeferredRenderingDemo::CreateFrameBuffer()
 	{
 		// Create frame buffer
-		GLCall(glGenFramebuffers(1, &mFBO));
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
+		GLCall(glGenFramebuffers(1, &mGBuffer));
+		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer));
 
 		// Position texture
 		GLCall(glGenTextures(1, &mPositionTexture));
