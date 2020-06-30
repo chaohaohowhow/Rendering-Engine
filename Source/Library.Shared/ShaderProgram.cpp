@@ -48,7 +48,6 @@ namespace Library
 
 			stringstream errorMessage;
 			errorMessage << "glCompileShader() failed!\n" << log.c_str();
-
 			throw runtime_error(errorMessage.str().c_str());
 		}
 

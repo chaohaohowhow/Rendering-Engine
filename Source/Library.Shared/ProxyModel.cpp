@@ -12,8 +12,8 @@ namespace Library
 {
 	RTTI_DEFINITIONS(ProxyModel);
 
-	ProxyModel::ProxyModel(Game& game, shared_ptr<Camera> camera, const string& modelFileName, float scale) :
-		DrawableGameComponent(game, move(camera)),
+	ProxyModel::ProxyModel(Game& game, shared_ptr<Camera> camera, const string& modelFileName, float scale, bool allowUniformColor) :
+		DrawableGameComponent(game, move(camera)), mAllowUniformColor(allowUniformColor),
 		mModelFileName(modelFileName)
 	{
 		mScaleMatrix = glm::scale(mat4(1), vec3(scale));
@@ -61,6 +61,11 @@ namespace Library
 		mPosition = position;
 	}
 
+	void ProxyModel::SetColor(const glm::vec4& color)
+	{
+		mColor = color;
+	}
+
 	void ProxyModel::ApplyRotation(const mat4& transform)
 	{
 		vec4 direction = transform * vec4(mDirection, 0.0f);
@@ -77,7 +82,10 @@ namespace Library
 	{
 		// Build the shader program
 		vector<ShaderDefinition> shaders;
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\BasicEffect.vert"));
+		if (mAllowUniformColor)
+			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\BasicEffectWithUniformColor.vert"));
+		else
+			shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\BasicEffect.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\BasicEffect.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
@@ -85,7 +93,7 @@ namespace Library
 
 		// Create the vertex and index buffers
 		shared_ptr<Mesh> mesh = model.Meshes().at(0);
-		VertexPositionColor::CreateVertexBuffer(*mesh, mVertexBuffer);
+		VertexPositionColor::CreateVertexBuffer(*mesh, mVertexBuffer, mColor);
 		mesh->CreateIndexBuffer(mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
 
@@ -116,6 +124,8 @@ namespace Library
 
 		mat4 wvp = mCamera->ViewProjectionMatrix() * mWorldMatrix;
 		mShaderProgram.WorldViewProjection() << wvp;
+		if (mAllowUniformColor)
+			glUniform4fv(glGetUniformLocation(mShaderProgram.Program(), "Color"), 1, value_ptr(mColor));
 
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);

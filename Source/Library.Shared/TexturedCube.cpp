@@ -130,7 +130,7 @@ namespace Library
 		// Get uniforms
 		GLCall(mProjectionLocation = glGetUniformLocation(mShaderProgram.Program(), "Projection"));
 		GLCall(mViewLocation = glGetUniformLocation(mShaderProgram.Program(), "View"));
-		GLCall(mWorldLocation = glGetUniformLocation(mShaderProgram.Program(), "World"));
+		GLCall(mGBufferWorldLocation = glGetUniformLocation(mShaderProgram.Program(), "World"));
 		GLCall(mAmbientColorLoation = glGetUniformLocation(mShaderProgram.Program(), "AmbientColor"));
 		GLCall(mDirectionalLightDirectionLocation = glGetUniformLocation(mShaderProgram.Program(), "DirectionalLight.Direction"));
 		GLCall(mDirectionalLightColorLocation = glGetUniformLocation(mShaderProgram.Program(), "DirectionalLight.Color"));
@@ -142,7 +142,7 @@ namespace Library
 		GLCall(mPointLightRadiusLocation = glGetUniformLocation(mShaderProgram.Program(), "PointLight.Radius"));
 			if (mProjectionLocation == -1 ||
 				mViewLocation == -1 ||
-				mWorldLocation == -1 ||
+				mGBufferWorldLocation == -1 ||
 				mAmbientColorLoation == -1 ||
 				mDirectionalLightDirectionLocation == -1 ||
 				mDirectionalLightColorLocation == -1 ||
@@ -216,7 +216,7 @@ namespace Library
 		// Set uniforms
 		GLCall(glUniformMatrix4fv(mProjectionLocation, 1, GL_FALSE, value_ptr(mCamera->ProjectionMatrix())));
 		GLCall(glUniformMatrix4fv(mViewLocation, 1, GL_FALSE, value_ptr(mCamera->ViewMatrix())));
-		GLCall(glUniformMatrix4fv(mWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix)));
+		GLCall(glUniformMatrix4fv(mGBufferWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix)));
 		GLCall(glUniform4fv(mAmbientColorLoation, 1, value_ptr(mAmbientLight->Color())));
 		GLCall(glUniform3fv(mDirectionalLightDirectionLocation, 1, value_ptr(mDirectionalLight->Direction())));
 		GLCall(glUniform4fv(mDirectionalLightColorLocation, 1, value_ptr(mDirectionalLight->Color())));

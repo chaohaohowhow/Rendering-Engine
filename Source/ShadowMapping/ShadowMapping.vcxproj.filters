@@ -21,18 +21,6 @@
     <None Include="Content\Shaders\ShadowMapping.vert">
       <Filter>Content\Shaders</Filter>
     </None>
-    <None Include="Content\Shaders\GaussianBlur.vert">
-      <Filter>Content\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\GaussianBlur.frag">
-      <Filter>Content\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\ScreenShader.frag">
-      <Filter>Content\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\ScreenShader.vert">
-      <Filter>Content\Shaders</Filter>
-    </None>
     <None Include="Content\Shaders\DepthShader.frag">
       <Filter>Content\Shaders</Filter>
     </None>
@@ -56,10 +44,5 @@
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="ShadowMappingEffect.h" />
     <ClInclude Include="ShadowMappingDemo.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Content\Textures\Floor.jpg">
-      <Filter>Content\Textures</Filter>
-    </Image>
   </ItemGroup>
 </Project>

@@ -31,6 +31,8 @@ namespace Library
 		GLCall(glDeleteBuffers(1, &mVBO));
 		GLCall(glDeleteBuffers(1, &mIBO));
 		GLCall(glDeleteVertexArrays(1, &mVAO));
+		GLCall(glDeleteFramebuffers(1, &mFBO));
+		GLCall(glDeleteTextures(1, &mDepthMap));
 	}
 
 	void ShadowMappingDemo::Initialize()
@@ -53,7 +55,7 @@ namespace Library
 		Model model("Content/Models/fountain2.obj", true);
 
 		// Create vertex and index buffer
-		auto mesh = model.Meshes().at(0);
+		auto& mesh = model.Meshes().at(0);
 		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVBO);
 		mesh->CreateIndexBuffer(mIBO);
 		mIndexCount = mesh->Indices().size();
@@ -229,7 +231,6 @@ namespace Library
 		GLfloat borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		GLCall(glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor));
 
-		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, mFBO));
 		GLCall(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthMap, 0));
 		GLCall(glDrawBuffer(GL_NONE));
 		GLCall(glReadBuffer(GL_NONE));

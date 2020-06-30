@@ -31,6 +31,9 @@
     <None Include="Content\Models\DirectionalLightProxy.mtl">
       <Filter>Content\Models</Filter>
     </None>
+    <None Include="Content\Shaders\BasicEffectWithUniformColor.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">
@@ -81,6 +84,9 @@
       <Filter>Content\Textures</Filter>
     </Image>
     <Image Include="Content\Textures\fountainOcclusionRoughnessMetallic.png">
+      <Filter>Content\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Floor.jpg">
       <Filter>Content\Textures</Filter>
     </Image>
   </ItemGroup>

@@ -11,12 +11,12 @@ uniform float FarPlane;
 float LinearizeDepth(float depth)
 {
     float z = depth * 2.0 - 1.0; // Back to NDC 
-    return (2.0 * NearPlane * FarPlane) / (FarPlane + NearPlane - z * (FarPlane - NearPlane));	
+    return (2.0 * NearPlane * FarPlane) / (FarPlane + NearPlane - z * (FarPlane - NearPlane));
 }
 
 void main()
-{             
-    float depthValue = texture(ShadowMapSampler, TextureCoordinate).r;
+{
+    float depthValue = texture(ShadowMapSampler, TextureCoordinate).x;
     // Color = vec4(vec3(LinearizeDepth(depthValue) / FarPlane), 1.0); // perspective
     Color = vec4(vec3(depthValue), 1.0); // orthographic
 }

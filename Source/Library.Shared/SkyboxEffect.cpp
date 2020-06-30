@@ -20,7 +20,7 @@ namespace Library
 	{
 		ShaderProgram::Initialize(vertexArrayObject);
 
-		SHADER_VARIABLE_INSTANTIATE(WorldViewProjection)
+		SHADER_VARIABLE_INSTANTIATE(WorldViewProjection);
 
 			glVertexAttribPointer(VertexAttributePosition, 4, GL_FLOAT, GL_FALSE, sizeof(VertexPosition), (void*)offsetof(VertexPosition, Position));
 		glEnableVertexAttribArray(VertexAttributePosition);

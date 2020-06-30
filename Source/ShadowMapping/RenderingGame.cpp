@@ -61,8 +61,6 @@ namespace Rendering
 	{
 		// Rendering the scene onto a render target
 		static const GLfloat one = 1.0f;
-		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
-		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));
 		GLCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 		GLCall(glClearBufferfv(GL_COLOR, 0, value_ptr(ColorHelper::CornflowerBlue)));
 		GLCall(glClearBufferfv(GL_DEPTH, 0, &one));

@@ -54,6 +54,6 @@ private:												\
 #define SHADER_VARIABLE_INSTANTIATE(VariableName)									\
 	m ## VariableName = new Variable(*this, #VariableName);							\
 	mVariables.push_back(m ## VariableName);										\
-	mVariablesByName.insert(std::pair<std::string, Variable*>(m ## VariableName->Name(), m ## VariableName));
+	mVariablesByName.insert(std::pair<std::string, Variable*>(m ## VariableName->Name(), m ## VariableName))
 }
 

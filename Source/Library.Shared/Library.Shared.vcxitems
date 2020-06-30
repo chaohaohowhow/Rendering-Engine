@@ -43,6 +43,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PointLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProxyModel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Random.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScreenQuad.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ShaderProgram.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PointLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProxyModel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Random.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RTTI.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScreenQuad.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ShaderProgram.h" />

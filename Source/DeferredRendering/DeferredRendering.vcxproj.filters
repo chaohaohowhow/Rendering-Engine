@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Program.cpp" />
+    <ClCompile Include="RenderingGame.cpp" />
+    <ClCompile Include="DeferredRenderingDemo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RenderingGame.h" />
+    <ClInclude Include="DeferredRenderingDemo.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shaders\DeferredRendering.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\DeferredRendering.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\GBuffer.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\GBuffer.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Content">
+      <UniqueIdentifier>{0a6adb76-ca76-47f8-a4c4-45f44493cf39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content\Shaders">
+      <UniqueIdentifier>{5b993d0e-0fb4-429a-8779-f8e70863347e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

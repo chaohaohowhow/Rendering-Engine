@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ColorHelper.h"
+
 namespace Library
 {
 	class Mesh;
@@ -39,7 +41,7 @@ namespace Library
 			Position(position), Color(color)
 		{
 		}
-		static void CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer);
+		static void CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer, const glm::vec4& color = ColorHelper::White);
 		inline static void CreateVertexBuffer(const gsl::span<const VertexPositionColor>& vertices, GLuint& vertexBuffer)
 		{
 			VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);

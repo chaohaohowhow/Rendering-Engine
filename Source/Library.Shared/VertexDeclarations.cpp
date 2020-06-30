@@ -56,7 +56,7 @@ namespace Library
 
 		VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
 	}
-	void VertexPositionColor::CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer)
+	void VertexPositionColor::CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer, const glm::vec4& color)
 	{
 		const vector<vec3>& sourceVertices = mesh.Vertices();
 
@@ -70,8 +70,8 @@ namespace Library
 			for (size_t i = 0; i < sourceVertices.size(); i++)
 			{
 				const vec3& position = sourceVertices.at(i);
-				const vec4& color = vertexColors.at(i);
-				vertices.emplace_back(vec4(position.x, position.y, position.z, 1.0f), color);
+				const vec4& col = vertexColors.at(i);
+				vertices.emplace_back(vec4(position.x, position.y, position.z, 1.0f), col);
 			}
 		}
 		else
@@ -79,7 +79,6 @@ namespace Library
 			for (size_t i = 0; i < sourceVertices.size(); i++)
 			{
 				const vec3& position = sourceVertices.at(i);
-				const vec4& color = ColorHelper::White;
 				vertices.emplace_back(vec4(position.x, position.y, position.z, 1.0f), color);
 			}
 		}

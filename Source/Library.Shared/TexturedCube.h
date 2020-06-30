@@ -50,7 +50,7 @@ namespace Library
 		// Uniforms
 		GLint mProjectionLocation = -1;
 		GLint mViewLocation = -1;
-		GLint mWorldLocation = -1;
+		GLint mGBufferWorldLocation = -1;
 		GLint mAmbientColorLoation = -1;
 		GLint mDirectionalLightDirectionLocation = -1;
 		GLint mDirectionalLightColorLocation = -1;

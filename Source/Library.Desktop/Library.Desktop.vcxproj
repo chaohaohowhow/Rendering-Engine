@@ -189,6 +189,7 @@
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="Content\Shaders\BasicEffectWithUniformColor.vert" />
     <None Include="Content\Models\DirectionalLightProxy.mtl" />
     <None Include="Content\Models\PointLightProxy.mtl" />
     <None Include="Content\Shaders\BasicEffect.frag" />
@@ -198,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Content\Textures\Cube.png" />
+    <Image Include="Content\Textures\Floor.jpg" />
     <Image Include="Content\Textures\fountainBaseColor.png" />
     <Image Include="Content\Textures\fountainEmissive.png" />
     <Image Include="Content\Textures\fountainNormal.png" />

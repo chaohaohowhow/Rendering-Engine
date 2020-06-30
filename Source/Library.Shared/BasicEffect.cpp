@@ -17,11 +17,11 @@ namespace Library
 
 	SHADER_VARIABLE_DEFINITION(BasicEffect, WorldViewProjection)
 
-		void BasicEffect::Initialize(GLuint vertexArrayObject)
+	void BasicEffect::Initialize(GLuint vertexArrayObject)
 	{
 		ShaderProgram::Initialize(vertexArrayObject);
 
-		SHADER_VARIABLE_INSTANTIATE(WorldViewProjection)
+		SHADER_VARIABLE_INSTANTIATE(WorldViewProjection);
 
 			glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionColor), (void*)offsetof(VertexPositionColor, Position));
 		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
