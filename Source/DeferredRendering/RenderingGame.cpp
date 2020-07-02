@@ -37,6 +37,11 @@ namespace Rendering
 				{
 					Exit();
 				}
+				if (key == GLFW_KEY_R && action == GLFW_PRESS)
+				{
+					if (mDemo != nullptr)
+						mDemo->RandomizePointLights();
+				}
 			});
 
 

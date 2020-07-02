@@ -36,10 +36,10 @@ layout (location = 0) out vec4 Color;
 
 vec4 sampledColor = texture(ColorTextureSampler, IN.TextureCoordinate);
 vec3 normal = normalize(IN.Normal);
+vec3 viewDirection = normalize(CameraPosition - IN.WorldPosition);
 
 vec3 CalculateByDirection(vec4 color, vec3 direction)
 {
-	vec3 viewDirection = normalize(CameraPosition - IN.WorldPosition);
 	vec3 lightDirection = normalize(direction);
 	float n_dot_l = dot(lightDirection, normal);
 	

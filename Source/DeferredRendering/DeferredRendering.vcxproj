@@ -155,6 +155,8 @@
     <ClInclude Include="RenderingGame.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Shaders\DebugShader.frag" />
+    <None Include="Content\Shaders\DebugShader.vert" />
     <None Include="Content\Shaders\DeferredRendering.frag" />
     <None Include="Content\Shaders\DeferredRendering.vert" />
     <None Include="Content\Shaders\GBuffer.frag" />

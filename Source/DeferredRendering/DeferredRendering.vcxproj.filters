@@ -22,6 +22,8 @@
     <None Include="Content\Shaders\GBuffer.vert">
       <Filter>Content\Shaders</Filter>
     </None>
+    <None Include="Content\Shaders\DebugShader.vert" />
+    <None Include="Content\Shaders\DebugShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Content">

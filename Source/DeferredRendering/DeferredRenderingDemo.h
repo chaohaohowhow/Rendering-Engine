@@ -11,7 +11,6 @@ namespace Library
 
 namespace Rendering
 {
-
 	class DeferredRenderingDemo final : public Library::DrawableGameComponent
 	{
 		RTTI_DECLARATIONS(DeferredRenderingDemo, DrawableGameComponent);
@@ -27,6 +26,7 @@ namespace Rendering
 		virtual void Initialize() override;
 		virtual void Update(const Library::GameTime& gameTime) override;
 		virtual void Draw(const Library::GameTime& gameTime) override;
+		void RandomizePointLights();
 	private:
 		static const size_t PointLightCount = 32;
 		glm::mat4 mWorldMatrix{ 1 };
@@ -43,26 +43,35 @@ namespace Rendering
 		GLuint mAlbedoSpecTexture = 0;
 		GLuint mQuadVAO = 0;
 		GLuint mQuadVBO = 0;
-		float mSpecularPower = 16.0f;
+		GLuint mDebugVAO = 0;
+		GLuint mDebugVBO = 0;
 
-		GLint mGBufferWorldLocation = -1;
+		GLint mWorldLocation = -1;
 		GLint mViewLocation = -1;
 		GLint mProjectionLocation = -1;
 
 		GLint mPointLightPositionLocations[PointLightCount] = { -1 };
 		GLint mPointLightColorLocations[PointLightCount] = { -1 };
-		GLint mShaderWorldLocation = -1;
 		GLint mCameraPositionLocation = -1;
+		GLint mSpecularPowerLocation = -1;
+		GLint mAmbientIntensityLocation = -1;
+		GLint mDebugTranslateLocation = -1;
 
 		std::unique_ptr<Library::Plane> mPlane;
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
+		float mSpecularPower = 16.0f;
+		float mAmbientIntensity = 0.5f;
 
 		Library::ShaderProgram mGBufferProgram;
 		Library::ShaderProgram mShaderProgram;
+		Library::ShaderProgram mDebugShaderProgram;
 
 		void CreateFrameBuffer();
 		void RenderQuad();
+		void RenderDebug(size_t index);
+		void UpdateSpecularPower(const Library::GameTime& gameTime);
+		void UpdateAmbientIntensity(const Library::GameTime& gameTime);
 
 		enum class VertexAttribute
 		{
