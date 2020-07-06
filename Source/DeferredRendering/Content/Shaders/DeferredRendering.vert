@@ -10,7 +10,9 @@ struct PLight {
 };
 
 const int NumLights = 32;
+const float LightThreshold = 5.0/256.0;
 uniform PLight PointLights[NumLights];
+uniform float Constant = 1.0;
 uniform float Linear = 0.7;
 uniform float Quadratic = 1.8;
 
@@ -29,7 +31,7 @@ void main()
     #pragma optionNV (unroll all)
     for(int i = 0; i < NumLights; ++i)
     {
-        float distance = length(PointLights[i].Position - WorldPosition);
-        OUT.Attenuation[i] = 1.0f / (1.0f + Linear * distance + Quadratic * distance * distance);
+        float lightDistance = distance(PointLights[i].Position, WorldPosition);
+        OUT.Attenuation[i] = 1.0f / (Constant + Linear * lightDistance + Quadratic * lightDistance * lightDistance);
     }
 }

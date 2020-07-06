@@ -130,6 +130,8 @@ namespace Rendering
 		// Initialize proxy model
 		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj", 0.1f, true);
 		mPointLightProxy->Initialize();
+
+		glDisable(GL_BLEND);
 	}
 
 	void DeferredRenderingDemo::Update(const Library::GameTime& gameTime)
@@ -178,7 +180,7 @@ namespace Rendering
 		for (size_t i = 0; i < mPointLights.size(); ++i)
 		{
 			glUniform3fv(mPointLightPositionLocations[i], 1, value_ptr(mPointLights[i]->Position()));
-			glUniform3fv(mPointLightColorLocations[i], 1, value_ptr(mPointLights[i]->Color()));
+			glUniform3fv(mPointLightColorLocations[i], 1, value_ptr(vec3(mPointLights[i]->Color())));
 		}
 		glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position()));
 		glUniform1f(mAmbientIntensityLocation, mAmbientIntensity);
@@ -356,6 +358,16 @@ namespace Rendering
 			light->SetColor(ColorHelper::RandomColor());
 			light->SetPosition(Random::RandomFloat(-10.0f, 10.0f), 0.5f, Random::RandomFloat(-10.0f, 10.0f));
 		}
+	}
+
+	float* DeferredRenderingDemo::GetAmbientIntensityAddress()
+	{
+		return &mAmbientIntensity;
+	}
+
+	float* DeferredRenderingDemo::GetSpecularPowerAddress()
+	{
+		return &mSpecularPower;
 	}
 
 }

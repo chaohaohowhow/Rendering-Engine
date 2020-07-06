@@ -27,6 +27,9 @@ namespace Rendering
 		virtual void Update(const Library::GameTime& gameTime) override;
 		virtual void Draw(const Library::GameTime& gameTime) override;
 		void RandomizePointLights();
+
+		float* GetAmbientIntensityAddress();
+		float* GetSpecularPowerAddress();
 	private:
 		static const size_t PointLightCount = 32;
 		glm::mat4 mWorldMatrix{ 1 };
@@ -61,7 +64,7 @@ namespace Rendering
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
 		float mSpecularPower = 16.0f;
-		float mAmbientIntensity = 0.5f;
+		float mAmbientIntensity = 0.1f;
 
 		Library::ShaderProgram mGBufferProgram;
 		Library::ShaderProgram mShaderProgram;

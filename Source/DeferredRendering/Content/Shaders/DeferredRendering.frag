@@ -32,19 +32,19 @@ void main()
     // Then calculate lighting as usual
     vec3 lighting = Diffuse * AmbientIntensity;
     vec3 viewDir  = normalize(CameraPosition - Position);
-
+    
     #pragma optionNV (unroll all)
     for(int i = 0; i < NumLights; ++i)
     {
         vec3 lightDir = normalize(PointLights[i].Position - Position);
-        float n_dot_l = dot(lightDir, Normal);
+        float n_dot_l = dot(Normal, lightDir);
         vec3 halfVector = normalize(lightDir + viewDir);
         float n_dot_h = dot(Normal, halfVector);
 
-        vec3 diffuse = clamp(PointLights[i].Color * n_dot_l * Diffuse, 0.0f, 1.0f);
+        vec3 diffuse = max(n_dot_l, 0.0f) * Diffuse * PointLights[i].Color;
 
-        float spec = pow(clamp(n_dot_h, 0.0f, 1.0f), SpecularPower);
-        vec3 specular = PointLights[i].Color * Specular * spec;
+        float spec = pow(max(n_dot_h, 0.0f), SpecularPower);
+        vec3 specular = PointLights[i].Color * spec * Specular;
 
         lighting += (diffuse + specular) * IN.Attenuation[i];
     }

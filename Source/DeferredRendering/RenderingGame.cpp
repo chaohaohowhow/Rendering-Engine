@@ -7,6 +7,7 @@
 #include "HelperMacros.h"
 #include "VectorHelper.h"
 #include "Skybox.h"
+#include "ImGuiComponent.h"
 
 using namespace std;
 using namespace glm;
@@ -37,11 +38,6 @@ namespace Rendering
 				{
 					Exit();
 				}
-				if (key == GLFW_KEY_R && action == GLFW_PRESS)
-				{
-					if (mDemo != nullptr)
-						mDemo->RandomizePointLights();
-				}
 			});
 
 
@@ -51,6 +47,29 @@ namespace Rendering
 
 		auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
 		mComponents.push_back(skybox);
+
+		auto imGui = make_shared<ImGuiComponent>(*this);
+		mComponents.push_back(imGui);
+
+		auto helpTextImGuiRenderBlock = make_shared<ImGuiComponent::RenderBlock>([this]()
+			{
+				ImGui::SetNextWindowPos(ImVec2(400, 0), ImGuiCond_Appearing);
+				ImGui::Begin("Controls");
+
+				ImGui::Text("Camera (WASD + Right-Click-Mouse-Look)");
+				ImGui::Separator();
+				if (ImGui::CollapsingHeader("Controls"))
+				{
+					ImGui::PushItemWidth(250);
+					ImGui::SliderFloat("Ambient Intensity", mDemo->GetAmbientIntensityAddress(), 0.0f, 1.0f);
+					ImGui::SliderFloat("Specular Power", mDemo->GetSpecularPowerAddress(), 4.0f, 256.0f);
+					if (ImGui::Button("Randomize light"))
+						mDemo->RandomizePointLights();
+				}
+				
+				ImGui::End();
+			});
+		imGui->AddRenderBlock(helpTextImGuiRenderBlock);
 
 		Game::Initialize();
 

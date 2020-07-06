@@ -28,6 +28,19 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameTime.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlur.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ImGuiComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Light.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MatrixHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mesh.cpp" />
@@ -71,6 +84,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlur.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GaussianBlurEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HelperMacros.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ImGuiComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_glfw.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_opengl3.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Light.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MatrixHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mesh.h" />

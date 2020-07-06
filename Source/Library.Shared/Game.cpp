@@ -97,7 +97,7 @@ namespace Library
 
 		if (glewInit() != GLEW_NO_ERROR)
 		{
-			throw runtime_error("gl3wInit() failed!");
+			throw runtime_error("glewInit() failed!");
 		}
 
 		GLCall(glGetIntegerv(GL_MAJOR_VERSION, &mMajorVersion));
