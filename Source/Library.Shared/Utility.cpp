@@ -31,4 +31,27 @@ namespace Library
 
 		file.close();
 	}
+	std::tuple<std::string, std::string> Utility::GetFileNameAndDirectory(const std::string& inputPath)
+	{
+		string fullPath(inputPath);
+		replace(fullPath.begin(), fullPath.end(), '\\', '/');
+
+		string::size_type lastSlashIndex = fullPath.find_last_of('/');
+
+		string directory;
+		string filename;
+
+		if (lastSlashIndex == string::npos)
+		{
+			directory = "";
+			filename = fullPath;
+		}
+		else
+		{
+			directory = fullPath.substr(0, lastSlashIndex);
+			filename = fullPath.substr(lastSlashIndex + 1, fullPath.size() - lastSlashIndex - 1);
+		}
+
+		return make_tuple(filename, directory);
+	}
 }

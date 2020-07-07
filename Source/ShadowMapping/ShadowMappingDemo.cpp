@@ -52,7 +52,7 @@ namespace Library
 		mDebugShaderProgram.BuildProgram(shaders);
 
 		// Load the model
-		Model model("Content/Models/fountain2.obj", true);
+		Model model("Content/Models/fountain2.obj.bin");
 
 		// Create vertex and index buffer
 		auto& mesh = model.Meshes().at(0);
@@ -110,12 +110,12 @@ namespace Library
 
 		mDirectionalLightPosition = vec3(0.0f, 5.0f, 0.0f);
 		// Initialize proxy models
-		mDirectionalLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\DirectionalLightProxy.obj", 0.5f);
+		mDirectionalLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\DirectionalLightProxy.obj.bin", 0.5f);
 		mDirectionalLightProxy->Initialize();
 		mDirectionalLightProxy->SetPosition(mDirectionalLightPosition);
 		mDirectionalLightProxy->ApplyRotation(rotate(mat4(1), radians(90.0f), Vector3Helper::Up));
 		
-		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj", 0.5f);
+		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj.bin", 0.5f);
 		mPointLightProxy->Initialize();
 		mPointLightProxy->SetPosition(mPointLight->Position());
 
@@ -186,9 +186,6 @@ namespace Library
 		GLCall(glUniform3fv(mPointLightPositionLocation, 1, value_ptr(mPointLight->Position())));
 		static float radius = mPointLight->Radius();
 		GLCall(glUniform1fv(mPointLightRadiusLocation, 1, &radius));
-
-		GLCall(glEnable(GL_CULL_FACE));
-		GLCall(glFrontFace(GL_CCW));
 
 		GLCall(glActiveTexture(GL_TEXTURE0));
 		GLCall(glBindTexture(GL_TEXTURE_2D, mColorTexture));

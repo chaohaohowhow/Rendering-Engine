@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "ModelMaterial.h"
+
 #include "Enum.h"
+#include "StreamHelper.h"
 
 using namespace std;
+using namespace gsl;
 
 namespace Library
 {
@@ -22,6 +25,55 @@ namespace Library
 	ModelMaterial::ModelMaterial(Model& model) :
 		mModel(&model)
 	{
+	}
+	ModelMaterial::ModelMaterial(Model& model, InputStreamHelper& streamHelper) :
+		mModel(&model)
+	{
+		Load(streamHelper);
+	}
+	ModelMaterial::ModelMaterial(Model& model, ModelMaterialData&& modelMaterialData) :
+		mModel(&model), mName(move(modelMaterialData.Name)), mTextures(move(modelMaterialData.Textures))
+	{
+	}
+	void ModelMaterial::Save(OutputStreamHelper& streamHelper) const
+	{
+		streamHelper << mName;
+
+		streamHelper << narrow_cast<uint32_t>(mTextures.size());
+		for (const auto& texturePair : mTextures)
+		{
+			streamHelper << narrow_cast<int32_t>(texturePair.first);
+			streamHelper << narrow_cast<uint32_t>(texturePair.second.size());
+			for (const auto& texture : texturePair.second)
+			{
+				streamHelper << texture;
+			}
+		}
+	}
+	void ModelMaterial::Load(InputStreamHelper& streamHelper)
+	{
+		streamHelper >> mName;
+
+		uint32_t texturesCount;
+		streamHelper >> texturesCount;
+		for (uint32_t i = 0; i < texturesCount; i++)
+		{
+			int32_t textureType;
+			streamHelper >> textureType;
+
+			vector<string> textures;
+			uint32_t textureListCount;
+			streamHelper >> textureListCount;
+			textures.reserve(textureListCount);
+			for (uint32_t j = 0; j < textureListCount; j++)
+			{
+				string texture;
+				streamHelper >> texture;
+				textures.push_back(move(texture));
+			}
+
+			mTextures.emplace(TextureType(textureType), move(textures));
+		}
 	}
 	ModelMaterial::ModelMaterial(Model& model, aiMaterial& material) :
 		mModel(&model)

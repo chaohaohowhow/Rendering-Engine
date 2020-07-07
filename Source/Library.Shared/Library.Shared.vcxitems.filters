@@ -113,6 +113,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)imgui_impl_glfw.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StreamHelper.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)imgui_impl_glfw.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StreamHelper.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

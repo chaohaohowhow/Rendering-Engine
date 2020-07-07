@@ -35,7 +35,7 @@ namespace Library
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\Skybox.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
-		Model model("Content/Models/Sphere.obj");
+		Model model("Content/Models/Sphere.obj.bin");
 
 		// Create the vertex and index buffers
 		shared_ptr<Mesh> mesh = model.Meshes().at(0);

@@ -5,14 +5,31 @@ struct aiMesh;
 namespace Library
 {
 	class Model;
-	class Material;
 	class ModelMaterial;
+	class OutputStreamHelper;
+	class InputStreamHelper;
+
+	struct MeshData final
+	{
+		std::shared_ptr<ModelMaterial> Material;
+		std::string Name;
+		std::vector<glm::vec3> Vertices;
+		std::vector<glm::vec3> Normals;
+		std::vector<glm::vec3> Tangents;
+		std::vector<glm::vec3> BiNormals;
+		std::vector<std::vector<glm::vec3>> TextureCoordinates;
+		std::vector<std::vector<glm::vec4>> VertexColors;
+		std::uint32_t FaceCount{ 0 };
+		std::vector<std::uint32_t> Indices;
+	};
 
 	class Mesh final
 	{
 		friend class Model;
 
 	public:
+		Mesh(Library::Model& model, InputStreamHelper& streamHelper);
+		Mesh(Library::Model& model, MeshData&& meshData);
 		Mesh(const Mesh&) = default;
 		Mesh(Mesh&&) = default;
 		Mesh& operator=(const Mesh&) = default;
@@ -21,32 +38,25 @@ namespace Library
 
 		// Getters
 		inline Model& GetModel() { return *mModel; }
-		inline std::shared_ptr<ModelMaterial> GetMaterial() const { return mMaterial; }
-		inline const std::string& Name() const { return mName; }
-		inline const std::vector<glm::vec3>& Vertices() const { return mVertices; }
-		inline const std::vector<glm::vec3>& Normals() const { return mNormals; }
-		inline const std::vector<glm::vec3>& Tangents() const { return mTangents; }
-		inline const std::vector<glm::vec3>& BiNormals() const { return mBiNormals; }
-		inline const std::vector<std::vector<glm::vec3>>& TextureCoordinates() const { return mTextureCoordinates; }
-		inline const std::vector<std::vector<glm::vec4>>& VertexColors() const { return mVertexColors; }
-		inline std::uint32_t FaceCount() const { return mFaceCount; }
-		inline const std::vector<std::uint32_t>& Indices() const { return mIndices; }
+		inline std::shared_ptr<ModelMaterial> GetMaterial() const { return mData.Material; }
+		inline const std::string& Name() const { return mData.Name; }
+		inline const std::vector<glm::vec3>& Vertices() const { return mData.Vertices; }
+		inline const std::vector<glm::vec3>& Normals() const { return mData.Normals; }
+		inline const std::vector<glm::vec3>& Tangents() const { return mData.Tangents; }
+		inline const std::vector<glm::vec3>& BiNormals() const { return mData.BiNormals; }
+		inline const std::vector<std::vector<glm::vec3>>& TextureCoordinates() const { return mData.TextureCoordinates; }
+		inline const std::vector<std::vector<glm::vec4>>& VertexColors() const { return mData.VertexColors; }
+		inline std::uint32_t FaceCount() const { return mData.FaceCount; }
+		inline const std::vector<std::uint32_t>& Indices() const { return mData.Indices; }
 
 		void CreateIndexBuffer(GLuint& indexBuffer);
+		void Save(OutputStreamHelper& streamHelper) const;
 	private:
 		Mesh(Model& model, aiMesh& mesh);
+		void Load(InputStreamHelper& streamHelper);
 
 		Model* mModel;
-		std::shared_ptr<ModelMaterial> mMaterial;
-		std::string mName;
-		std::vector<glm::vec3> mVertices;
-		std::vector<glm::vec3> mNormals;
-		std::vector<glm::vec3> mTangents;
-		std::vector<glm::vec3> mBiNormals;
-		std::vector<std::vector<glm::vec3>> mTextureCoordinates;
-		std::vector<std::vector<glm::vec4>> mVertexColors;
-		std::uint32_t mFaceCount = 0;
-		std::vector<std::uint32_t> mIndices;
+		MeshData mData;
 	};
 }
 

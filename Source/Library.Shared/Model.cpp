@@ -2,41 +2,85 @@
 #include "Model.h"
 
 #include "ModelMaterial.h"
+#include "StreamHelper.h"
 
 using namespace std;
+using namespace gsl;
 
 namespace Library
 {
-	Model::Model(const std::string& fileName, bool flipUVs)
+	Model::Model(const std::string& fileName)
 	{
-		Assimp::Importer importer;
+		Load(fileName);
+	}
 
-		uint32_t flags = aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType;
-		if (flipUVs)
+	ModelData& Model::Data()
+	{
+		return mData;
+	}
+
+	void Model::Save(const std::string& filename) const
+	{
+		ofstream file(filename.c_str(), ios::binary);
+		if (!file.good())
 		{
-			flags |= aiProcess_FlipUVs;
+			throw exception("Could not open file.");
 		}
 
-		const aiScene* scene = importer.ReadFile(fileName, flags);
-		if (!scene)
+		Save(file);
+	}
+
+	void Model::Save(std::ofstream& file) const
+	{
+		OutputStreamHelper streamHelper(file);
+
+		// Serialize materials
+		streamHelper << narrow_cast<uint32_t>(mData.Materials.size());
+		for (const auto& material : mData.Materials)
 		{
-			throw runtime_error(importer.GetErrorString());
+			material->Save(streamHelper);
 		}
 
-		if (scene->HasMaterials())
+		// Serialize meshes
+		streamHelper << narrow_cast<uint32_t>(mData.Meshes.size());
+		for (auto& mesh : mData.Meshes)
 		{
-			for (uint32_t i = 0; i < scene->mNumMaterials; ++i)
-			{
-				mMaterials.push_back(shared_ptr<ModelMaterial>(new ModelMaterial(*this, *scene->mMaterials[i])));
-			}
-		}
-
-		if (scene->HasMeshes())
-		{
-			for (uint32_t i = 0; i < scene->mNumMeshes; ++i)
-			{
-				mMeshes.push_back(shared_ptr<Mesh>(new Mesh(*this, *scene->mMeshes[i])));
-			}
+			mesh->Save(streamHelper);
 		}
 	}
+
+	void Model::Load(const std::string& filename)
+	{
+		ifstream file(filename.c_str(), ios::binary);
+		if (!file.good())
+		{
+			throw runtime_error("Could not open file.");
+		}
+
+		Load(file);
+	}
+
+	void Model::Load(std::ifstream& file)
+	{
+		InputStreamHelper streamHelper(file);
+
+		// Deserialize materials
+		uint32_t materialCount;
+		streamHelper >> materialCount;
+		mData.Materials.reserve(materialCount);
+		for (uint32_t i = 0; i < materialCount; i++)
+		{
+			mData.Materials.emplace_back(make_shared<ModelMaterial>(*this, streamHelper));
+		}
+
+		// Deserialize meshes
+		uint32_t meshCount;
+		streamHelper >> meshCount;
+		mData.Meshes.reserve(meshCount);
+		for (uint32_t i = 0; i < meshCount; i++)
+		{
+			mData.Meshes.emplace_back(make_shared<Mesh>(*this, streamHelper));
+		}
+	}
+
 }

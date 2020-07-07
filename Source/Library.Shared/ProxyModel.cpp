@@ -89,7 +89,7 @@ namespace Library
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\BasicEffect.frag"));
 		mShaderProgram.BuildProgram(shaders);
 
-		Model model(mModelFileName, true);
+		Model model(mModelFileName);
 
 		// Create the vertex and index buffers
 		shared_ptr<Mesh> mesh = model.Meshes().at(0);

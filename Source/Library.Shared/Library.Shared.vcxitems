@@ -62,6 +62,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Skybox.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyboxEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)StreamHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Variable.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Skybox.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyboxEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StreamHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Variable.h" />

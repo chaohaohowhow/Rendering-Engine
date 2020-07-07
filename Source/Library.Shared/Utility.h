@@ -14,5 +14,6 @@ namespace Library
 		~Utility() = default;
 
 		static void LoadBinaryFile(const std::string& filename, std::vector<char>& data);
+		static std::tuple<std::string, std::string> GetFileNameAndDirectory(const std::string& inputPath);
 	};
 }

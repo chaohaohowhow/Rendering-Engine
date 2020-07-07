@@ -60,7 +60,7 @@ namespace Rendering
 		// Create frame buffer
 		CreateFrameBuffer();
 		// Load fountain model, VBO, and IBO
-		Model model("Content\\Models\\fountain2.obj", true);
+		Model model("Content\\Models\\fountain2.obj.bin");
 
 		auto& mesh = model.Meshes().at(0);
 		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVBO);
@@ -128,7 +128,7 @@ namespace Rendering
 		mPlane->SetWorldMatrix(scale(mPlane->WorldMatrix(), vec3(10.0f, 1.0f, 10.0f)));
 
 		// Initialize proxy model
-		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj", 0.1f, true);
+		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj.bin", 0.1f, true);
 		mPointLightProxy->Initialize();
 
 		glDisable(GL_BLEND);
@@ -157,8 +157,6 @@ namespace Rendering
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mColorTexture);
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 
 		glUniformMatrix4fv(glGetUniformLocation(mGBufferProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix()));
