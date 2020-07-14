@@ -38,16 +38,23 @@ namespace Rendering
 		GLuint mVAO = 0;
 		GLuint mVBO = 0;
 		GLuint mIBO = 0;
+		size_t mIndexCount = 0;
 		GLuint mGBuffer = 0;
 		GLuint mColorTexture = 0;
-		size_t mIndexCount = 0;
+
 		GLuint mPositionTexture = 0;
 		GLuint mNormalTexture = 0;
 		GLuint mAlbedoSpecTexture = 0;
+
 		GLuint mQuadVAO = 0;
 		GLuint mQuadVBO = 0;
 		GLuint mDebugVAO = 0;
 		GLuint mDebugVBO = 0;
+
+		GLuint mSphereVAO = 0;
+		GLuint mSphereVBO = 0;
+		GLuint mSphereIBO = 0;
+		size_t mSphereIndexCount = 0;
 
 		GLint mWorldLocation = -1;
 		GLint mViewLocation = -1;
@@ -59,12 +66,18 @@ namespace Rendering
 		GLint mSpecularPowerLocation = -1;
 		GLint mAmbientIntensityLocation = -1;
 		GLint mDebugTranslateLocation = -1;
+		GLint mConstantLocation = -1;
+		GLint mLinearLocation = -1;
+		GLint mQuadraticLocation = -1;
 
 		std::unique_ptr<Library::Plane> mPlane;
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
 		float mSpecularPower = 16.0f;
 		float mAmbientIntensity = 0.1f;
+		float mConstant = 1.0f;
+		float mLinear = 0.7f;
+		float mQuadratic = 1.8f;
 
 		Library::ShaderProgram mGBufferProgram;
 		Library::ShaderProgram mShaderProgram;
@@ -75,6 +88,7 @@ namespace Rendering
 		void RenderDebug(size_t index);
 		void UpdateSpecularPower(const Library::GameTime& gameTime);
 		void UpdateAmbientIntensity(const Library::GameTime& gameTime);
+		float CaculateLightRadius(const Library::PointLight& pointLight);
 
 		enum class VertexAttribute
 		{

@@ -14,11 +14,13 @@ uniform PLight PointLights[NumLights];
 uniform vec3 CameraPosition;
 uniform float SpecularPower = 16.0f;
 uniform float AmbientIntensity = 0.5f;
+uniform float Constant = 1.0;
+uniform float Linear = 0.7;
+uniform float Quadratic = 1.8;
 
 in VS_OUTPUT
 {
     vec2 TextureCoordinate;
-    float Attenuation[NumLights];
 } IN;
 
 void main()
@@ -37,6 +39,8 @@ void main()
     for(int i = 0; i < NumLights; ++i)
     {
         vec3 lightDir = normalize(PointLights[i].Position - Position);
+        float lightDistance = length(lightDir);
+        float attenuation = 1.0f / (Constant + Linear * lightDistance + Quadratic * lightDistance * lightDistance);
         float n_dot_l = dot(Normal, lightDir);
         vec3 halfVector = normalize(lightDir + viewDir);
         float n_dot_h = dot(Normal, halfVector);
@@ -46,7 +50,7 @@ void main()
         float spec = pow(max(n_dot_h, 0.0f), SpecularPower);
         vec3 specular = PointLights[i].Color * spec * Specular;
 
-        lighting += (diffuse + specular) * IN.Attenuation[i];
+        lighting += (diffuse + specular) * attenuation;
     }
     Color = vec4(lighting, 1.0);
 }

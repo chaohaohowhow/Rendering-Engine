@@ -41,12 +41,13 @@ namespace Rendering
 			});
 
 
+
 		// Adding an object
 		mDemo = make_shared<DeferredRenderingDemo>(*this, camera);
 		mComponents.push_back(mDemo);
 
-		auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
-		mComponents.push_back(skybox);
+		//auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
+		//mComponents.push_back(skybox);
 
 		auto imGui = make_shared<ImGuiComponent>(*this);
 		mComponents.push_back(imGui);

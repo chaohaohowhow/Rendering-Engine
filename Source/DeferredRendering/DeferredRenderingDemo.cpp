@@ -86,6 +86,21 @@ namespace Rendering
 		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Normal));
 		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Normal));
 
+		// Load sphere model
+		Model sphere("Content\\Models\\Sphere.obj.bin");
+
+		auto& sphereMesh = sphere.Meshes().at(0);
+		VertexPositionTexture::CreateVertexBuffer(*sphereMesh, mSphereVBO);
+		sphereMesh->CreateIndexBuffer(mSphereIBO);
+		mSphereIndexCount = sphereMesh->Indices().size();
+
+		glGenVertexArrays(1, &mSphereVAO);
+		glBindVertexArray(mSphereVAO);
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, Position));
+		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, TextureCoordinates));
+		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
+
 		// Get uniform locations
 		mWorldLocation = glGetUniformLocation(mGBufferProgram.Program(), "World");
 		mViewLocation = glGetUniformLocation(mGBufferProgram.Program(), "View");
@@ -130,7 +145,6 @@ namespace Rendering
 		// Initialize proxy model
 		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj.bin", 0.1f, true);
 		mPointLightProxy->Initialize();
-
 		glDisable(GL_BLEND);
 	}
 
@@ -145,8 +159,16 @@ namespace Rendering
 	{
 		// Draw to the gBuffer first
 		// --------------------------------------------------------------------
+
 		glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer);
+
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CW);
+
+		glDepthMask(GL_TRUE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glDisable(GL_BLEND);
+
 		mGBufferProgram.Use();
 		// Send Uniforms
 		glUniformMatrix4fv(mWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix));
@@ -160,12 +182,20 @@ namespace Rendering
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 
 		glUniformMatrix4fv(glGetUniformLocation(mGBufferProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix()));
+
+		glFrontFace(GL_CCW);
 		mPlane->Draw(gameTime);
 
-		// Render scene with the lighting pass
+		glDepthMask(GL_FALSE);
+
+		// lighting pass
 		// --------------------------------------------------------------------
+		glEnable(GL_BLEND);
+		glBlendEquation(GL_FUNC_ADD);
+		glBlendFunc(GL_ONE, GL_ONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		mShaderProgram.Use();
 		// Bind all the textures from the gBuffer
 		glActiveTexture(GL_TEXTURE0);
@@ -174,15 +204,16 @@ namespace Rendering
 		glBindTexture(GL_TEXTURE_2D, mAlbedoSpecTexture);
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, mNormalTexture);
+
+		glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position()));
+		glUniform1f(mAmbientIntensityLocation, mAmbientIntensity);
+		glUniform1f(mSpecularPowerLocation, mSpecularPower);
 		// Send uniforms
 		for (size_t i = 0; i < mPointLights.size(); ++i)
 		{
 			glUniform3fv(mPointLightPositionLocations[i], 1, value_ptr(mPointLights[i]->Position()));
 			glUniform3fv(mPointLightColorLocations[i], 1, value_ptr(vec3(mPointLights[i]->Color())));
 		}
-		glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position()));
-		glUniform1f(mAmbientIntensityLocation, mAmbientIntensity);
-		glUniform1f(mSpecularPowerLocation, mSpecularPower);
 		RenderQuad();
 
 		// Render Proxy models
@@ -199,7 +230,6 @@ namespace Rendering
 			mPointLightProxy->Update(gameTime);
 			mPointLightProxy->Draw(gameTime);
 		}
-
 		// Render debug quads
 		// --------------------------------------------------------------------
 		mDebugShaderProgram.Use();
@@ -346,6 +376,13 @@ namespace Rendering
 		{
 			mAmbientIntensity -= gameTime.ElapsedGameTimeSeconds().count();
 		}
+	}
+
+	float DeferredRenderingDemo::CaculateLightRadius(const Library::PointLight& pointLight)
+	{
+		vec4 color = pointLight.Color();
+		float maxChannel = std::max(std::max(color.r, color.g), color.b);
+		return (-mLinear + sqrtf(mLinear * mLinear - 4 * mQuadratic * (mQuadratic - 256 * maxChannel))) / (2 * mQuadratic);
 	}
 
 	void DeferredRenderingDemo::RandomizePointLights()
