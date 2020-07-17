@@ -4,10 +4,22 @@
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="DeferredRenderingDemo.cpp" />
+    <ClCompile Include="GBufferPass.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightPass.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="DeferredRenderingDemo.h" />
+    <ClInclude Include="GBufferPass.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLightPass.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Shaders\DeferredRendering.vert">
@@ -35,6 +47,9 @@
     </Filter>
     <Filter Include="Content\Shaders">
       <UniqueIdentifier>{5b993d0e-0fb4-429a-8779-f8e70863347e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderPrograms">
+      <UniqueIdentifier>{0b8013c1-8d69-494a-ad91-61bd52cd7542}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

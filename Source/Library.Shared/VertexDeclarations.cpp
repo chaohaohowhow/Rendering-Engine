@@ -37,7 +37,7 @@ namespace Library
 
 		VertexDeclaration::CreateVertexBuffer(vertices, vertexBuffer);
 	}
-	void VertexPositionTextureNormal::CreateVertexBuffer(const Library::Mesh& mesh, GLuint& vertexBuffer)
+	void VertexPositionTextureNormal::CreateVertexBuffer(const Mesh& mesh, GLuint& vertexBuffer)
 	{
 		const vector<vec3>& sourceVertices = mesh.Vertices();
 

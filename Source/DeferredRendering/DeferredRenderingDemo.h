@@ -1,6 +1,8 @@
 #pragma once
 #include "ShaderProgram.h"
 #include "DrawableGameComponent.h"
+#include "GBufferPass.h"
+#include "PointLightPass.h"
 
 namespace Library
 {
@@ -56,31 +58,16 @@ namespace Rendering
 		GLuint mSphereIBO = 0;
 		size_t mSphereIndexCount = 0;
 
-		GLint mWorldLocation = -1;
-		GLint mViewLocation = -1;
-		GLint mProjectionLocation = -1;
-
-		GLint mPointLightPositionLocations[PointLightCount] = { -1 };
-		GLint mPointLightColorLocations[PointLightCount] = { -1 };
-		GLint mCameraPositionLocation = -1;
-		GLint mSpecularPowerLocation = -1;
-		GLint mAmbientIntensityLocation = -1;
 		GLint mDebugTranslateLocation = -1;
-		GLint mConstantLocation = -1;
-		GLint mLinearLocation = -1;
-		GLint mQuadraticLocation = -1;
 
 		std::unique_ptr<Library::Plane> mPlane;
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
 		float mSpecularPower = 16.0f;
 		float mAmbientIntensity = 0.1f;
-		float mConstant = 1.0f;
-		float mLinear = 0.7f;
-		float mQuadratic = 1.8f;
 
-		Library::ShaderProgram mGBufferProgram;
-		Library::ShaderProgram mShaderProgram;
+		GBufferPass mGBufferPassProgram;
+		PointLightPass mPointLightPassProgram;
 		Library::ShaderProgram mDebugShaderProgram;
 
 		void CreateFrameBuffer();
@@ -88,7 +75,6 @@ namespace Rendering
 		void RenderDebug(size_t index);
 		void UpdateSpecularPower(const Library::GameTime& gameTime);
 		void UpdateAmbientIntensity(const Library::GameTime& gameTime);
-		float CaculateLightRadius(const Library::PointLight& pointLight);
 
 		enum class VertexAttribute
 		{

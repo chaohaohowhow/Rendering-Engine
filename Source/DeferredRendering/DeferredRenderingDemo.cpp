@@ -45,12 +45,12 @@ namespace Rendering
 		vector<ShaderDefinition> shaders;
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\GBuffer.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\GBuffer.frag"));
-		mGBufferProgram.BuildProgram(shaders);
+		mGBufferPassProgram.BuildProgram(shaders);
 		
 		shaders.clear();
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\DeferredRendering.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\DeferredRendering.frag"));
-		mShaderProgram.BuildProgram(shaders);
+		mPointLightPassProgram.BuildProgram(shaders);
 
 		shaders.clear();
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\DebugShader.vert"));
@@ -59,9 +59,9 @@ namespace Rendering
 
 		// Create frame buffer
 		CreateFrameBuffer();
+
 		// Load fountain model, VBO, and IBO
 		Model model("Content\\Models\\fountain2.obj.bin");
-
 		auto& mesh = model.Meshes().at(0);
 		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVBO);
 		mesh->CreateIndexBuffer(mIBO);
@@ -74,58 +74,26 @@ namespace Rendering
 			throw runtime_error("SOIL_load_OGL_texture() failed!");
 		}
 		
-		// Create VAO
 		glGenVertexArrays(1, &mVAO);
-		glBindVertexArray(mVAO);
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
-
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, TextureCoordinates));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
-
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Normal), 3, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Normal));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Normal));
+		mGBufferPassProgram.Initialize(mVAO);
+		glBindVertexArray(0);
 
 		// Load sphere model
-		Model sphere("Content\\Models\\Sphere.obj.bin");
-
+		Model sphere("Content\\Models\\UnitSphere.obj.bin");
 		auto& sphereMesh = sphere.Meshes().at(0);
 		VertexPositionTexture::CreateVertexBuffer(*sphereMesh, mSphereVBO);
 		sphereMesh->CreateIndexBuffer(mSphereIBO);
 		mSphereIndexCount = sphereMesh->Indices().size();
 
 		glGenVertexArrays(1, &mSphereVAO);
-		glBindVertexArray(mSphereVAO);
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, Position));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
-		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, TextureCoordinates));
-		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
+		mPointLightPassProgram.Initialize(mSphereVAO);
+		glBindVertexArray(0);
 
-		// Get uniform locations
-		mWorldLocation = glGetUniformLocation(mGBufferProgram.Program(), "World");
-		mViewLocation = glGetUniformLocation(mGBufferProgram.Program(), "View");
-		mProjectionLocation = glGetUniformLocation(mGBufferProgram.Program(), "Projection"); 
-		for (size_t i = 0; i < PointLightCount; ++i)
-		{
-			mPointLightPositionLocations[i] = glGetUniformLocation(mShaderProgram.Program(), ("PointLights[" + to_string(i) + "].Position").c_str());
-			mPointLightColorLocations[i] = glGetUniformLocation(mShaderProgram.Program(), ("PointLights[" + to_string(i) + "].Color").c_str());
-			if (mPointLightPositionLocations[i] == -1 || mPointLightColorLocations[i] == -1)
-			{
-				throw runtime_error("glGetUniformLocation() failed!");
-			}
-		}
-		mCameraPositionLocation = glGetUniformLocation(mShaderProgram.Program(), "CameraPosition");
-		mSpecularPowerLocation = glGetUniformLocation(mShaderProgram.Program(), "SpecularPower");
-		mAmbientIntensityLocation = glGetUniformLocation(mShaderProgram.Program(), "AmbientIntensity");
 		mDebugTranslateLocation = glGetUniformLocation(mDebugShaderProgram.Program(), "Translate");
-		if (mWorldLocation == -1 || mViewLocation == -1 ||
-			mProjectionLocation == -1|| mCameraPositionLocation == -1 ||
-			mDebugTranslateLocation == -1 || mSpecularPowerLocation == -1 ||
-			mAmbientIntensityLocation == -1)
+		if (mDebugTranslateLocation == -1)
 		{
 			throw runtime_error("glGetUniformLocation() failed!");
 		}
-		glBindVertexArray(0);
 
 		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
 		// Initialize lights
@@ -135,6 +103,7 @@ namespace Rendering
 			auto& light = mPointLights.back();
 			light->SetColor(ColorHelper::RandomColor());
 			light->SetPosition(Random::RandomFloat(-10.0f, 10.0f), 0.5f, Random::RandomFloat(-10.0f, 10.0f));
+			light->SetRadius(3.0f);
 		}
 
 		// Initialize plane
@@ -169,19 +138,20 @@ namespace Rendering
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisable(GL_BLEND);
 
-		mGBufferProgram.Use();
+		mGBufferPassProgram.Use();
 		// Send Uniforms
-		glUniformMatrix4fv(mWorldLocation, 1, GL_FALSE, value_ptr(mWorldMatrix));
-		glUniformMatrix4fv(mViewLocation, 1, GL_FALSE, value_ptr(mCamera->ViewMatrix()));
-		glUniformMatrix4fv(mProjectionLocation, 1, GL_FALSE, value_ptr(mCamera->ProjectionMatrix()));
+		mGBufferPassProgram.Projection() << mCamera->ProjectionMatrix();
+		mGBufferPassProgram.View() << mCamera->ViewMatrix();
+		mGBufferPassProgram.World() << mWorldMatrix;
 
 		glBindVertexArray(mVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mColorTexture);
 		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
 
-		glUniformMatrix4fv(glGetUniformLocation(mGBufferProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix()));
+		glUniformMatrix4fv(glGetUniformLocation(mGBufferPassProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix()));
 
 		glFrontFace(GL_CCW);
 		mPlane->Draw(gameTime);
@@ -190,14 +160,18 @@ namespace Rendering
 
 		// lighting pass
 		// --------------------------------------------------------------------
+		// Configurations
 		glEnable(GL_BLEND);
 		glBlendEquation(GL_FUNC_ADD);
 		glBlendFunc(GL_ONE, GL_ONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		mShaderProgram.Use();
+		mPointLightPassProgram.Use();
 		// Bind all the textures from the gBuffer
+		glBindVertexArray(mSphereVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mSphereVBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mSphereIBO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mPositionTexture);
 		glActiveTexture(GL_TEXTURE1);
@@ -205,19 +179,28 @@ namespace Rendering
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, mNormalTexture);
 
-		glUniform3fv(mCameraPositionLocation, 1, value_ptr(mCamera->Position()));
-		glUniform1f(mAmbientIntensityLocation, mAmbientIntensity);
-		glUniform1f(mSpecularPowerLocation, mSpecularPower);
-		// Send uniforms
-		for (size_t i = 0; i < mPointLights.size(); ++i)
+		// Sending uniforms
+		mPointLightPassProgram.CameraPosition() << mCamera->Position();
+		mPointLightPassProgram.SpecularPower() << mSpecularPower;
+		mPointLightPassProgram.AmbientIntensity() << mAmbientIntensity;
+		for (auto& light : mPointLights)
 		{
-			glUniform3fv(mPointLightPositionLocations[i], 1, value_ptr(mPointLights[i]->Position()));
-			glUniform3fv(mPointLightColorLocations[i], 1, value_ptr(vec3(mPointLights[i]->Color())));
+			mat4 world(1);
+			scale(world, vec3(light->Radius(), light->Radius(), light->Radius()));
+			translate(world, light->Position());
+			mPointLightPassProgram.WVP() << mCamera->ViewProjectionMatrix() * world;
+			mPointLightPassProgram.PointLightPosition() << light->Position();
+			mPointLightPassProgram.PointLightColor() << light->Color();
+			mPointLightPassProgram.PointLightRadius() << light->Radius();
+			
+			// Render sphere
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mSphereIndexCount), GL_UNSIGNED_INT, 0);
 		}
-		RenderQuad();
 
 		// Render Proxy models
 		// --------------------------------------------------------------------
+		glDisable(GL_BLEND);
+
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, mGBuffer);
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // Read from FBO and draw to default buffer
 		glBlitFramebuffer(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), 0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
@@ -376,13 +359,6 @@ namespace Rendering
 		{
 			mAmbientIntensity -= gameTime.ElapsedGameTimeSeconds().count();
 		}
-	}
-
-	float DeferredRenderingDemo::CaculateLightRadius(const Library::PointLight& pointLight)
-	{
-		vec4 color = pointLight.Color();
-		float maxChannel = std::max(std::max(color.r, color.g), color.b);
-		return (-mLinear + sqrtf(mLinear * mLinear - 4 * mQuadratic * (mQuadratic - 256 * maxChannel))) / (2 * mQuadratic);
 	}
 
 	void DeferredRenderingDemo::RandomizePointLights()

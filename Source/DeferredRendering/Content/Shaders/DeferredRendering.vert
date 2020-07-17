@@ -7,8 +7,10 @@ out VS_OUTPUT
     vec2 TextureCoordinate;
 } OUT;
 
+uniform mat4 WVP;
+
 void main()
 {
     OUT.TextureCoordinate = TextureCoordinate;
-    gl_Position = Position;
+    gl_Position = WVP * Position;
 }
