@@ -11,6 +11,7 @@ uniform float PointLightRadius;
 uniform vec3 CameraPosition;
 uniform float SpecularPower = 16.0f;
 uniform float AmbientIntensity = 0.1f;
+uniform vec2 ScreenSize = vec2(800, 600);
 
 in VS_OUTPUT
 {
@@ -19,19 +20,20 @@ in VS_OUTPUT
 
 void main()
 {
+    vec2 texCoord = gl_FragCoord.xy / ScreenSize;
     // Retrieve data from gBuffer
-    vec3 Position = texture(PositionTexture, IN.TextureCoordinate).rgb;
-    vec3 Normal = texture(NormalTexture, IN.TextureCoordinate).rgb;
-    vec3 Diffuse = texture(AlbedoSpecTexture, IN.TextureCoordinate).rgb;
-    float Specular = texture(AlbedoSpecTexture, IN.TextureCoordinate).a;
+    vec3 Position = texture(PositionTexture, texCoord).rgb;
+    vec3 Normal = texture(NormalTexture, texCoord).rgb;
+    vec3 Diffuse = texture(AlbedoSpecTexture, texCoord).rgb;
+    float Specular = texture(AlbedoSpecTexture, texCoord).a;
     
     // Then calculate lighting as usual
     vec3 lighting = Diffuse * AmbientIntensity;
     vec3 viewDir  = normalize(CameraPosition - Position);
     
-    vec3 lightDir = normalize(PointLightPosition - Position);
-    float lightDistance = length(lightDir);
+    vec3 lightDir = PointLightPosition - Position;
     float attenuation = max(1.0f - length(lightDir) / PointLightRadius, 0.0f);
+    lightDir = normalize(lightDir);
     float n_dot_l = dot(Normal, lightDir);
     vec3 halfVector = normalize(lightDir + viewDir);
     float n_dot_h = dot(Normal, halfVector);

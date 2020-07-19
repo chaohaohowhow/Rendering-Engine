@@ -103,7 +103,7 @@ namespace Rendering
 			auto& light = mPointLights.back();
 			light->SetColor(ColorHelper::RandomColor());
 			light->SetPosition(Random::RandomFloat(-10.0f, 10.0f), 0.5f, Random::RandomFloat(-10.0f, 10.0f));
-			light->SetRadius(3.0f);
+			light->SetRadius(2.0f);
 		}
 
 		// Initialize plane
@@ -166,6 +166,7 @@ namespace Rendering
 		glBlendFunc(GL_ONE, GL_ONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glFrontFace(GL_CW);
 
 		mPointLightPassProgram.Use();
 		// Bind all the textures from the gBuffer
@@ -183,11 +184,13 @@ namespace Rendering
 		mPointLightPassProgram.CameraPosition() << mCamera->Position();
 		mPointLightPassProgram.SpecularPower() << mSpecularPower;
 		mPointLightPassProgram.AmbientIntensity() << mAmbientIntensity;
+		mPointLightPassProgram.ScreenSize() << vec2(mGame->ScreenWidth(), mGame->ScreenHeight());
 		for (auto& light : mPointLights)
 		{
 			mat4 world(1);
-			scale(world, vec3(light->Radius(), light->Radius(), light->Radius()));
-			translate(world, light->Position());
+			float radius = light->Radius();
+			world = translate(world, light->Position());
+			world = scale(world, vec3(radius, radius, radius));
 			mPointLightPassProgram.WVP() << mCamera->ViewProjectionMatrix() * world;
 			mPointLightPassProgram.PointLightPosition() << light->Position();
 			mPointLightPassProgram.PointLightColor() << light->Color();
@@ -196,6 +199,7 @@ namespace Rendering
 			// Render sphere
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mSphereIndexCount), GL_UNSIGNED_INT, 0);
 		}
+		glFrontFace(GL_CCW);
 
 		// Render Proxy models
 		// --------------------------------------------------------------------

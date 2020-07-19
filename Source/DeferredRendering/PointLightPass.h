@@ -14,6 +14,7 @@ namespace Rendering
 		SHADER_VARIABLE_DECLARATION(CameraPosition);
 		SHADER_VARIABLE_DECLARATION(SpecularPower);
 		SHADER_VARIABLE_DECLARATION(AmbientIntensity);
+		SHADER_VARIABLE_DECLARATION(ScreenSize);
 
 	public:
 		PointLightPass();
