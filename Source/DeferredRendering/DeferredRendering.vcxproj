@@ -147,13 +147,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DeferredRenderingDemo.cpp" />
+    <ClCompile Include="DirectionalLightPass.cpp" />
+    <None Include="Content\Shaders\DirectionalLightPass.frag">
+      <FileType>Discomap</FileType>
+    </None>
     <ClCompile Include="GBufferPass.cpp" />
     <ClCompile Include="PointLightPass.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
+    <None Include="Content\Shaders\DirectionalLightPass.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeferredRenderingDemo.h" />
+    <ClInclude Include="DirectionalLightPass.h" />
     <ClInclude Include="GBufferPass.h" />
     <ClInclude Include="PointLightPass.h" />
     <ClInclude Include="RenderingGame.h" />
@@ -161,8 +167,8 @@
   <ItemGroup>
     <None Include="Content\Shaders\DebugShader.frag" />
     <None Include="Content\Shaders\DebugShader.vert" />
-    <None Include="Content\Shaders\DeferredRendering.frag" />
-    <None Include="Content\Shaders\DeferredRendering.vert" />
+    <None Include="Content\Shaders\PointLightPass.frag" />
+    <None Include="Content\Shaders\PointLightPass.vert" />
     <None Include="Content\Shaders\GBuffer.frag" />
     <None Include="Content\Shaders\GBuffer.vert" />
   </ItemGroup>

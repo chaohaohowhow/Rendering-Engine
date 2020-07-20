@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "VertexDeclarations.h"
 #include "PointLight.h"
+#include "DirectionalLight.h"
 #include "Random.h"
 #include "Plane.h"
 #include "ProxyModel.h"
@@ -48,9 +49,14 @@ namespace Rendering
 		mGBufferPassProgram.BuildProgram(shaders);
 		
 		shaders.clear();
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\DeferredRendering.vert"));
-		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\DeferredRendering.frag"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\LightPass.vert"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\PointLightPass.frag"));
 		mPointLightPassProgram.BuildProgram(shaders);
+
+		shaders.clear();
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\DirectionalLightPass.vert"));
+		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\DirectionalLightPass.frag"));
+		mDirectionalLightPassProgram.BuildProgram(shaders);
 
 		shaders.clear();
 		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\DebugShader.vert"));
@@ -59,6 +65,8 @@ namespace Rendering
 
 		// Create frame buffer
 		CreateFrameBuffer();
+
+		InitializeQuad();
 
 		// Load fountain model, VBO, and IBO
 		Model model("Content\\Models\\fountain2.obj.bin");
@@ -106,6 +114,8 @@ namespace Rendering
 			light->SetRadius(2.0f);
 		}
 
+		mDirectionalLight = make_unique<DirectionalLight>(*mGame);
+
 		// Initialize plane
 		mPlane = make_unique<Plane>(*mGame, mCamera);
 		mPlane->Initialize();
@@ -114,6 +124,10 @@ namespace Rendering
 		// Initialize proxy model
 		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj.bin", 0.1f, true);
 		mPointLightProxy->Initialize();
+		mDirectionalLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\DirectionalLightProxy.obj.bin", 0.3f);
+		mDirectionalLightProxy->Initialize();
+		mDirectionalLightProxy->SetPosition(vec3(0.0f, 5.0f, 0.0f));
+		mDirectionalLightProxy->ApplyRotation(rotate(mat4(1), radians(90.0f), Vector3Helper::Up));
 		glDisable(GL_BLEND);
 	}
 
@@ -122,6 +136,9 @@ namespace Rendering
 		mWorldMatrix = rotate(mWorldMatrix, gameTime.ElapsedGameTimeSeconds().count() / 2.0f, Vector3Helper::Up);
 		UpdateSpecularPower(gameTime);
 		UpdateAmbientIntensity(gameTime);
+		UpdateDirectionalLight(gameTime);
+
+		mDirectionalLightProxy->Update(gameTime);
 	}
 
 	void DeferredRenderingDemo::Draw(const Library::GameTime& gameTime)
@@ -158,21 +175,11 @@ namespace Rendering
 
 		glDepthMask(GL_FALSE);
 
-		// lighting pass
+		// Directional light pass
 		// --------------------------------------------------------------------
-		// Configurations
-		glEnable(GL_BLEND);
-		glBlendEquation(GL_FUNC_ADD);
-		glBlendFunc(GL_ONE, GL_ONE);
+		mDirectionalLightPassProgram.Use();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glFrontFace(GL_CW);
-
-		mPointLightPassProgram.Use();
-		// Bind all the textures from the gBuffer
-		glBindVertexArray(mSphereVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, mSphereVBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mSphereIBO);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mPositionTexture);
 		glActiveTexture(GL_TEXTURE1);
@@ -180,10 +187,40 @@ namespace Rendering
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, mNormalTexture);
 
+		mDirectionalLightPassProgram.CameraPosition() << mCamera->Position();
+		mDirectionalLightPassProgram.AmbientIntensity() << mAmbientIntensity;
+		mDirectionalLightPassProgram.SpecularPower() << mSpecularPower;
+		mDirectionalLightPassProgram.DirectionalLightColor() << mDirectionalLight->Color() * mDirectionalLightIntensity;
+		mDirectionalLightPassProgram.DirectionalLightDirection() << -mDirectionalLight->Direction();
+
+		RenderQuad();
+
+		// Point light pass
+		// --------------------------------------------------------------------
+		// Configurations
+		glEnable(GL_BLEND);
+		glBlendEquation(GL_FUNC_ADD);
+		glBlendFunc(GL_ONE, GL_ONE);
+		glFrontFace(GL_CW);
+
+		mPointLightPassProgram.Use();
+		// Bind all the textures from the gBuffer
+		glBindVertexArray(mSphereVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mSphereVBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mSphereIBO);
+		if (mShowSphere)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			mPointLightPassProgram.AmbientIntensity() << 0.1f;
+		}
+		else
+		{
+			mPointLightPassProgram.AmbientIntensity() << 0.0f;
+		}
+
 		// Sending uniforms
 		mPointLightPassProgram.CameraPosition() << mCamera->Position();
 		mPointLightPassProgram.SpecularPower() << mSpecularPower;
-		mPointLightPassProgram.AmbientIntensity() << mAmbientIntensity;
 		mPointLightPassProgram.ScreenSize() << vec2(mGame->ScreenWidth(), mGame->ScreenHeight());
 		for (auto& light : mPointLights)
 		{
@@ -199,10 +236,12 @@ namespace Rendering
 			// Render sphere
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mSphereIndexCount), GL_UNSIGNED_INT, 0);
 		}
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		glFrontFace(GL_CCW);
 
 		// Render Proxy models
 		// --------------------------------------------------------------------
+		glDepthMask(GL_TRUE);
 		glDisable(GL_BLEND);
 
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, mGBuffer);
@@ -217,6 +256,7 @@ namespace Rendering
 			mPointLightProxy->Update(gameTime);
 			mPointLightProxy->Draw(gameTime);
 		}
+		mDirectionalLightProxy->Draw(gameTime);
 		// Render debug quads
 		// --------------------------------------------------------------------
 		mDebugShaderProgram.Use();
@@ -280,28 +320,33 @@ namespace Rendering
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
+	void DeferredRenderingDemo::InitializeQuad()
+	{
+		float quadVertices[] = {
+			// positions        // texture coordinates
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		};
+		// setup plane VAO
+		glGenVertexArrays(1, &mQuadVAO);
+		glGenBuffers(1, &mQuadVBO);
+		glBindVertexArray(mQuadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+		glEnableVertexAttribArray(1);
+
+		mDirectionalLightPassProgram.Initialize(mQuadVAO);
+		glBindVertexArray(0);
+	}
+
 	void DeferredRenderingDemo::RenderQuad()
 	{
-		if (mQuadVAO == 0)
-		{
-			float quadVertices[] = {
-				// positions        // texture coordinates
-				-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-				-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-				 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-				 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-			};
-			// setup plane VAO
-			glGenVertexArrays(1, &mQuadVAO);
-			glGenBuffers(1, &mQuadVBO);
-			glBindVertexArray(mQuadVAO);
-			glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-			glEnableVertexAttribArray(1);
-			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		}
 		glBindVertexArray(mQuadVAO);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glBindVertexArray(0);
@@ -363,6 +408,51 @@ namespace Rendering
 		{
 			mAmbientIntensity -= gameTime.ElapsedGameTimeSeconds().count();
 		}
+	}
+
+	void DeferredRenderingDemo::UpdateDirectionalLight(const Library::GameTime& gameTime)
+	{
+		float elapsedTime = gameTime.ElapsedGameTimeSeconds().count();
+		// Rotate directional light
+		vec2 rotationAmount = Vector2Helper::Zero;
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_LEFT))
+		{
+			rotationAmount.x += sLightRotationRate.x * elapsedTime;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_RIGHT))
+		{
+			rotationAmount.x -= sLightRotationRate.x * elapsedTime;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_UP))
+		{
+			rotationAmount.y += sLightRotationRate.y * elapsedTime;
+		}
+		if (glfwGetKey(mGame->Window(), GLFW_KEY_DOWN))
+		{
+			rotationAmount.y -= sLightRotationRate.y * elapsedTime;
+		}
+
+		mat4 lightRotationMatrix(1);
+		if (rotationAmount.x != 0)
+		{
+			lightRotationMatrix = rotate(mat4(1), rotationAmount.x, Vector3Helper::Up);
+		}
+
+		if (rotationAmount.y != 0)
+		{
+			lightRotationMatrix = rotate(lightRotationMatrix, rotationAmount.y, mDirectionalLight->Right());
+		}
+
+		if (rotationAmount.x != 0.0f || rotationAmount.y != 0.0f)
+		{
+			mDirectionalLight->ApplyRotation(lightRotationMatrix);
+			mDirectionalLightProxy->ApplyRotation(lightRotationMatrix);
+		}
+	}
+
+	void DeferredRenderingDemo::ToggleShowSphere()
+	{
+		mShowSphere = !mShowSphere;
 	}
 
 	void DeferredRenderingDemo::RandomizePointLights()

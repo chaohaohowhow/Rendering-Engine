@@ -10,6 +10,9 @@
     <ClCompile Include="PointLightPass.cpp">
       <Filter>ShaderPrograms</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLightPass.cpp">
+      <Filter>ShaderPrograms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderingGame.h" />
@@ -20,14 +23,11 @@
     <ClInclude Include="PointLightPass.h">
       <Filter>ShaderPrograms</Filter>
     </ClInclude>
+    <ClInclude Include="DirectionalLightPass.h">
+      <Filter>ShaderPrograms</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Shaders\DeferredRendering.vert">
-      <Filter>Content\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\DeferredRendering.frag">
-      <Filter>Content\Shaders</Filter>
-    </None>
     <None Include="Content\Shaders\GBuffer.frag">
       <Filter>Content\Shaders</Filter>
     </None>
@@ -38,6 +38,18 @@
       <Filter>Content\Shaders</Filter>
     </None>
     <None Include="Content\Shaders\DebugShader.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\PointLightPass.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\DirectionalLightPass.frag">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\PointLightPass.vert">
+      <Filter>Content\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\DirectionalLightPass.vert">
       <Filter>Content\Shaders</Filter>
     </None>
   </ItemGroup>

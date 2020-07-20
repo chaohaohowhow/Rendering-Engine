@@ -9,7 +9,7 @@ uniform vec3 PointLightPosition;
 uniform vec4 PointLightColor;
 uniform float PointLightRadius;
 uniform vec3 CameraPosition;
-uniform float SpecularPower = 16.0f;
+uniform float SpecularPower = 32.0f;
 uniform float AmbientIntensity = 0.1f;
 uniform vec2 ScreenSize = vec2(800, 600);
 
@@ -42,7 +42,7 @@ void main()
 
     float spec = pow(max(n_dot_h, 0.0f), SpecularPower);
     vec3 specular = PointLightColor.rgb * spec * Specular;
-
     lighting += (diffuse + specular) * attenuation;
+
     Color = vec4(lighting, 1.0);
 }

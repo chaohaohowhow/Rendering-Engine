@@ -3,11 +3,13 @@
 #include "DrawableGameComponent.h"
 #include "GBufferPass.h"
 #include "PointLightPass.h"
+#include "DirectionalLightPass.h"
 
 namespace Library
 {
 	class Plane;
 	class PointLight;
+	class DirectionalLight;
 	class ProxyModel;
 }
 
@@ -29,9 +31,11 @@ namespace Rendering
 		virtual void Update(const Library::GameTime& gameTime) override;
 		virtual void Draw(const Library::GameTime& gameTime) override;
 		void RandomizePointLights();
+		void ToggleShowSphere();
 
 		float* GetAmbientIntensityAddress();
 		float* GetSpecularPowerAddress();
+		float mDirectionalLightIntensity = 0.5f;
 	private:
 		static const size_t PointLightCount = 32;
 		glm::mat4 mWorldMatrix{ 1 };
@@ -62,19 +66,25 @@ namespace Rendering
 
 		std::unique_ptr<Library::Plane> mPlane;
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
+		std::unique_ptr<Library::DirectionalLight> mDirectionalLight;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
+		std::unique_ptr<Library::ProxyModel> mDirectionalLightProxy;
 		float mSpecularPower = 16.0f;
 		float mAmbientIntensity = 0.1f;
+		bool mShowSphere = true;
 
 		GBufferPass mGBufferPassProgram;
 		PointLightPass mPointLightPassProgram;
+		DirectionalLightPass mDirectionalLightPassProgram;
 		Library::ShaderProgram mDebugShaderProgram;
 
 		void CreateFrameBuffer();
+		void InitializeQuad();
 		void RenderQuad();
 		void RenderDebug(size_t index);
 		void UpdateSpecularPower(const Library::GameTime& gameTime);
 		void UpdateAmbientIntensity(const Library::GameTime& gameTime);
+		void UpdateDirectionalLight(const Library::GameTime& gameTime);
 
 		enum class VertexAttribute
 		{
@@ -82,6 +92,8 @@ namespace Rendering
 			TextureCoordinate = 1,
 			Normal = 2
 		};
+
+		inline static const glm::vec2 sLightRotationRate{ glm::two_pi<float>(), glm::two_pi<float>() };
 	};
 }
 

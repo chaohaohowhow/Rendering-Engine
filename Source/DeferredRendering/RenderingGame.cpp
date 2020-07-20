@@ -46,8 +46,8 @@ namespace Rendering
 		mDemo = make_shared<DeferredRenderingDemo>(*this, camera);
 		mComponents.push_back(mDemo);
 
-		//auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
-		//mComponents.push_back(skybox);
+		auto skybox = make_shared<Skybox>(*this, camera, "Content/Textures/Skybox/posx.jpg", "Content/Textures/Skybox/negx.jpg", "Content/Textures/Skybox/posy.jpg", "Content/Textures/Skybox/negy.jpg", "Content/Textures/Skybox/posz.jpg", "Content/Textures/Skybox/negz.jpg", 100.0f);
+		mComponents.push_back(skybox);
 
 		auto imGui = make_shared<ImGuiComponent>(*this);
 		mComponents.push_back(imGui);
@@ -63,9 +63,16 @@ namespace Rendering
 				{
 					ImGui::PushItemWidth(250);
 					ImGui::SliderFloat("Ambient Intensity", mDemo->GetAmbientIntensityAddress(), 0.0f, 1.0f);
+					ImGui::SliderFloat("Directional Light Intensity", &mDemo->mDirectionalLightIntensity, 0.0f, 1.0f);
 					ImGui::SliderFloat("Specular Power", mDemo->GetSpecularPowerAddress(), 4.0f, 256.0f);
+
 					if (ImGui::Button("Randomize light"))
 						mDemo->RandomizePointLights();
+					ImGui::SameLine();
+					if (ImGui::Button("Toggle sphere"))
+						mDemo->ToggleShowSphere();
+
+					ImGui::Text("Use arrow keys to control directional light");
 				}
 				
 				ImGui::End();
