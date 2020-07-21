@@ -149,7 +149,7 @@
     <ClCompile Include="DeferredRenderingDemo.cpp" />
     <ClCompile Include="DirectionalLightPass.cpp" />
     <None Include="Content\Shaders\DirectionalLightPass.frag">
-      <FileType>Discomap</FileType>
+      <FileType>Document</FileType>
     </None>
     <ClCompile Include="GBufferPass.cpp" />
     <ClCompile Include="PointLightPass.cpp" />
