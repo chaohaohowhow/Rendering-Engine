@@ -24,7 +24,6 @@ namespace Rendering
 		enum class VertexAttribute
 		{
 			Position = 0,
-			TextureCoordinate = 1
 		};
 	};
 }

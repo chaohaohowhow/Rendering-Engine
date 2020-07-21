@@ -128,7 +128,6 @@ namespace Rendering
 		mDirectionalLightProxy->Initialize();
 		mDirectionalLightProxy->SetPosition(vec3(0.0f, 5.0f, 0.0f));
 		mDirectionalLightProxy->ApplyRotation(rotate(mat4(1), radians(90.0f), Vector3Helper::Up));
-		glDisable(GL_BLEND);
 	}
 
 	void DeferredRenderingDemo::Update(const Library::GameTime& gameTime)
@@ -201,10 +200,8 @@ namespace Rendering
 		glEnable(GL_BLEND);
 		glBlendEquation(GL_FUNC_ADD);
 		glBlendFunc(GL_ONE, GL_ONE);
-		glFrontFace(GL_CW);
 
 		mPointLightPassProgram.Use();
-		// Bind all the textures from the gBuffer
 		glBindVertexArray(mSphereVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, mSphereVBO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mSphereIBO);
@@ -237,7 +234,6 @@ namespace Rendering
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mSphereIndexCount), GL_UNSIGNED_INT, 0);
 		}
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glFrontFace(GL_CCW);
 
 		// Render Proxy models
 		// --------------------------------------------------------------------
@@ -323,11 +319,11 @@ namespace Rendering
 	void DeferredRenderingDemo::InitializeQuad()
 	{
 		float quadVertices[] = {
-			// positions        // texture coordinates
-			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
-			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-			 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+			// positions			  // texture coordinates
+			-1.0f,  1.0f, 0.0f, 1.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+			 1.0f,  1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+			 1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
 		};
 		// setup plane VAO
 		glGenVertexArrays(1, &mQuadVAO);
@@ -335,11 +331,6 @@ namespace Rendering
 		glBindVertexArray(mQuadVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
-
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(1);
 
 		mDirectionalLightPassProgram.Initialize(mQuadVAO);
 		glBindVertexArray(0);

@@ -71,7 +71,7 @@ namespace Rendering
 		std::unique_ptr<Library::ProxyModel> mDirectionalLightProxy;
 		float mSpecularPower = 16.0f;
 		float mAmbientIntensity = 0.1f;
-		bool mShowSphere = true;
+		bool mShowSphere = false;
 
 		GBufferPass mGBufferPassProgram;
 		PointLightPass mPointLightPassProgram;

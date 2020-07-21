@@ -34,10 +34,10 @@ namespace Rendering
 		SHADER_VARIABLE_INSTANTIATE(AmbientIntensity);
 		SHADER_VARIABLE_INSTANTIATE(SpecularPower);
 
-		//glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, Position));
-		//glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, Position));
+		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::Position));
 
-		//glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, TextureCoordinates));
-		//glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
+		glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::TextureCoordinate), 2, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTexture), (void*)offsetof(VertexPositionTexture, TextureCoordinates));
+		glEnableVertexAttribArray(static_cast<GLuint>(VertexAttribute::TextureCoordinate));
 	}
 }
