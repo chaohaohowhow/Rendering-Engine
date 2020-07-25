@@ -10,7 +10,7 @@ uniform vec4 PointLightColor;
 uniform float PointLightRadius;
 uniform vec3 CameraPosition;
 uniform float SpecularPower = 32.0f;
-uniform float AmbientIntensity = 0.1f;
+uniform float AmbientIntensity = 0.1f; // For showing sphere visualization
 uniform vec2 ScreenSize = vec2(800, 600);
 
 void main()

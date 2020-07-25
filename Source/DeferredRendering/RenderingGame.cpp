@@ -61,7 +61,7 @@ namespace Rendering
 				ImGui::Separator();
 				if (ImGui::CollapsingHeader("Controls"))
 				{
-					ImGui::PushItemWidth(250);
+					ImGui::PushItemWidth(200);
 					ImGui::SliderFloat("Ambient Intensity", mDemo->GetAmbientIntensityAddress(), 0.0f, 1.0f);
 					ImGui::SliderFloat("Directional Light Intensity", &mDemo->mDirectionalLightIntensity, 0.0f, 1.0f);
 					ImGui::SliderFloat("Specular Power", mDemo->GetSpecularPowerAddress(), 4.0f, 256.0f);

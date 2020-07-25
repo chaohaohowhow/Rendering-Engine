@@ -222,9 +222,8 @@ namespace Rendering
 		for (auto& light : mPointLights)
 		{
 			mat4 world(1);
-			float radius = light->Radius();
 			world = translate(world, light->Position());
-			world = scale(world, vec3(radius, radius, radius));
+			world = scale(world, vec3(light->Radius()));
 			mPointLightPassProgram.WVP() << mCamera->ViewProjectionMatrix() * world;
 			mPointLightPassProgram.PointLightPosition() << light->Position();
 			mPointLightPassProgram.PointLightColor() << light->Color();
@@ -357,7 +356,7 @@ namespace Rendering
 				-1.0f + offsetAmount, 1.0f - offsetAmount, 0.0f, 1.0f, 0.0f,
 			};
 			// setup plane VAO
-			glGenVertexArrays(1, &mDebugVAO);
+			glGenVertexArrays(1, &mDebugVAO); 
 			glGenBuffers(1, &mDebugVBO);
 			glBindVertexArray(mDebugVAO);
 			glBindBuffer(GL_ARRAY_BUFFER, mDebugVBO);
