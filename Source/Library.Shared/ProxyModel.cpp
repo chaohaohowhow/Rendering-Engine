@@ -12,9 +12,9 @@ namespace Library
 {
 	RTTI_DEFINITIONS(ProxyModel);
 
-	ProxyModel::ProxyModel(Game& game, shared_ptr<Camera> camera, const string& modelFileName, float scale, bool allowUniformColor) :
+	ProxyModel::ProxyModel(Game& game, shared_ptr<Camera> camera, const string& modelFileName, float scale, bool allowUniformColor, GLenum frontFace) :
 		DrawableGameComponent(game, move(camera)), mAllowUniformColor(allowUniformColor),
-		mModelFileName(modelFileName)
+		mModelFileName(modelFileName), mFrontFace(frontFace)
 	{
 		mScaleMatrix = glm::scale(mat4(1), vec3(scale));
 	}
@@ -128,7 +128,7 @@ namespace Library
 			glUniform4fv(glGetUniformLocation(mShaderProgram.Program(), "Color"), 1, value_ptr(mColor));
 
 		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
+		glFrontFace(mFrontFace);
 
 		if (mDisplayWireframe)
 		{
@@ -142,5 +142,6 @@ namespace Library
 		}
 
 		glBindVertexArray(0);
+		glFrontFace(GL_CCW);
 	}
 }

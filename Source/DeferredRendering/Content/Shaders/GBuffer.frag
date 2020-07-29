@@ -12,9 +12,19 @@ in VS_OUTPUT
     vec3 Normal;
 } IN;
 
+uniform int UseTexture;
+uniform vec3 DiffuseColor;
+
 void main()
 {
     Position = IN.Position;
     Normal = normalize(IN.Normal);
-    AlbedoSpec = texture(ColorTextureSampler, IN.TextureCoordinate);
+    if(UseTexture != 0)
+    {
+        AlbedoSpec = texture(ColorTextureSampler, IN.TextureCoordinate);
+    }
+    else
+    {
+        AlbedoSpec = vec4(DiffuseColor, 1.0f);
+    }
 }

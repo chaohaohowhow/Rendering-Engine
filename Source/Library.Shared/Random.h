@@ -14,6 +14,7 @@ namespace Library
 		static float RandomFloat();
 		static float RandomFloat(float max);
 		static float RandomFloat(float min, float max);
+		static float RandomFloat(glm::vec2 range);
 	private:
 		static void Seed();
 		static bool mIsSeeded;

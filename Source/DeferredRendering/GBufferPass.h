@@ -9,10 +9,13 @@ namespace Rendering
 		SHADER_VARIABLE_DECLARATION(Projection);
 		SHADER_VARIABLE_DECLARATION(View);
 		SHADER_VARIABLE_DECLARATION(World);
+		SHADER_VARIABLE_DECLARATION(UseTexture);
+		SHADER_VARIABLE_DECLARATION(DiffuseColor);
 
 	public:
 		GBufferPass();
 		virtual void Initialize(GLuint vertexArrayObject) override;
+		void InitializeUniform();
 
 	private:
 		enum class VertexAttribute

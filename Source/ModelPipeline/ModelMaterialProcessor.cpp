@@ -5,6 +5,7 @@
 
 using namespace std;
 using namespace Library;
+using namespace glm;
 
 namespace ModelPipeline
 {
@@ -25,10 +26,22 @@ namespace ModelPipeline
 	{
 		ModelMaterialData modelMaterialData;
 
+		// Loading name
 		aiString name;
 		material.Get(AI_MATKEY_NAME, name);
 		modelMaterialData.Name = name.C_Str();
 
+		// Loading material colors
+		aiColor3D color;
+		material.Get(AI_MATKEY_COLOR_AMBIENT, color);
+		modelMaterialData.AmbientColor = vec3(color.r, color.g, color.b);
+		material.Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		modelMaterialData.DiffuseColor = vec3(color.r, color.g, color.b);
+		material.Get(AI_MATKEY_COLOR_SPECULAR, color);
+		modelMaterialData.SpecularColor = vec3(color.r, color.g, color.b);
+
+
+		// Loading textures
 		for (TextureType textureType = (TextureType)0; textureType < TextureType::End; textureType = (TextureType)(static_cast<int>(textureType) + 1))
 		{
 			aiTextureType mappedTextureType = static_cast<aiTextureType>(sTextureTypeMappings.at(textureType));

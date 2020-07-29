@@ -6,6 +6,7 @@
 
 using namespace std;
 using namespace gsl;
+using namespace glm;
 
 namespace Library
 {
@@ -32,12 +33,17 @@ namespace Library
 		Load(streamHelper);
 	}
 	ModelMaterial::ModelMaterial(Model& model, ModelMaterialData&& modelMaterialData) :
-		mModel(&model), mName(move(modelMaterialData.Name)), mTextures(move(modelMaterialData.Textures))
+		mModel(&model), mName(move(modelMaterialData.Name)), mTextures(move(modelMaterialData.Textures)), 
+		mAmbientColor(move(modelMaterialData.AmbientColor)), mDiffuseColor(move(modelMaterialData.DiffuseColor)),
+		mSpecularColor(move(modelMaterialData.SpecularColor))
 	{
 	}
 	void ModelMaterial::Save(OutputStreamHelper& streamHelper) const
 	{
 		streamHelper << mName;
+		streamHelper << mAmbientColor;
+		streamHelper << mDiffuseColor;
+		streamHelper << mSpecularColor;
 
 		streamHelper << narrow_cast<uint32_t>(mTextures.size());
 		for (const auto& texturePair : mTextures)
@@ -53,9 +59,13 @@ namespace Library
 	void ModelMaterial::Load(InputStreamHelper& streamHelper)
 	{
 		streamHelper >> mName;
+		streamHelper >> mAmbientColor;
+		streamHelper >> mDiffuseColor;
+		streamHelper >> mSpecularColor;
 
 		uint32_t texturesCount;
 		streamHelper >> texturesCount;
+		
 		for (uint32_t i = 0; i < texturesCount; i++)
 		{
 			int32_t textureType;
@@ -81,6 +91,14 @@ namespace Library
 		aiString name;
 		material.Get(AI_MATKEY_NAME, name);
 		mName = name.C_Str();
+
+		aiColor3D color;
+		material.Get(AI_MATKEY_COLOR_AMBIENT, color);
+		mAmbientColor = vec3(color.r, color.g, color.b);
+		material.Get(AI_MATKEY_COLOR_DIFFUSE, color);
+		mDiffuseColor = vec3(color.r, color.g, color.b);
+		material.Get(AI_MATKEY_COLOR_SPECULAR, color);
+		mSpecularColor = vec3(color.r, color.g, color.b);
 
 		for (TextureType textureType : Enum<TextureType>())
 		{

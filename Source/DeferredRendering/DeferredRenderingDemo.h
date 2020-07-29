@@ -35,28 +35,39 @@ namespace Rendering
 
 		float* GetAmbientIntensityAddress();
 		float* GetSpecularPowerAddress();
-		float mDirectionalLightIntensity = 0.5f;
+		float mDirectionalLightIntensity = 0.2f;
+
+		inline size_t GetPointLightCount() const { return mPointLightCount; }
+		void SetPointLightCount(size_t count);
+
+		inline GLuint GetPositionTexture() const { return mPositionTexture; }
+		inline GLuint GetAlbedoSpecTexture() const { return mAlbedoSpecTexture; }
+		inline GLuint GetNormalTexture() const { return mNormalTexture; }
 	private:
-		static const size_t PointLightCount = 32;
+		struct RenderData 
+		{
+			GLuint VAO = 0;
+			GLuint VBO = 0;
+			GLuint IBO = 0;
+			GLuint IndexCount = 0;
+			glm::vec3 DiffuseColor { 0 };
+			GLuint Texture = 0;
+		};
+		GLuint mSampler = 0;
+		size_t mPointLightCount = 32;
 		glm::mat4 mWorldMatrix{ 1 };
 
 		// For shader program
-		GLuint mVAO = 0;
-		GLuint mVBO = 0;
-		GLuint mIBO = 0;
-		size_t mIndexCount = 0;
+		std::vector<RenderData> mRenderData;
+		std::map<std::string, GLuint> mFileNameToTextureId;
 		GLuint mGBuffer = 0;
-		GLuint mColorTexture = 0;
-
 		GLuint mPositionTexture = 0;
 		GLuint mNormalTexture = 0;
 		GLuint mAlbedoSpecTexture = 0;
-
 		GLuint mQuadVAO = 0;
 		GLuint mQuadVBO = 0;
 		GLuint mDebugVAO = 0;
 		GLuint mDebugVBO = 0;
-
 		GLuint mSphereVAO = 0;
 		GLuint mSphereVBO = 0;
 		GLuint mSphereIBO = 0;
@@ -64,7 +75,7 @@ namespace Rendering
 
 		GLint mDebugTranslateLocation = -1;
 
-		std::unique_ptr<Library::Plane> mPlane;
+		//std::unique_ptr<Library::Plane> mPlane;
 		std::vector<std::unique_ptr<Library::PointLight>> mPointLights;
 		std::unique_ptr<Library::DirectionalLight> mDirectionalLight;
 		std::unique_ptr<Library::ProxyModel> mPointLightProxy;
@@ -94,6 +105,10 @@ namespace Rendering
 		};
 
 		inline static const glm::vec2 sLightRotationRate{ glm::two_pi<float>(), glm::two_pi<float>() };
+		inline static const glm::vec2 sLightPositionRangeX{ -6.0f, 5.0f };
+		inline static const glm::vec2 sLightPositionRangeY{ 0.0f, 7.0f };
+		inline static const glm::vec2 sLightPositionRangeZ{ -4.0f, 5.0f };
+
 	};
 }
 

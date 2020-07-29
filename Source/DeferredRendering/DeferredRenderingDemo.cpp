@@ -4,6 +4,8 @@
 
 #include "Game.h"
 #include "Model.h"
+#include "Mesh.h"
+#include "ModelMaterial.h"
 #include "VertexDeclarations.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
@@ -30,11 +32,14 @@ namespace Rendering
 
 	DeferredRenderingDemo::~DeferredRenderingDemo()
 	{
-		glDeleteBuffers(1, &mVBO);
-		glDeleteBuffers(1, &mIBO);
-		glDeleteVertexArrays(1, &mVAO);
+		for (auto& data : mRenderData)
+		{
+			glDeleteVertexArrays(1, &data.VAO);
+			glDeleteBuffers(1, &data.VBO);
+			glDeleteBuffers(1, &data.IBO);
+			glDeleteTextures(1, &data.Texture);
+		}
 		glDeleteFramebuffers(1, &mGBuffer);
-		glDeleteTextures(1, &mColorTexture);
 		glDeleteTextures(1, &mPositionTexture);
 		glDeleteTextures(1, &mNormalTexture);
 		glDeleteTextures(1, &mAlbedoSpecTexture);
@@ -49,7 +54,7 @@ namespace Rendering
 		mGBufferPassProgram.BuildProgram(shaders);
 		
 		shaders.clear();
-		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\LightPass.vert"));
+		shaders.push_back(ShaderDefinition(GL_VERTEX_SHADER, "Content\\Shaders\\PointLightPass.vert"));
 		shaders.push_back(ShaderDefinition(GL_FRAGMENT_SHADER, "Content\\Shaders\\PointLightPass.frag"));
 		mPointLightPassProgram.BuildProgram(shaders);
 
@@ -68,23 +73,50 @@ namespace Rendering
 
 		InitializeQuad();
 
-		// Load fountain model, VBO, and IBO
-		Model model("Content\\Models\\fountain2.obj.bin");
-		auto& mesh = model.Meshes().at(0);
-		VertexPositionTextureNormal::CreateVertexBuffer(*mesh, mVBO);
-		mesh->CreateIndexBuffer(mIBO);
-		mIndexCount = mesh->Indices().size();
-
-		// Loading fountain texture
-		mColorTexture = SOIL_load_OGL_texture("Content\\Textures\\fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		if (mColorTexture == 0)
+		Model model("Content\\Models\\breakfast_room.obj.bin");
+		mRenderData.reserve(model.Meshes().size());
+		for (auto& mesh : model.Meshes())
 		{
-			throw runtime_error("SOIL_load_OGL_texture() failed!");
+			RenderData data;
+			glGenVertexArrays(1, &data.VAO);
+			glBindVertexArray(data.VAO);
+			VertexPositionTextureNormal::CreateVertexBuffer(*mesh, data.VBO);
+			mesh->CreateIndexBuffer(data.IBO);
+			mGBufferPassProgram.Initialize(data.VAO);
+			data.IndexCount = mesh->Indices().size();
+			data.DiffuseColor = mesh->GetMaterial()->DiffuseColor();
+			auto& textures = mesh->GetMaterial()->Textures();
+
+			if (textures.contains(TextureType::Diffuse))
+			{
+				string fileName = textures.at(TextureType::Diffuse)[0];
+				if (!mFileNameToTextureId.contains(fileName))
+				{
+					GLuint newTexture = SOIL_load_OGL_texture(("Content\\Textures\\" + fileName).c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+					if (newTexture == 0)
+					{
+						throw runtime_error("SOIL_load_OGL_texture() failed!");
+					}
+					mFileNameToTextureId.emplace(fileName, newTexture);
+					data.Texture = newTexture;
+				}
+				else
+				{
+					data.Texture = mFileNameToTextureId.at(fileName);
+				}
+			}
+			mRenderData.emplace_back(data);
+
+			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindVertexArray(0);
+
+			glGenSamplers(1, &mSampler);
+			glSamplerParameteri(mSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glSamplerParameteri(mSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		}
 		
-		glGenVertexArrays(1, &mVAO);
-		mGBufferPassProgram.Initialize(mVAO);
-		glBindVertexArray(0);
+		mGBufferPassProgram.InitializeUniform();
 
 		// Load sphere model
 		Model sphere("Content\\Models\\UnitSphere.obj.bin");
@@ -102,29 +134,23 @@ namespace Rendering
 		{
 			throw runtime_error("glGetUniformLocation() failed!");
 		}
-
-		mWorldMatrix = scale(mWorldMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
 		// Initialize lights
-		for (size_t i = 0; i < PointLightCount; ++i)
+		mPointLights.reserve(mPointLightCount);
+		for (size_t i = 0; i < mPointLightCount; ++i)
 		{
 			mPointLights.emplace_back(make_unique<PointLight>(*mGame));
 			auto& light = mPointLights.back();
 			light->SetColor(ColorHelper::RandomColor());
-			light->SetPosition(Random::RandomFloat(-10.0f, 10.0f), 0.5f, Random::RandomFloat(-10.0f, 10.0f));
+			light->SetPosition(Random::RandomFloat(sLightPositionRangeX), Random::RandomFloat(sLightPositionRangeY), Random::RandomFloat(sLightPositionRangeZ));
 			light->SetRadius(2.0f);
 		}
 
 		mDirectionalLight = make_unique<DirectionalLight>(*mGame);
 
-		// Initialize plane
-		mPlane = make_unique<Plane>(*mGame, mCamera);
-		mPlane->Initialize();
-		mPlane->SetWorldMatrix(scale(mPlane->WorldMatrix(), vec3(10.0f, 1.0f, 10.0f)));
-
 		// Initialize proxy model
 		mPointLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\PointLightProxy.obj.bin", 0.1f, true);
 		mPointLightProxy->Initialize();
-		mDirectionalLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\DirectionalLightProxy.obj.bin", 0.3f);
+		mDirectionalLightProxy = make_unique<ProxyModel>(*mGame, mCamera, "Content\\Models\\DirectionalLightProxy.obj.bin", 0.3f, false, GL_CW);
 		mDirectionalLightProxy->Initialize();
 		mDirectionalLightProxy->SetPosition(vec3(0.0f, 5.0f, 0.0f));
 		mDirectionalLightProxy->ApplyRotation(rotate(mat4(1), radians(90.0f), Vector3Helper::Up));
@@ -132,7 +158,6 @@ namespace Rendering
 
 	void DeferredRenderingDemo::Update(const Library::GameTime& gameTime)
 	{
-		mWorldMatrix = rotate(mWorldMatrix, gameTime.ElapsedGameTimeSeconds().count() / 2.0f, Vector3Helper::Up);
 		UpdateSpecularPower(gameTime);
 		UpdateAmbientIntensity(gameTime);
 		UpdateDirectionalLight(gameTime);
@@ -147,9 +172,6 @@ namespace Rendering
 
 		glBindFramebuffer(GL_FRAMEBUFFER, mGBuffer);
 
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CW);
-
 		glDepthMask(GL_TRUE);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glDisable(GL_BLEND);
@@ -160,17 +182,25 @@ namespace Rendering
 		mGBufferPassProgram.View() << mCamera->ViewMatrix();
 		mGBufferPassProgram.World() << mWorldMatrix;
 
-		glBindVertexArray(mVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIBO);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mColorTexture);
-		glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(mIndexCount), GL_UNSIGNED_INT, 0);
-
-		glUniformMatrix4fv(glGetUniformLocation(mGBufferPassProgram.Program(), "World"), 1, GL_FALSE, value_ptr(mPlane->WorldMatrix()));
-
-		glFrontFace(GL_CCW);
-		mPlane->Draw(gameTime);
+		for (auto& data : mRenderData)
+		{
+			glBindVertexArray(data.VAO);
+			glBindBuffer(GL_ARRAY_BUFFER, data.VBO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, data.IBO);
+			mGBufferPassProgram.UseTexture() << static_cast<int>(data.Texture != 0);
+			if (data.Texture == 0)
+			{
+				mGBufferPassProgram.DiffuseColor() << data.DiffuseColor;
+			}
+			else
+			{
+				glBindTexture(GL_TEXTURE_2D, data.Texture);
+				glBindSampler(0, mSampler);
+			}
+			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(data.IndexCount), GL_UNSIGNED_INT, 0);
+		}
+		glBindSampler(0, 0);
 
 		glDepthMask(GL_FALSE);
 
@@ -197,6 +227,7 @@ namespace Rendering
 		// Point light pass
 		// --------------------------------------------------------------------
 		// Configurations
+		glEnable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendEquation(GL_FUNC_ADD);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -219,8 +250,9 @@ namespace Rendering
 		mPointLightPassProgram.CameraPosition() << mCamera->Position();
 		mPointLightPassProgram.SpecularPower() << mSpecularPower;
 		mPointLightPassProgram.ScreenSize() << vec2(mGame->ScreenWidth(), mGame->ScreenHeight());
-		for (auto& light : mPointLights)
+		for (size_t i = 0; i < mPointLightCount; ++i)
 		{
+			auto& light = mPointLights[i];
 			mat4 world(1);
 			world = translate(world, light->Position());
 			world = scale(world, vec3(light->Radius()));
@@ -244,7 +276,7 @@ namespace Rendering
 		glBlitFramebuffer(0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), 0, 0, mGame->ScreenWidth(), mGame->ScreenHeight(), GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		for (size_t i = 0; i < mPointLights.size(); ++i)
+		for (size_t i = 0; i < mPointLightCount; ++i)
 		{
 			mPointLightProxy->SetPosition(mPointLights[i]->Position());
 			mPointLightProxy->SetColor(mPointLights[i]->Color());
@@ -447,11 +479,11 @@ namespace Rendering
 
 	void DeferredRenderingDemo::RandomizePointLights()
 	{
-		for (size_t i = 0; i < mPointLights.size(); ++i)
+		for (size_t i = 0; i < mPointLightCount; ++i)
 		{
 			auto& light = mPointLights.at(i);
 			light->SetColor(ColorHelper::RandomColor());
-			light->SetPosition(Random::RandomFloat(-10.0f, 10.0f), 0.5f, Random::RandomFloat(-10.0f, 10.0f));
+			light->SetPosition(Random::RandomFloat(sLightPositionRangeX), Random::RandomFloat(sLightPositionRangeY), Random::RandomFloat(sLightPositionRangeZ));
 		}
 	}
 
@@ -463,6 +495,24 @@ namespace Rendering
 	float* DeferredRenderingDemo::GetSpecularPowerAddress()
 	{
 		return &mSpecularPower;
+	}
+
+	void DeferredRenderingDemo::SetPointLightCount(size_t count)
+	{
+		mPointLightCount = count;
+		if (mPointLightCount > mPointLights.size())
+		{
+			mPointLights.reserve(mPointLightCount);
+			for (size_t i = mPointLights.size(); i < mPointLightCount; ++i)
+			{
+				mPointLights.emplace_back(make_unique<PointLight>(*mGame));
+				auto& light = mPointLights.back();
+				light->SetColor(ColorHelper::RandomColor());
+				light->SetPosition(Random::RandomFloat(sLightPositionRangeX), Random::RandomFloat(sLightPositionRangeY), Random::RandomFloat(sLightPositionRangeZ));
+				light->SetRadius(2.0f);
+			}
+		}
+		RandomizePointLights();
 	}
 
 }

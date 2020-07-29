@@ -22,6 +22,12 @@ namespace Rendering
 
 	private:
 		std::shared_ptr<DeferredRenderingDemo> mDemo = nullptr;
+		
+		void CalculateFrameRate(const GameTime& gameTime);
+		
+		int mFrameRate = 0;
+		int mFrameCount = 0;
+		std::chrono::milliseconds mLastTotalTime;
 	};
 }
 

@@ -74,6 +74,28 @@ OutputStreamHelper& OutputStreamHelper::operator<<(const mat4& value)
 	return *this;
 }
 
+OutputStreamHelper& Library::OutputStreamHelper::operator<<(const glm::mat3& value)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			*this << value[i][j];
+		}
+	}
+
+	return *this;
+}
+
+OutputStreamHelper& Library::OutputStreamHelper::operator<<(const glm::vec3& value)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		*this << value[i];
+	}
+	return *this;
+}
+
 OutputStreamHelper& OutputStreamHelper::operator<<(bool value)
 {
 	WriteObject(mStream, static_cast<uint8_t>(value ? 1 : 0));
@@ -160,6 +182,28 @@ InputStreamHelper& InputStreamHelper::operator>>(mat4& value)
 		}
 	}
 
+	return *this;
+}
+
+InputStreamHelper& Library::InputStreamHelper::operator>>(glm::mat3& value)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			*this >> value[i][j];
+		}
+	}
+
+	return *this;
+}
+
+InputStreamHelper& Library::InputStreamHelper::operator>>(glm::vec3& value)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		*this >> value[i];
+	}
 	return *this;
 }
 

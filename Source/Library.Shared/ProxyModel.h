@@ -13,7 +13,7 @@ namespace Library
 		RTTI_DECLARATIONS(ProxyModel, DrawableGameComponent);
 
 	public:
-		ProxyModel(Game& game, std::shared_ptr<Camera> camera, const std::string& modelFileName, float scale = 1.0f, bool allowUniformColor = false);
+		ProxyModel(Game& game, std::shared_ptr<Camera> camera, const std::string& modelFileName, float scale = 1.0f, bool allowUniformColor = false, GLenum frontFace = GL_CCW);
 		ProxyModel(const ProxyModel&) = delete;
 		ProxyModel& operator=(const ProxyModel&) = delete;
 		ProxyModel(ProxyModel&&) = delete;
@@ -49,6 +49,7 @@ namespace Library
 		GLuint mVertexArrayObject = 0;
 		GLuint mVertexBuffer = 0;
 		GLuint mIndexBuffer = 0;
+		GLenum mFrontFace = GL_CCW;
 		std::size_t mIndexCount = 0;
 		bool mDisplayWireframe = true;
 		bool mAllowUniformColor;

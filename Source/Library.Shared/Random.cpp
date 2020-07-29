@@ -23,6 +23,12 @@ namespace Library
 		return min + static_cast<float>(rand()) / static_cast<float>(RAND_MAX / (max-min));
 	}
 
+	float Random::RandomFloat(glm::vec2 range)
+	{
+		Seed();
+		return RandomFloat(range.x, range.y);
+	}
+
 	void Random::Seed()
 	{
 		if (!mIsSeeded)

@@ -20,6 +20,8 @@ namespace Library
 		OutputStreamHelper& operator<<(float value);
 		OutputStreamHelper& operator<<(const std::string& value);
 		OutputStreamHelper& operator<<(const glm::mat4& value);
+		OutputStreamHelper& operator<<(const glm::mat3& value);
+		OutputStreamHelper& operator<<(const glm::vec3& value);
 		OutputStreamHelper& operator<<(bool value);
 
 	private:
@@ -45,6 +47,8 @@ namespace Library
 		InputStreamHelper& operator>>(float& value);
 		InputStreamHelper& operator>>(std::string& value);
 		InputStreamHelper& operator>>(glm::mat4& value);
+		InputStreamHelper& operator>>(glm::mat3& value);
+		InputStreamHelper& operator>>(glm::vec3& value);
 		InputStreamHelper& operator>>(bool& value);
 
 	private:

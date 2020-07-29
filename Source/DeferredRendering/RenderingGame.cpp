@@ -29,6 +29,7 @@ namespace Rendering
 	{
 		// Adding camera
 		shared_ptr<Camera> camera = make_shared<FirstPersonCamera>(*this);
+		camera->SetPosition(0.0f, 0.0f, 2.0f);
 		mComponents.push_back(camera);
 
 		// Adding escape keyboard control
@@ -54,10 +55,16 @@ namespace Rendering
 
 		auto helpTextImGuiRenderBlock = make_shared<ImGuiComponent::RenderBlock>([this]()
 			{
+				int numLights = mDemo->GetPointLightCount();
+				stringstream sstream;
+				sstream << "Current frame rate: " << setprecision(4);
+				sstream << mFrameRate << "frames/s";
 				ImGui::SetNextWindowPos(ImVec2(400, 0), ImGuiCond_Appearing);
 				ImGui::Begin("Controls");
 
+				ImGui::Text(sstream.str().c_str());
 				ImGui::Text("Camera (WASD + Right-Click-Mouse-Look)");
+				ImGui::Text("Use arrow keys to control directional light");
 				ImGui::Separator();
 				if (ImGui::CollapsingHeader("Controls"))
 				{
@@ -65,28 +72,32 @@ namespace Rendering
 					ImGui::SliderFloat("Ambient Intensity", mDemo->GetAmbientIntensityAddress(), 0.0f, 1.0f);
 					ImGui::SliderFloat("Directional Light Intensity", &mDemo->mDirectionalLightIntensity, 0.0f, 1.0f);
 					ImGui::SliderFloat("Specular Power", mDemo->GetSpecularPowerAddress(), 4.0f, 256.0f);
+					ImGui::SliderInt("Light Count", &numLights, 1, 800);
 
 					if (ImGui::Button("Randomize light"))
 						mDemo->RandomizePointLights();
 					ImGui::SameLine();
 					if (ImGui::Button("Toggle sphere"))
 						mDemo->ToggleShowSphere();
-
-					ImGui::Text("Use arrow keys to control directional light");
 				}
-				
 				ImGui::End();
+
+				if (static_cast<size_t>(numLights) != mDemo->GetPointLightCount())
+				{
+					mDemo->SetPointLightCount(numLights);
+				}
 			});
 		imGui->AddRenderBlock(helpTextImGuiRenderBlock);
 
 		Game::Initialize();
 
-		camera->SetPosition(0, 6, 10);
+		camera->SetPosition(0, 6, 9);
 		camera->ApplyRotation(rotate(mat4(1), radians(30.0f), Vector3Helper::Left));
 	}
 	void RenderingGame::Update(const GameTime& gameTime)
 	{
 		Game::Update(gameTime);
+		CalculateFrameRate(gameTime);
 	}
 	void RenderingGame::Draw(const GameTime& gameTime)
 	{
@@ -100,5 +111,15 @@ namespace Rendering
 		Game::Draw(gameTime);
 
 		glfwSwapBuffers(mWindow);
+	}
+	void RenderingGame::CalculateFrameRate(const GameTime& gameTime)
+	{
+		if((mGameTime.TotalGameTime() - mLastTotalTime) >= 1s)
+		{
+			mLastTotalTime = gameTime.TotalGameTime();
+			mFrameRate = mFrameCount;
+			mFrameCount = 0;
+		}
+		++mFrameCount;
 	}
 }

@@ -28,6 +28,9 @@ namespace Library
 	{
 		std::string Name;
 		std::map<TextureType, std::vector<std::string>> Textures;
+		glm::vec3 DiffuseColor;
+		glm::vec3 AmbientColor;
+		glm::vec3 SpecularColor;
 	};
 
 	class ModelMaterial final
@@ -47,6 +50,9 @@ namespace Library
 		inline Model& GetModel() { return *mModel; }
 		inline const std::string& Name() const { return mName; }
 		inline const std::map<TextureType, std::vector<std::string>>& Textures() const { return mTextures; }
+		inline const glm::vec3& DiffuseColor() const { return mDiffuseColor; }
+		inline const glm::vec3& AmbientColor() const { return mAmbientColor; }
+		inline const glm::vec3& SpecularColor() const { return mSpecularColor; }
 
 		void Save(OutputStreamHelper& streamHelper) const;
 
@@ -60,6 +66,9 @@ namespace Library
 		Model* mModel;
 		std::string mName;
 		std::map<TextureType, std::vector<std::string>> mTextures;
+		glm::vec3 mDiffuseColor;
+		glm::vec3 mAmbientColor;
+		glm::vec3 mSpecularColor;
 	};
 }
 
