@@ -3,6 +3,7 @@
 #include "Utility.h"
 #include "Model.h"
 #include "Camera.h"
+#include "TextureHelper.h"
 
 using namespace glm;
 using namespace std;
@@ -20,7 +21,6 @@ namespace Library
 
 	Skybox::~Skybox()
 	{
-		glDeleteSamplers(1, &mSkyboxTextureSampler);
 		glDeleteTextures(1, &mSkyboxTexture);
 		glDeleteBuffers(1, &mIndexBuffer);
 		glDeleteBuffers(1, &mVertexBuffer);
@@ -43,18 +43,8 @@ namespace Library
 		mesh->CreateIndexBuffer(mIndexBuffer);
 		mIndexCount = mesh->Indices().size();
 
-		mSkyboxTexture = SOIL_load_OGL_cubemap(mPosXFilename.c_str(), mNegXFilename.c_str(), mPosYFilename.c_str(), mNegYFilename.c_str(), mPosZFilename.c_str(), mNegZFilename.c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		if (mSkyboxTexture == 0)
-		{
-			throw runtime_error("SOIL_load_OGL_cubemap() failed.");
-		}
-
-		glGenSamplers(1, &mSkyboxTextureSampler);
-		glSamplerParameteri(mSkyboxTextureSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glSamplerParameteri(mSkyboxTextureSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glSamplerParameteri(mSkyboxTextureSampler, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glSamplerParameteri(mSkyboxTextureSampler, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glSamplerParameteri(mSkyboxTextureSampler, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		// Load cube map texture
+		mSkyboxTexture = TextureHelper::LoadCubeMap(mPosXFilename.c_str(), mNegXFilename.c_str(), mPosYFilename.c_str(), mNegYFilename.c_str(), mPosZFilename.c_str(), mNegZFilename.c_str(), GL_CLAMP_TO_EDGE, GL_LINEAR);
 
 		// Create the vertex array object
 		glGenVertexArrays(1, &mVertexArrayObject);
@@ -71,7 +61,6 @@ namespace Library
 		glBindVertexArray(mVertexArrayObject);
 		glBindBuffer(GL_ARRAY_BUFFER, mVertexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexBuffer);
-		glBindSampler(0, mSkyboxTextureSampler);
 
 		mShaderProgram.Use();
 

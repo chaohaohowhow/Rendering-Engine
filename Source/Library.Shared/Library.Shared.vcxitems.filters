@@ -116,6 +116,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)StreamHelper.cpp">
       <Filter>Helpers</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureHelper.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)pch.h" />
@@ -237,6 +240,9 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StreamHelper.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureHelper.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>

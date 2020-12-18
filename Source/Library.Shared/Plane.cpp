@@ -4,6 +4,7 @@
 #include "HelperMacros.h"
 #include "VertexDeclarations.h"
 #include "VectorHelper.h"
+#include "TextureHelper.h"
 
 using namespace glm;
 using namespace std;
@@ -51,11 +52,7 @@ namespace Library
 		GLCall(glBindVertexArray(mVAO));
 
 		// Load texture
-		mTexture = SOIL_load_OGL_texture("Content\\Textures\\Floor.jpg", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		if (mTexture == 0)
-		{
-			throw runtime_error("SOIL_load_OGL_texture() failed!");
-		}
+		mTexture = TextureHelper::LoadTexture("Content\\Textures\\Floor.jpg", GL_REPEAT, GL_LINEAR);
 
 		// Attribute pointers
 		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position)));

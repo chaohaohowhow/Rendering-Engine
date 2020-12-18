@@ -14,6 +14,7 @@
 #include "ProxyModel.h"
 #include "Camera.h"
 #include "ShaderProgram.h"
+#include "TextureHelper.h"
 
 using namespace std;
 using namespace std::string_literals;
@@ -83,7 +84,7 @@ namespace Rendering
 			VertexPositionTextureNormal::CreateVertexBuffer(*mesh, data.VBO);
 			mesh->CreateIndexBuffer(data.IBO);
 			mGBufferPassProgram.Initialize(data.VAO);
-			data.IndexCount = mesh->Indices().size();
+			data.IndexCount = static_cast<GLuint>(mesh->Indices().size());
 			data.DiffuseColor = mesh->GetMaterial()->DiffuseColor();
 			auto& textures = mesh->GetMaterial()->Textures();
 
@@ -92,11 +93,7 @@ namespace Rendering
 				string fileName = textures.at(TextureType::Diffuse)[0];
 				if (!mFileNameToTextureId.contains(fileName))
 				{
-					GLuint newTexture = SOIL_load_OGL_texture(("Content\\Textures\\" + fileName).c_str(), SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-					if (newTexture == 0)
-					{
-						throw runtime_error("SOIL_load_OGL_texture() failed!");
-					}
+					GLuint newTexture = TextureHelper::LoadTexture(("Content\\Textures\\" + fileName).c_str(), GL_REPEAT, GL_LINEAR);
 					mFileNameToTextureId.emplace(fileName, newTexture);
 					data.Texture = newTexture;
 				}
@@ -110,10 +107,6 @@ namespace Rendering
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			glBindVertexArray(0);
-
-			glGenSamplers(1, &mSampler);
-			glSamplerParameteri(mSampler, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glSamplerParameteri(mSampler, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		}
 		
 		mGBufferPassProgram.InitializeUniform();
@@ -196,7 +189,6 @@ namespace Rendering
 			else
 			{
 				glBindTexture(GL_TEXTURE_2D, data.Texture);
-				glBindSampler(0, mSampler);
 			}
 			glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(data.IndexCount), GL_UNSIGNED_INT, 0);
 		}

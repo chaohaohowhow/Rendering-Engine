@@ -64,6 +64,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SpotLight.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StreamHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TexturedCube.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextureHelper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Utility.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Variable.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)VectorHelper.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SpotLight.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StreamHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TexturedCube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextureHelper.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utility.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Variable.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VectorHelper.h" />

@@ -4,6 +4,9 @@
 #include "ModelMaterial.h"
 #include "StreamHelper.h"
 
+#include <filesystem>
+namespace fs = std::filesystem;
+
 using namespace std;
 using namespace gsl;
 

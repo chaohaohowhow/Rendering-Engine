@@ -46,8 +46,8 @@ namespace Library
 		virtual void InitializeOpenGL();
 		virtual void ShutDown();
 
-		inline static const std::uint32_t sDefaultWidth = 800;
-		inline static const std::uint32_t sDefaultHeight = 600;
+		inline static const std::uint32_t sDefaultWidth = 1920;
+		inline static const std::uint32_t sDefaultHeight = 1440;
 
 		// Member variables
 		std::string mWindowTitle;

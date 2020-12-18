@@ -42,8 +42,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #pragma warning(pop)
 
-#include <SOIL/SOIL.h>
-
 // Microsoft guild line
 #include <gsl/gsl>
 

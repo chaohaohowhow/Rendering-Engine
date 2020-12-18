@@ -55,7 +55,7 @@ namespace Rendering
 
 		auto helpTextImGuiRenderBlock = make_shared<ImGuiComponent::RenderBlock>([this]()
 			{
-				int numLights = mDemo->GetPointLightCount();
+				size_t numLights = mDemo->GetPointLightCount();
 				stringstream sstream;
 				sstream << "Current frame rate: " << setprecision(4);
 				sstream << mFrameRate << "frames/s";
@@ -72,7 +72,7 @@ namespace Rendering
 					ImGui::SliderFloat("Ambient Intensity", mDemo->GetAmbientIntensityAddress(), 0.0f, 1.0f);
 					ImGui::SliderFloat("Directional Light Intensity", &mDemo->mDirectionalLightIntensity, 0.0f, 1.0f);
 					ImGui::SliderFloat("Specular Power", mDemo->GetSpecularPowerAddress(), 4.0f, 256.0f);
-					ImGui::SliderInt("Light Count", &numLights, 1, 800);
+					ImGui::SliderInt("Light Count", reinterpret_cast<int*>(&numLights), 1, 800);
 
 					if (ImGui::Button("Randomize light"))
 						mDemo->RandomizePointLights();
@@ -82,7 +82,7 @@ namespace Rendering
 				}
 				ImGui::End();
 
-				if (static_cast<size_t>(numLights) != mDemo->GetPointLightCount())
+				if (numLights != mDemo->GetPointLightCount())
 				{
 					mDemo->SetPointLightCount(numLights);
 				}

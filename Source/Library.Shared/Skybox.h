@@ -38,7 +38,6 @@ namespace Library
 		GLuint mIndexBuffer = 0;
 		std::size_t mIndexCount = 0;
 		GLuint mSkyboxTexture = 0;
-		GLuint mSkyboxTextureSampler = 0;
 		BasicEffect mShaderProgram;
 	};
 }

@@ -7,6 +7,7 @@
 #include "HelperMacros.h"
 #include "Light.h"
 #include "PointLight.h"
+#include "TextureHelper.h"
 #include "VectorHelper.h"
 #include "VertexDeclarations.h"
 
@@ -111,11 +112,7 @@ namespace Library
 		GLCall(glBindVertexArray(mVertexArrayObject));
 
 		// Loading Texture
-		mTexture = SOIL_load_OGL_texture("Content\\Textures\\Cube.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB);
-		if (mTexture == 0)
-		{
-			throw runtime_error("SOIL_load_OGL_texture() failed!");
-		}
+		mTexture = TextureHelper::LoadTexture("Content\\Textures\\Cube.png", GL_REPEAT, GL_LINEAR);
 		
 		// Attribute Pointers
 		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position)));

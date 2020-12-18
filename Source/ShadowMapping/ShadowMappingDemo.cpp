@@ -11,6 +11,7 @@
 #include "ModelMaterial.h"
 #include "Plane.h"
 #include "ProxyModel.h"
+#include "TextureHelper.h"
 
 using namespace std;
 using namespace glm;
@@ -52,7 +53,7 @@ namespace Library
 		mDebugShaderProgram.BuildProgram(shaders);
 
 		// Load the model
-		Model model("Content/Models/fountain2.obj.bin");
+		Model model("Content\\Models\\fountain2.obj.bin");
 
 		// Create vertex and index buffer
 		auto& mesh = model.Meshes().at(0);
@@ -61,11 +62,7 @@ namespace Library
 		mIndexCount = mesh->Indices().size();
 
 		// Loading fountain texture
-		mColorTexture = SOIL_load_OGL_texture("Content/Textures/fountainBaseColor.png", SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
-		if (mColorTexture == 0)
-		{
-			throw runtime_error("SOIL_load_OGL_texture() failed!");
-		}
+		mColorTexture = TextureHelper::LoadTexture("Content/Textures/fountainBaseColor.png", GL_REPEAT, GL_LINEAR);
 
 		// Create the vertex array object
 		GLCall(glGenVertexArrays(1, &mVAO));

@@ -53,7 +53,6 @@ namespace Rendering
 			glm::vec3 DiffuseColor { 0 };
 			GLuint Texture = 0;
 		};
-		GLuint mSampler = 0;
 		size_t mPointLightCount = 32;
 		glm::mat4 mWorldMatrix{ 1 };
 
