@@ -62,7 +62,7 @@ namespace Library
 		mIndexCount = mesh->Indices().size();
 
 		// Loading fountain texture
-		mColorTexture = TextureHelper::LoadTexture("Content/Textures/fountainBaseColor.png", GL_REPEAT, GL_LINEAR);
+		mColorTexture = TextureHelper::LoadTextureRGBA("Content/Textures/fountainBaseColor.png", GL_REPEAT, GL_LINEAR);
 
 		// Create the vertex array object
 		GLCall(glGenVertexArrays(1, &mVAO));

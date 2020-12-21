@@ -52,7 +52,7 @@ namespace Library
 		GLCall(glBindVertexArray(mVAO));
 
 		// Load texture
-		mTexture = TextureHelper::LoadTexture("Content\\Textures\\Floor.jpg", GL_REPEAT, GL_LINEAR);
+		mTexture = TextureHelper::LoadTextureRGB("Content\\Textures\\Wood_BaseColor.jpg", GL_REPEAT, GL_LINEAR);
 
 		// Attribute pointers
 		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position)));

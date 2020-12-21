@@ -5,32 +5,14 @@
 
 namespace Library
 {
-	GLuint TextureHelper::LoadTexture(const char* fileName, GLint wrapping, GLint filtering)
+	GLuint TextureHelper::LoadTextureRGB(const char* fileName, GLint wrapping, GLint filtering)
 	{
-		GLuint texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapping);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filtering);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filtering);
+		return LoadTextureHelper(fileName, GL_TEXTURE_2D, wrapping, filtering, GL_RGB, GL_RGB, GL_UNSIGNED_BYTE);
+	}
 
-		int width, height, nrChannel;
-		unsigned char* textureData = stbi_load(fileName, &width, &height, &nrChannel, 0);
-		if (textureData)
-		{
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureData);
-			glGenerateMipmap(GL_TEXTURE_2D);
-			stbi_image_free(textureData);
-		}
-		else
-		{
-			stbi_image_free(textureData);
-			throw std::runtime_error("stbi_load() failed!");
-		}
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		return texture;
+	GLuint TextureHelper::LoadTextureRGBA(const char* fileName, GLint wrapping, GLint filtering)
+	{
+		return LoadTextureHelper(fileName, GL_TEXTURE_2D, wrapping, filtering, GL_RGBA, GL_RGBA, GL_UNSIGNED_BYTE);
 	}
 
 	GLuint TextureHelper::LoadCubeMap(const std::vector<const char*>& faces, GLint wrapping, GLint filtering)
@@ -77,4 +59,33 @@ namespace Library
 
 		return LoadCubeMap(faces, wrapping, filtering);
 	}
+
+	GLuint TextureHelper::LoadTextureHelper(const char* fileName, GLenum bindTarget, GLint wrapping, GLint filtering, GLint internalFormat, GLenum format, GLenum type)
+	{
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glBindTexture(bindTarget, texture);
+		glTexParameteri(bindTarget, GL_TEXTURE_WRAP_S, wrapping);
+		glTexParameteri(bindTarget, GL_TEXTURE_WRAP_T, wrapping);
+		glTexParameteri(bindTarget, GL_TEXTURE_MIN_FILTER, filtering);
+		glTexParameteri(bindTarget, GL_TEXTURE_MAG_FILTER, filtering);
+
+		int width, height, nrChannel;
+		unsigned char* textureData = stbi_load(fileName, &width, &height, &nrChannel, 0);
+		if (textureData)
+		{
+			glTexImage2D(bindTarget, 0, internalFormat, width, height, 0, format, type, textureData);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			stbi_image_free(textureData);
+		}
+		else
+		{
+			stbi_image_free(textureData);
+			throw std::runtime_error("stbi_load() failed!");
+		}
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		return texture;
+	}
+
 }

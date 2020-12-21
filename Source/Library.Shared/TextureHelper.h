@@ -13,12 +13,16 @@ namespace Library
 
 	public:
 		// Create new texture ID and load new 2D texture with the given wrapping and filtering mode
-		static GLuint LoadTexture(const char* fileName, GLint wrapping, GLint filtering);
+		static GLuint LoadTextureRGB(const char* fileName, GLint wrapping, GLint filtering);
+
+		static GLuint LoadTextureRGBA(const char* fileName, GLint wrapping, GLint filtering);
 
 		// Create new texture ID and load cube map texture with the given wrapping and filtering mode
 		static GLuint LoadCubeMap(const std::vector<const char*>& faces, GLint wrapping, GLint filtering);
 
 		static GLuint LoadCubeMap(const char* posX, const char* negX, const char* posY, const char* negY, const char* posZ, const char* negZ, GLint wrapping, GLint filtering);
 
+	private:
+		static GLuint LoadTextureHelper(const char* fileName, GLenum bindTarget, GLint wrapping, GLint filtering, GLint internalFormat, GLenum format, GLenum type);
 	};
 }

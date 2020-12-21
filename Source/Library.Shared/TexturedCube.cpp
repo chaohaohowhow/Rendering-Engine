@@ -112,7 +112,7 @@ namespace Library
 		GLCall(glBindVertexArray(mVertexArrayObject));
 
 		// Loading Texture
-		mTexture = TextureHelper::LoadTexture("Content\\Textures\\Cube.png", GL_REPEAT, GL_LINEAR);
+		mTexture = TextureHelper::LoadTextureRGB("Content\\Textures\\Cube.png", GL_REPEAT, GL_LINEAR);
 		
 		// Attribute Pointers
 		GLCall(glVertexAttribPointer(static_cast<GLuint>(VertexAttribute::Position), 4, GL_FLOAT, GL_FALSE, sizeof(VertexPositionTextureNormal), (void*)offsetof(VertexPositionTextureNormal, Position)));

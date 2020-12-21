@@ -39,7 +39,7 @@ namespace Library
 
 	void Game::Exit()
 	{
-		glfwSetWindowShouldClose(mWindow, GL_TRUE);
+		glfwSetWindowShouldClose(mWindow, GLFW_TRUE);
 	}
 	void Game::Initialize()
 	{

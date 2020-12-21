@@ -93,7 +93,7 @@ namespace Rendering
 				string fileName = textures.at(TextureType::Diffuse)[0];
 				if (!mFileNameToTextureId.contains(fileName))
 				{
-					GLuint newTexture = TextureHelper::LoadTexture(("Content\\Textures\\" + fileName).c_str(), GL_REPEAT, GL_LINEAR);
+					GLuint newTexture = TextureHelper::LoadTextureRGB(("Content\\Textures\\" + fileName).c_str(), GL_REPEAT, GL_LINEAR);
 					mFileNameToTextureId.emplace(fileName, newTexture);
 					data.Texture = newTexture;
 				}

@@ -18,3 +18,6 @@ The following libraries need to be installed with vcpkg for both x86 and x64:
 * [OpenGL Mathematics (GLM)](https://glm.g-truc.net/0.9.9/index.html) - C++ mathematics library for graphics software based on GLSL
 * [Microsoft GSL](https://github.com/microsoft/GSL) - Library contains functions ad types that are suggested by the C++ Core Guidelines
 * [Dear ImGui](https://github.com/ocornut/imgui) - C++ graphic user interface library. Used for debugging in this project
+
+### Debug project
+Before debugging a project, please go to the project's property page, go to Debugging, and change Working Directory to **$(OutDir)**
